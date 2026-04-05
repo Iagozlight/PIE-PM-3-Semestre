@@ -3,7 +3,7 @@ import org.example.models.Usuarios;
 import org.example.repositories.CustomizerFactory;
 import org.example.Repository.UsuarioRepository;
 import jakarta.persistence.EntityManager;
-
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -11,9 +11,10 @@ public class Main {
         EntityManager em = CustomizerFactory.getEntityManager();// aqui cria o entitymanager que vai conversar com o banco
         UsuarioRepository usuarioRepository = new UsuarioRepository(em);// o "em" é o EntityManager que será usado pelo repository para manipular o banco de dados
         novoUsuario(usuarioRepository);// chamando o metodo
+        exibirUsuarios(usuarioRepository);
     }
 
-    static void novoUsuario(UsuarioRepository usuarioRepository) {
+    static void novoUsuario(UsuarioRepository usuarioRepository) {//sem passa os parametros o metodo nao conseguiria acessar as variaveis de instancia
 
         while (true) { //depois ajusta isso
             Scanner sc = new Scanner(System.in);
@@ -39,6 +40,13 @@ public class Main {
                 System.out.println("USUARIO CADASTRADO");
 
             }
+        }
+    }
+
+    static void exibirUsuarios(UsuarioRepository usuarioRepository) {
+        List<Usuarios> lista = usuarioRepository.findAll();//faz a busca de todos os usuarios de todos os usuarios do banco de dados e retorna uma lista
+        for (Usuarios u : lista) {
+            System.out.println("Usuario: " + u.getUsuario());
         }
     }
 }
