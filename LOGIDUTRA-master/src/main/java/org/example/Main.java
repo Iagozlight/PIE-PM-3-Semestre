@@ -10,9 +10,14 @@ public class Main {
     public static void main(String[] args) {
         EntityManager em = CustomizerFactory.getEntityManager();// aqui cria o entitymanager que vai conversar com o banco
         UsuarioRepository usuarioRepository = new UsuarioRepository(em);// o "em" é o EntityManager que será usado pelo repository para manipular o banco de dados
-        novoUsuario(usuarioRepository);// chamando o metodo
+        // chamando os metodos
+        novoUsuario(usuarioRepository);
+
         exibirUsuarios(usuarioRepository);
+
         alterarSenha(usuarioRepository);
+
+        removerUsuario(usuarioRepository);
 
     }
 
@@ -63,7 +68,7 @@ public class Main {
         Usuarios usuarioencontrado = null;
 
         while (encontrado == false) {
-            usuarioencontrado = null;
+            usuarioencontrado = null;//caso o usuario nao seja encontrado, reseta o valor pra null;
             List<Usuarios> lista = usuarioRepository.findAll();
             for (Usuarios u : lista) {
                 if (u.getUsuario().equals(user)){
@@ -93,6 +98,37 @@ public class Main {
             if (encontrado == false && usuarioencontrado != null) {
                 System.out.println("Senha incorreta!!\nDigite novamente");
                 senhaDigitada = sc.nextLine();
+            }
+        }
+    }
+
+    static void removerUsuario (UsuarioRepository usuarioRepository) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Digite o usuario que sera removido: ");
+        String user = sc.nextLine();
+
+        Usuarios usuarioencontrado = null;
+        boolean encontrado = false;
+
+        while (encontrado == false) {
+            usuarioencontrado = null;
+            List<Usuarios> lista = usuarioRepository.findAll();
+
+            for (Usuarios u : lista) {
+                if (u.getUsuario().equals(user)) {
+                    usuarioencontrado = u;
+                }
+            }
+            if (usuarioencontrado!= null){
+                usuarioRepository.delete(usuarioencontrado);
+                encontrado = true;
+                System.out.println("Usuario deletado com sucesso!!");
+            }
+            {
+                System.out.println("Usuario não encontrado!!\n" +
+                        "Digite um usuario valido: ");
+                user = sc.nextLine();
             }
         }
     }
