@@ -12,6 +12,8 @@ public class Main {
         UsuarioRepository usuarioRepository = new UsuarioRepository(em);// o "em" é o EntityManager que será usado pelo repository para manipular o banco de dados
         novoUsuario(usuarioRepository);// chamando o metodo
         exibirUsuarios(usuarioRepository);
+        alterarSenha(usuarioRepository);
+
     }
 
     static void novoUsuario(UsuarioRepository usuarioRepository) {//sem passa os parametros o metodo nao conseguiria acessar as variaveis de instancia
@@ -47,6 +49,51 @@ public class Main {
         List<Usuarios> lista = usuarioRepository.findAll();//faz a busca de todos os usuarios de todos os usuarios do banco de dados e retorna uma lista
         for (Usuarios u : lista) {
             System.out.println("Usuario: " + u.getUsuario());
+        }
+    }
+
+    static void alterarSenha (UsuarioRepository usuarioRepository) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Digite o Usuario que deseja atualizar a senha");
+        String user = sc.nextLine();
+
+        boolean encontrado = false;
+        String senhaDigitada;
+        Usuarios usuarioencontrado = null;
+
+        while (encontrado == false) {
+            usuarioencontrado = null;
+            List<Usuarios> lista = usuarioRepository.findAll();
+            for (Usuarios u : lista) {
+                if (u.getUsuario().equals(user)){
+                    usuarioencontrado = u;
+                }
+            }
+                if (usuarioencontrado != null) {
+                    if (usuarioencontrado.getUsuario().equals(user)) {// verificação desnecessaria, mas rodou assim entao deixei
+                        System.out.println("Senha antiga: ");
+                        senhaDigitada = sc.nextLine();
+
+                        if (senhaDigitada.equals(usuarioencontrado.getSenha())) {
+                            System.out.println("Nova Senha: ");
+                            String novaSenha = sc.nextLine();
+                            usuarioencontrado.setSenha(novaSenha);
+                            usuarioRepository.update(usuarioencontrado);// atualizando no banco de dados
+                            encontrado = true;
+
+                            System.out.println("Senha atualizada!!");
+                        }
+                    }
+                }else {
+                    System.out.println("Usuario nao encontrado, digite um usuario valido!!");
+                    user = sc.nextLine();
+                }
+            //quando as duas forem verdadeiras vai significar que  senha ta errada mas o usuario ta correto, evita de cair direto na senha incorreta
+            if (encontrado == false && usuarioencontrado != null) {
+                System.out.println("Senha incorreta!!\nDigite novamente");
+                senhaDigitada = sc.nextLine();
+            }
         }
     }
 }
