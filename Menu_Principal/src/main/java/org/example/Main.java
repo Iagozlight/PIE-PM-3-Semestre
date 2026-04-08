@@ -85,14 +85,31 @@ public class Main {
                 break;
             case "2":
                 romaneios();
+                break;
             case "3":
-                criar_romaneios();
+                if(admin[0] == true) {
+                    criar_romaneios();
+                } else {
+                    System.out.println("Indisponível");
+                }
                 break;
             case "4":
-                cadastro();
+                if(admin[0] == true) {
+                    cadastro();
+                } else {
+                    System.out.println("Indisponível");
+                }
                 break;
             case "5":
-                ver_cadastros();
+                if(admin[0] == true) {
+                    ver_cadastros();
+                } else {
+                    System.out.println("Indisponível");
+                }
+                break;
+
+            default:
+                System.out.println("Indisponível");
                 break;
         }
         } while(!escolha.equals("0"));
