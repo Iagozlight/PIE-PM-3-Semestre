@@ -16,6 +16,9 @@
         <mapping class="org.example.models.ClientesRomaneio"/>
         <mapping class="org.example.models.Pedidos"/>
         <mapping class="org.example.models.Romaneios"/>
+        <mapping class="org.example.models.Endereco"/>
+        <mapping class="org.example.models.Motoristas"/>
+        <mapping class="org.example.models.Veiculos"/>
 
     </session-factory>
 </hibernate-configuration>
