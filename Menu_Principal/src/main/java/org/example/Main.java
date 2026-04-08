@@ -4,15 +4,18 @@ import java.util.Scanner;
 public class Main {
 
     public static int login(boolean[] admin) {
+        //Apenas um teste, será aplicado futuramente o Login do Mateus//
+
+
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Você é o que : 1 Admin | 2 Funcionario ___");
-        int escolha = sc.nextInt();
+        String escolha = sc.nextLine();
 
-        if (escolha == 1) {
+        if (escolha.equals("1")) {
             admin[0] = true;
             System.out.println("Você é Admin");
-        } else if (escolha == 2) {
+        } else if (escolha.equals("2")) {
             System.out.println("Você é um funcionário");
             admin[0] = false;
         } else {
@@ -24,19 +27,19 @@ public class Main {
     }
 
     public static void romaneios(){
-
+        //Apenas um teste, será aplicado futuramente o Login do Thales//
     }
 
     public static void criar_romaneios(){
-
+        //Apenas um teste, será aplicado futuramente o Login do Thales//
     }
 
     public static void cadastro(){
-
+        //Apenas um teste, será aplicado futuramente o Login do Mateus//
     }
 
     public static void ver_cadastros(){
-
+        //Apenas um teste, será aplicado futuramente o Login do Mateus//
     }
 
     public static void main(String[] args) {
@@ -44,27 +47,25 @@ public class Main {
 
         int logged = 0;
         String escolha;
-        boolean[] admin = {false};
+        boolean[] admin = {false}; //A Booleana está por array, porque quando passamos por parametro normalmente ele apenas passa uma "cópia"//
 
         System.out.println("=-=-= LOGI-DUTRA =-=-=");
+        do {
+            System.out.println("1 =-=-= LOGIN =-=-=");
+            System.out.println("||__||");
+            escolha = sc.nextLine();
 
-        if (logged != 1) {
-            do {
-                System.out.println("1 =-=-= LOGIN =-=-=");
-                System.out.println("||__||");
-                escolha = sc.nextLine();
+            switch (escolha) {
+                case "1":
+                    logged = login(admin);
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+                    break;
+            }
 
-                switch (escolha) {
-                    case "1":
-                        logged = login(admin);
-                        break;
-                    default:
-                        System.out.println("Opção inválida!");
-                        break;
-                }
+        } while (logged != 1);
 
-            } while (logged != 1);
-        }
 
         do{
         System.out.println("1 =-=-= LOGADO          =-=-=");
@@ -73,11 +74,12 @@ public class Main {
         if (admin[0]) {
             System.out.println("3 =-=-= CRIAR ROMANEIOS =-=-=");
             System.out.println("4 =-=-= CADASTRAR       =-=-=");
-            System.out.println("5 =-=-= VER CADSASTROS  =-=-=");
+            System.out.println("5 =-=-= VER CADASTROS  =-=-=");
         }
 
         System.out.println("0 =-=-= ENCERRAR         =-=-=");
         escolha = sc.nextLine();
+
 
         switch(escolha) {
             case "1":
@@ -112,6 +114,7 @@ public class Main {
                 System.out.println("Indisponível");
                 break;
         }
+
         } while(!escolha.equals("0"));
     }
 }
