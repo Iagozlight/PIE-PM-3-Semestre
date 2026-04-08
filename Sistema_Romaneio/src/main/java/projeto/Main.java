@@ -19,11 +19,11 @@ public class Main {
         boolean rodando = true;
         EntityManager em = CustomizerFactory.getEntityManager();
         FlyWayconfig.migrate();
-
-        RomaneiosRepository romaneiosRepository = new RomaneiosRepository(em);
-        ClientesRomaneioRepository clientesRomaneioRepository = new ClientesRomaneioRepository(em);
-        PedidosRepository pedidosRepository = new PedidosRepository(em);
-
+//
+//        RomaneiosRepository romaneiosRepository = new RomaneiosRepository(em);
+//        ClientesRomaneioRepository clientesRomaneioRepository = new ClientesRomaneioRepository(em);
+//        PedidosRepository pedidosRepository = new PedidosRepository(em);
+//
 //
 //        do {
 //            System.out.println("\t\tDUTRA MOVEIS(romaneios)");
@@ -56,23 +56,23 @@ public class Main {
 //
 //
 //
-//                    do {
-//                        System.out.println("Nome: \n");
-//                        String nomeCliente = scanner.nextLine();
-//                        System.out.println("CEP: ");
-//                        String cep = scanner.nextLine();
-//                        System.out.println("Rua: \n");
-//                        String ruaCliente = scanner.nextLine();
-//                        System.out.println("Numero da casa: \n");
-//                        String numeroCasa = scanner.nextLine();
-//                        System.out.println("Bairro: \n");
-//                        String bairroCliente = scanner.nextLine();
-//                        ClientesRomaneio cliente = new ClientesRomaneio(null, nomeCliente, cep, ruaCliente,
-//                                numeroCasa, bairroCliente);
-//
-//                        System.out.println("\nConfirme os dados:");
-//                        System.out.println(cliente);
-//                    }
+////                    do {
+////                        System.out.println("Nome: \n");
+////                        String nomeCliente = scanner.nextLine();
+////                        System.out.println("CEP: ");
+////                        String cep = scanner.nextLine();
+////                        System.out.println("Rua: \n");
+////                        String ruaCliente = scanner.nextLine();
+////                        System.out.println("Numero da casa: \n");
+////                        String numeroCasa = scanner.nextLine();
+////                        System.out.println("Bairro: \n");
+////                        String bairroCliente = scanner.nextLine();
+////                        ClientesRomaneio cliente = new ClientesRomaneio(null, nomeCliente, cep, ruaCliente,
+////                                numeroCasa, bairroCliente);
+////
+////                        System.out.println("\nConfirme os dados:");
+////                        System.out.println(cliente);
+////                    }
 //
 //                    System.out.println("\nConfirme os dados:");
 //                    System.out.println(romaneio);
@@ -99,5 +99,5 @@ public class Main {
 //        } while (rodando);
 //
 //        scanner.close();
-//    }
-//}
+    }
+}

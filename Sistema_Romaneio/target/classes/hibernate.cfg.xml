@@ -5,7 +5,7 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5433/postgres</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">postgres</property>
 
@@ -16,6 +16,9 @@
         <mapping class="org.example.models.ClientesRomaneio"/>
         <mapping class="org.example.models.Pedidos"/>
         <mapping class="org.example.models.Romaneios"/>
+        <mapping class="org.example.models.Endereco"/>
+        <mapping class="org.example.models.Motoristas"/>
+        <mapping class="org.example.models.Veiculos"/>
 
     </session-factory>
 </hibernate-configuration>
