@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>projeto</groupId>
     <artifactId>untitled</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -32,6 +32,16 @@
             <artifactId>postgresql</artifactId>
             <version>42.7.10</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>12.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>12.3.0</version> <!-- mesma versão do flyway-core -->
         </dependency>
     </dependencies>
 

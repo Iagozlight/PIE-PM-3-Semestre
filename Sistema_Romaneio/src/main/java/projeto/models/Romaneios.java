@@ -6,18 +6,27 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "romaneios")
+@Entity
+@Table(name = "romaneios")
 public class Romaneios {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "data")
+    @Column(name = "data", nullable = false)
     private LocalDate data;
 
     @OneToMany(mappedBy = "romaneio", cascade = CascadeType.ALL)
     private List<ClientesRomaneio> clientes = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "veiculo_id", nullable = true)
+    private Veiculos veiculo;
+
+    @ManyToOne
+    @JoinColumn(name = "motorista_id", nullable = true)
+    private Motoristas motorista;
 
     public Romaneios() {}
 
@@ -42,12 +51,21 @@ public class Romaneios {
         this.data = data;
     }
 
+    public Veiculos getVeiculo() { return veiculo; }
+    public void setVeiculo(Veiculos veiculo) { this.veiculo = veiculo; }
+
+    public Motoristas getMotorista() { return motorista; }
+    public void setMotorista(Motoristas motorista) { this.motorista = motorista; }
+
     public List<ClientesRomaneio> getClientes() { return clientes; }
     public void setClientes(List<ClientesRomaneio> clientes) { this.clientes = clientes; }
 
     @Override
     public String toString() {
-        return "Romaneio{id=" + id + ", data=" + data + ", clientes=" + clientes + "}";
+        return "Romaneio{id=" + id + ", data=" + data +
+                ", veiculo=" + veiculo +
+                ", motorista=" + motorista +
+                ", clientes=" + clientes + "}";
     }
 
 }

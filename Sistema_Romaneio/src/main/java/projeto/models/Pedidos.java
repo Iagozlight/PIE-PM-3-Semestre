@@ -2,7 +2,8 @@ package projeto.models;
 
 import jakarta.persistence.*;
 
-@Entity(name = "pedidos")
+@Entity
+@Table(name = "pedidos")
 public class Pedidos {
 
     @Id
