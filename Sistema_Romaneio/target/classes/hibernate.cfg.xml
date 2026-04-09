@@ -13,12 +13,12 @@
         <property name="hibernate.format_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
 
-        <mapping class="org.example.models.ClientesRomaneio"/>
-        <mapping class="org.example.models.Pedidos"/>
-        <mapping class="org.example.models.Romaneios"/>
-        <mapping class="org.example.models.Endereco"/>
-        <mapping class="org.example.models.Motoristas"/>
-        <mapping class="org.example.models.Veiculos"/>
+        <mapping class="projeto.models.ClientesRomaneio"/>
+        <mapping class="projeto.models.Pedidos"/>
+        <mapping class="projeto.models.Romaneios"/>
+        <mapping class="projeto.models.Endereco"/>
+        <mapping class="projeto.models.Motoristas"/>
+        <mapping class="projeto.models.Veiculos"/>
 
     </session-factory>
 </hibernate-configuration>
