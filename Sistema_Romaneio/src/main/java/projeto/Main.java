@@ -6,10 +6,7 @@ import projeto.models.ClientesRomaneio;
 import projeto.models.Motoristas;
 import projeto.models.Romaneios;
 import projeto.models.Veiculos;
-import projeto.repositories.ClientesRomaneioRepository;
-import projeto.repositories.CustomizerFactory;
-import projeto.repositories.PedidosRepository;
-import projeto.repositories.RomaneiosRepository;
+import projeto.repositories.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,6 +22,8 @@ public class Main {
         RomaneiosRepository romaneiosRepository = new RomaneiosRepository(em);
         ClientesRomaneioRepository clientesRomaneioRepository = new ClientesRomaneioRepository(em);
         PedidosRepository pedidosRepository = new PedidosRepository(em);
+        VeiculosRepository veiculosRepository = new VeiculosRepository(em);
+        MotoristasRepository motoristasRepository = new MotoristasRepository(em);
 
         Veiculos master = new Veiculos(null, "Master", 2222, true);
         Veiculos bongo = new Veiculos(null, "Bongo", 3333, true);
@@ -34,7 +33,9 @@ public class Main {
         Motoristas italo = new Motoristas(null, "Italo");
 
         do {
+            System.out.println("\n======================================\n");
             System.out.println("\t\tDUTRA MOVEIS(romaneios)");
+            System.out.println("\n======================================\n");
             System.out.println("Selecione uma das opções:");
             System.out.println("(1) - Novo Romaneio");
             System.out.println("(2) - Ver Romaneios");
@@ -49,6 +50,12 @@ public class Main {
                         System.out.println("\t====Novo Romaneio====\n");
                         System.out.println("(1) - Cadastrar Cliente");
                         System.out.println("(2) - Cadastrar Romaneio");
+                        String escolha2 = scanner.nextLine();
+
+                        switch (escolha2){
+                            case 1:
+
+                        }
                     }
 
 
