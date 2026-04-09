@@ -2,10 +2,7 @@ package projeto;
 
 import jakarta.persistence.EntityManager;
 import projeto.config.FlyWayconfig;
-import projeto.models.ClientesRomaneio;
-import projeto.models.Motoristas;
-import projeto.models.Romaneios;
-import projeto.models.Veiculos;
+import projeto.models.*;
 import projeto.repositories.*;
 
 import java.time.LocalDate;
@@ -56,13 +53,34 @@ public class Main {
                         System.out.println("\t====Novo Romaneio====\n");
                         System.out.println("(1) - Cadastrar Cliente");
                         System.out.println("(2) - Cadastrar Romaneio");
+                        System.out.println("(3) - Sair");
                         String escolha2 = scanner.nextLine();
 
-                        switch (escolha2){
-                            case 1:
+                        if(escolha2.equals(1)){
+                                scanner.nextLine();
+
                                 System.out.println("=====Cadastrar Cliente======\n");
                                 System.out.println("Nome do Cliente: \n");
-                                System.out.println("");
+                                String nomeCliente = scanner.nextLine();
+                                System.out.println("CPF: \n");
+                                String cpfCliente = scanner.nextLine();
+                                ClientesRomaneio cliente = new ClientesRomaneio(null,  nomeCliente, cpfCliente);
+
+                                System.out.println("==Endereço==\n");
+                                System.out.println("CEP: ");
+                                String cepCasa = scanner.nextLine();
+                                System.out.println("Rua: \n");
+                                String ruaCliente = scanner.nextLine();
+                                System.out.println("Numero da casa: \n");
+                                String numeroCasa = scanner.nextLine();
+                                System.out.println("Bairro: \n");
+                                String bairroCliente = scanner.nextLine();
+                                System.out.println("Complemento(Opcional): \n");
+                                String complementoCasa = scanner.nextLine();
+                                System.out.println("Referencia(Opcional): \n");
+                                String referenciaCasa = scanner.nextLine();
+                                Endereco endereco = new Endereco(cepCasa, ruaCliente, numeroCasa, bairroCliente,
+                                        complementoCasa, referenciaCasa);
                         }
                     }
 
@@ -90,14 +108,7 @@ public class Main {
                     do {
                         System.out.println("Nome: \n");
                         String nomeCliente = scanner.nextLine();
-                        System.out.println("CEP: ");
-                        String cep = scanner.nextLine();
-                        System.out.println("Rua: \n");
-                        String ruaCliente = scanner.nextLine();
-                        System.out.println("Numero da casa: \n");
-                        String numeroCasa = scanner.nextLine();
-                        System.out.println("Bairro: \n");
-                        String bairroCliente = scanner.nextLine();
+
                         ClientesRomaneio cliente = new ClientesRomaneio(null, nomeCliente, cep, ruaCliente,
                                 numeroCasa, bairroCliente);
 
