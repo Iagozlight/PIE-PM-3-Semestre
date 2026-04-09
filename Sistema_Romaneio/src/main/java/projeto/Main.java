@@ -13,8 +13,8 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean rodando = true;
-        EntityManager em = CustomizerFactory.getEntityManager();
-        FlyWayconfig.migrate();
+        EntityManager em = CustomizerFactory.getEntityManager(); //EntityManager é a API(JPA) responsavel por interagir com a database
+        FlyWayconfig.migrate(); //Flyway é uma ferramenta voltada para o versionamento e migração de banco de dados
 
         RomaneiosRepository romaneiosRepository = new RomaneiosRepository(em);
         ClientesRomaneioRepository clientesRomaneioRepository = new ClientesRomaneioRepository(em);
@@ -22,20 +22,7 @@ public class Main {
         VeiculosRepository veiculosRepository = new VeiculosRepository(em);
         MotoristasRepository motoristasRepository = new MotoristasRepository(em);
 
-        Veiculos master = new Veiculos(null, "Master", 2222, true);
-        veiculosRepository.create(master);
-        Veiculos bongo = new Veiculos(null, "Bongo", 3333, true);
-        veiculosRepository.create(bongo);
-        Veiculos sprinter = new Veiculos(null, "Sprinter", 4444, true);
-        veiculosRepository.create(sprinter);
-        Motoristas roberto = new Motoristas(null, "Roberto");
-        motoristasRepository.create(roberto);
-        Motoristas carlos = new Motoristas(null, "Carlos");
-        motoristasRepository.create(carlos);
-        Motoristas italo = new Motoristas(null, "Italo");
-        motoristasRepository.create(italo);
-
-        do {
+        do { // Aqui será o menu principal de romaneios
             System.out.println("\n======================================\n");
             System.out.println("\t\tDUTRA MOVEIS(romaneios)");
             System.out.println("\n======================================\n");
@@ -46,7 +33,7 @@ public class Main {
             String escolha = scanner.nextLine();
 
             switch (escolha){
-                case 1:
+                case "1":
                     do {
                         scanner.nextLine();
 
@@ -56,7 +43,7 @@ public class Main {
                         System.out.println("(3) - Sair");
                         String escolha2 = scanner.nextLine();
 
-                        if(escolha2.equals(1)){
+                        if(escolha2.equals("1")){
                                 scanner.nextLine();
 
                                 System.out.println("=====Cadastrar Cliente======\n");
@@ -81,8 +68,10 @@ public class Main {
                                 String referenciaCasa = scanner.nextLine();
                                 Endereco endereco = new Endereco(cepCasa, ruaCliente, numeroCasa, bairroCliente,
                                         complementoCasa, referenciaCasa);
+
+
                         }
-                    }
+                    } while(true);
 
 
 
@@ -130,15 +119,15 @@ public class Main {
 
 
                     break;
-                case 2:
+                case "2":
 
                     break;
-                case 3:
+                case "3":
                     System.out.println("Encerrando...");
                     rodando = false;
                     break;
             }
-        } while (rodando);
+        } while (true);
 
         scanner.close();
     }
