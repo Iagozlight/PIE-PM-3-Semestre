@@ -26,11 +26,17 @@ public class Main {
         MotoristasRepository motoristasRepository = new MotoristasRepository(em);
 
         Veiculos master = new Veiculos(null, "Master", 2222, true);
+        veiculosRepository.create(master);
         Veiculos bongo = new Veiculos(null, "Bongo", 3333, true);
+        veiculosRepository.create(bongo);
         Veiculos sprinter = new Veiculos(null, "Sprinter", 4444, true);
+        veiculosRepository.create(sprinter);
         Motoristas roberto = new Motoristas(null, "Roberto");
+        motoristasRepository.create(roberto);
         Motoristas carlos = new Motoristas(null, "Carlos");
+        motoristasRepository.create(carlos);
         Motoristas italo = new Motoristas(null, "Italo");
+        motoristasRepository.create(italo);
 
         do {
             System.out.println("\n======================================\n");
@@ -54,7 +60,9 @@ public class Main {
 
                         switch (escolha2){
                             case 1:
-
+                                System.out.println("=====Cadastrar Cliente======\n");
+                                System.out.println("Nome do Cliente: \n");
+                                System.out.println("");
                         }
                     }
 
