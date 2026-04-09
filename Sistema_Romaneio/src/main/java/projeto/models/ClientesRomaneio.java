@@ -26,7 +26,7 @@ public class ClientesRomaneio {
     private List<Pedidos> pedidos = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "romaneios_id", nullable = false)
+    @JoinColumn(name = "romaneios_id")
     private Romaneios romaneio;
 
     public ClientesRomaneio() {}

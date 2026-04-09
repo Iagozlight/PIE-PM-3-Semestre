@@ -29,7 +29,7 @@ CREATE TABLE clientes_romaneio (
    bairro VARCHAR(50) NOT NULL,
    complemento VARCHAR(50),
    referencia VARCHAR(50),
-   romaneios_id BIGINT NOT NULL,
+   romaneios_id BIGINT,
    FOREIGN KEY (romaneios_id) REFERENCES romaneios(id)
 );
 
