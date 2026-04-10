@@ -36,7 +36,6 @@ CREATE TABLE clientes_romaneio (
 CREATE TABLE pedidos (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome_produto VARCHAR(50),
-    valor DOUBLE,
     quantidade VARCHAR(50),
     clientesRomaneio_id BIGINT NOT NULL,
     FOREIGN KEY (clientesRomaneio_id) REFERENCES clientes_romaneio(id)

@@ -29,14 +29,13 @@ CREATE TABLE clientes_romaneio (
    bairro VARCHAR(50) NOT NULL,
    complemento VARCHAR(50),
    referencia VARCHAR(50),
-   romaneios_id BIGINT NOT NULL,
+   romaneios_id BIGINT,
    FOREIGN KEY (romaneios_id) REFERENCES romaneios(id)
 );
 
 CREATE TABLE pedidos (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome_produto VARCHAR(50),
-    valor DOUBLE,
     quantidade VARCHAR(50),
     clientesRomaneio_id BIGINT NOT NULL,
     FOREIGN KEY (clientesRomaneio_id) REFERENCES clientes_romaneio(id)
