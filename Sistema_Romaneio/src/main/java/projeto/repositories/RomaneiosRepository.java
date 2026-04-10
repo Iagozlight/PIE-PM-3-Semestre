@@ -1,7 +1,9 @@
 package projeto.repositories;
 
 import jakarta.persistence.EntityManager;
+import projeto.models.Motoristas;
 import projeto.models.Romaneios;
+import projeto.models.Veiculos;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -44,5 +46,21 @@ public class RomaneiosRepository {
         return em.createQuery("select r from Romaneios r where r.data = :data", Romaneios.class)
                 .setParameter("data", data)
                 .getResultList();
+    }
+
+    public boolean veiculoEmUso(Veiculos veiculo) {
+        List<Romaneios> result = em.createQuery(
+                        "select r from Romaneios r where r.veiculo = :veiculo", Romaneios.class)
+                .setParameter("veiculo", veiculo)
+                .getResultList();
+        return !result.isEmpty();
+    }
+
+    public boolean motoristaEmUso(Motoristas motorista) {
+        List<Romaneios> result = em.createQuery(
+                        "select r from Romaneios r where r.motorista = :motorista", Romaneios.class)
+                .setParameter("motorista", motorista)
+                .getResultList();
+        return !result.isEmpty();
     }
 }
