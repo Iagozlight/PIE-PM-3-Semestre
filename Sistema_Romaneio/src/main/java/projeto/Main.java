@@ -84,7 +84,7 @@ public class Main {
                     cliente.getPedidos().add(pedido);// lado OneToMany adiciona o filho
 
                 } else if (confirmar.equals("n") || confirmar.equals("N")) {
-                    return;
+                    System.out.println("Pedido cancelado!");
                 } else {
                     System.out.println("Opção inválida!");
                     return;
@@ -119,29 +119,39 @@ public class Main {
         List<ClientesRomaneio> clientesSemRomaneio = clientesRomaneioRepository.findSemRomaneio();
 
         if (clientesSemRomaneio.isEmpty()) {
-            System.out.println("Nenhum Romaneio encontrado!");
+            System.out.println("Nenhum cliente disponível para adicionar!");
             return;
         }
 
-        for (int i = 0; i < clientesSemRomaneio.size(); i++) { // Para ver os clientes disponíveis
+        for (int i = 0; i < clientesSemRomaneio.size(); i++) { // Mostra os clientes disponiveis
             System.out.println("(" + i + ") - " + clientesSemRomaneio.get(i).getNome_cliente());
         }
 
         System.out.println("Digite o número do cliente para adicionar (ou Q para finalizar): ");
-        String opcao = scanner.nextLine();
+        String opcao = scanner.nextLine(); // inicializa aqui com o primeiro valor
 
-         do{
-            int index = Integer.parseInt(opcao);
-            ClientesRomaneio cliente = clientesSemRomaneio.get(index);
-            cliente.setRomaneio(romaneio);
-            romaneio.getClientes().add(cliente);
-            System.out.println("Cliente " + cliente.getNome_cliente() + " adicionado!");
+        while (!opcao.equals("Q") && !opcao.equals("q")) {
+            try {
+                int index = Integer.parseInt(opcao);
+
+                if (index < 0 || index >= clientesSemRomaneio.size()) {
+                    System.out.println("Número inválido! Escolha entre 0 e " + (clientesSemRomaneio.size() - 1));
+                } else {
+                    ClientesRomaneio cliente = clientesSemRomaneio.get(index);
+                    cliente.setRomaneio(romaneio);
+                    romaneio.getClientes().add(cliente);
+                    System.out.println("Cliente " + cliente.getNome_cliente() + " adicionado!");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Digite um número válido ou Q para finalizar!");
+            }
+
             System.out.println("Adicionar mais um cliente? (ou Q para finalizar): ");
             opcao = scanner.nextLine();
-        }while (!opcao.equals("q") || !opcao.equals("Q"));
-
+        }
         romaneiosRepository.create(romaneio);
-        System.out.println("Romaneio cadastrado com sucesso!");
+        System.out.println("Romaneio criado com sucesso!");
     }
 
     public static void main(String[] args) {
