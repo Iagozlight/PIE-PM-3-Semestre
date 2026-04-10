@@ -50,7 +50,7 @@ public class Pedidos {
     }
 
     public ClientesRomaneio getClientes() { return clientes; }
-    public void setClientesRomaneio(ClientesRomaneio clientes) { this.clientes = clientes; }
+    public void setClientes(ClientesRomaneio clientes) { this.clientes = clientes; }
 
     @Override
     public String toString() {
