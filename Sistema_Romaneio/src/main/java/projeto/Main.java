@@ -38,70 +38,139 @@ public class Main {
         } while(!escolha.equals("0"));
     }
 
-    static  void verRomaneios(RomaneiosRepository romaneiosRepository,
-                              ClientesRomaneioRepository clientesRomaneioRepository) {
+    static void verRomaneios(RomaneiosRepository romaneiosRepository,
+                             ClientesRomaneioRepository clientesRomaneioRepository,
+                             VeiculosRepository veiculosRepository,
+                             MotoristasRepository motoristasRepository) {
+        Scanner scanner = new Scanner(System.in);
+
+        List<Romaneios> romaneios = romaneiosRepository.findAll();
+
+        if (romaneios.isEmpty()) {
+            System.out.println("Nenhum Romaneio encontrado!");
+            return;
+        }
+
+        for (int i = 0; i<romaneios.size(); i++) {
+            System.out.println("(" + i + ") - " + romaneios.get(i).getData());
+        }
+
+        System.out.println("Selecione um romaneio (ou Q para voltar): ");
+        String opcao = scanner.nextLine();
+
+        while (!opcao.equals("Q") && !opcao.equals("q")) {
+            try {
+                int index = Integer.parseInt(opcao);
+
+                if (index < 0 || index >= romaneios.size()) {
+                    System.out.println("Número inválido! Escolha entre 0 e " + (romaneios.size() - 1));
+                } else {
+                    Romaneios romaneioSelecionado = romaneios.get(index);
+                    System.out.println("\n" + romaneioSelecionado); // mostra os detalhes
+
+                    String escolha;
+                    do {
+                        System.out.println("\n==Opções==");
+                        System.out.println("(1) - Atribuir Veículo");
+                        System.out.println("(2) - Atribuir Motorista");
+                        System.out.println("(3) - Deletar Romaneio");
+                        System.out.println("(0) - Voltar");
+                        escolha = scanner.nextLine();
+
+                        switch (escolha) {
+                            case "1":
+                                List<Veiculos> veiculos = veiculosRepository.findAll();
+                                for (int i = 0; i < veiculos.size(); i++) {
+                                    System.out.println("(" + i + ") - " + veiculos.get(i).getNomeVeiculo());
+                                }
+                                System.out.println("Selecione um veículo: ");
+                                int indexVeiculo = Integer.parseInt(scanner.nextLine());
+                                romaneioSelecionado.setVeiculo(veiculos.get(indexVeiculo));
+                                romaneiosRepository.update(romaneioSelecionado);
+                                System.out.println("Veículo atribuído com sucesso!");
+                                break;
+
+                            case "2":
+                                List<Motoristas> motoristas = motoristasRepository.findAll();
+                                for (int i = 0; i < motoristas.size(); i++) {
+                                    System.out.println("(" + i + ") - " + motoristas.get(i).getNome());
+                                }
+                                System.out.println("Selecione um motorista: ");
+                                int indexMotorista = Integer.parseInt(scanner.nextLine());
+                                romaneioSelecionado.setMotorista(motoristas.get(indexMotorista));
+                                romaneiosRepository.update(romaneioSelecionado);
+                                System.out.println("Motorista atribuído com sucesso!");
+                                break;
+                            case "3":
+                                romaneiosRepository.delete(romaneioSelecionado);
+                                System.out.println("Romaneio deletado!");
+                                return;
+                            case "0":
+                                break;
+                            default:
+                                System.out.println("Opção Inválida!");
+                        }
+                    } while (!escolha.equals("0"));
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Digite um número válido ou Q para voltar!");
+            }
+
+            System.out.println("Selecione um romaneio (ou Q para voltar): ");
+            opcao = scanner.nextLine();
+        }
     }
 
     static void cadastrarCliente(ClientesRomaneioRepository clientesRomaneioRepository,
                                  PedidosRepository pedidosRepository) {
         Scanner scanner = new Scanner(System.in);
-        Boolean funcionando = true;
         String confirmar;
 
-        do {
-            System.out.println("=====Cadastrar Cliente======");
-            System.out.println("Nome do Cliente: ");
-            String nomeCliente = scanner.nextLine();
-            System.out.println("CPF: ");
-            String cpfCliente = scanner.nextLine();
-            System.out.println("Dados do Cliente Confirmado!");
-            ClientesRomaneio cliente = new ClientesRomaneio(null,  nomeCliente, cpfCliente);
+        System.out.println("=====Cadastrar Cliente======");
+        System.out.println("Nome do Cliente: ");
+        String nomeCliente = scanner.nextLine();
+        System.out.println("CPF: ");
+        String cpfCliente = scanner.nextLine();
+        System.out.println("Dados do Cliente Confirmado!");
+        ClientesRomaneio cliente = new ClientesRomaneio(null, nomeCliente, cpfCliente);
 
-            Endereco endereco = Endereco.lerEndereco(scanner); // Lendo endereço do cliente
+        Endereco endereco = Endereco.lerEndereco(scanner); // Le o endereço e cadastra
+        cliente.setEndereco(endereco);
 
-            cliente.setEndereco(endereco); // Ligando endereço ao cliente
+        String opcao;
+        do { // Loop para escolher se quer cadastrar mais de um pedido
+            System.out.println("==Pedido==");
+            System.out.println("Nome do Produto: ");
+            String nomeProduto = scanner.nextLine();
+            System.out.println("Quantidade adquirida do Produto: ");
+            String quantidadeProduto = scanner.nextLine();
 
-            String opcao;
-            do {
-                System.out.println("==Pedido==");
-                System.out.println("Nome do Produto: ");
-                String nomeProduto = scanner.nextLine();
-                System.out.println("Quantidade adquirida do Produto: ");
-                String quantidadeProduto = scanner.nextLine();
+            Pedidos pedido = new Pedidos(null, nomeProduto, quantidadeProduto);
 
-                Pedidos pedido = new Pedidos(null, nomeProduto, quantidadeProduto);
+            System.out.println("Confirme os dados abaixo:");
+            System.out.println(pedido);
 
-                System.out.println("Confirme os dados abaixo: \n");
-                System.out.println(pedido);
+            System.out.println("Confirmar?(s/n): ");
+            confirmar = scanner.nextLine();
 
-                System.out.println("Confirmar?(s/n): ");
-                confirmar = scanner.nextLine();
+            if (confirmar.equals("s") || confirmar.equals("S")) {
+                System.out.println("Pedido adicionado com Sucesso!");
+                pedido.setClientes(cliente);
+                cliente.getPedidos().add(pedido);
+            } else if (confirmar.equals("n") || confirmar.equals("N")) {
+                System.out.println("Pedido cancelado!");
+            } else {
+                System.out.println("Opção inválida!");
+            }
 
-                if (confirmar.equals("s") || confirmar.equals("S")) {
-                    System.out.println("Criação de pedido feito com Sucesso!");
+            System.out.println("Adicionar mais um pedido?(s/n): ");
+            opcao = scanner.nextLine();
 
-                    pedido.setClientes(cliente);     // lado ManyToOne aponta para o pai
-                    cliente.getPedidos().add(pedido);// lado OneToMany adiciona o filho
+        } while (!opcao.equals("n") && !opcao.equals("N"));
 
-                } else if (confirmar.equals("n") || confirmar.equals("N")) {
-                    System.out.println("Pedido cancelado!");
-                } else {
-                    System.out.println("Opção inválida!");
-                    return;
-                }
-
-                System.out.println("Adicionar mais um pedido?(s/n): ");
-                opcao = scanner.nextLine();
-
-                if (confirmar.equals("n") && confirmar.equals("N")) {
-                    return;
-                }
-            } while (!opcao.equals("n") && !opcao.equals("N"));
-
-            clientesRomaneioRepository.create(cliente); // Salvando cliente uma única vez
-            System.out.println("Fechando criação dos pedidos...");
-
-        } while (funcionando.equals(true));
+        clientesRomaneioRepository.create(cliente);
+        System.out.println("Cliente salvo com sucesso!");
     }
 
     static void cadastrarRomaneio(RomaneiosRepository romaneiosRepository,
@@ -180,7 +249,8 @@ public class Main {
                 case "1":
                     novoRomaneio(romaneiosRepository, clientesRomaneioRepository, pedidosRepository); break;
                 case "2":
-                    verRomaneios(romaneiosRepository, clientesRomaneioRepository); break;
+                    verRomaneios(romaneiosRepository, clientesRomaneioRepository, veiculosRepository,
+                            motoristasRepository); break;
                 case "0":
                     System.out.println("Fechando...");
                     rodando = false;
