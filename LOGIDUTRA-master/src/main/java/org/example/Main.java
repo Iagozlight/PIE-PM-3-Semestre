@@ -16,22 +16,39 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         FlyWayconfig.migrate();
-        EntityManager em = CustomizerFactory.getEntityManager();// aqui cria o entitymanager que vai conversar com o banco
-        UsuarioRepository usuarioRepository = new UsuarioRepository(em);// o "em" é o EntityManager que será usado pelo repository para manipular o banco de dados
-        Motoristasrepository motoristasrepository = new Motoristasrepository(em);
 
-        // chamando os metodos
+        while (true) {
+            EntityManager em = CustomizerFactory.getEntityManager();// aqui cria o entitymanager que vai conversar com o banco
+            UsuarioRepository usuarioRepository = new UsuarioRepository(em);// o "em" é o EntityManager que será usado pelo repository para manipular o banco de dados
+            Motoristasrepository motoristasrepository = new Motoristasrepository(em);
+            String condicao;
 
-        novoUsuario(usuarioRepository);
+            Scanner sc = new Scanner(System.in);
 
-        novoMotorista(motoristasrepository,usuarioRepository);
+            System.out.println("Selecione uma opção\n" +
+                    "\n1: Cadastrar usuario" +
+                    "\n2: Novo motorista" +
+                    "\n3: Exibir usuarios" +
+                    "\n4: Alterar senha" +
+                    "\n5: Remover usuario");
+            String opcao = sc.nextLine();
 
-        exibirUsuarios(usuarioRepository);
-
-        alterarSenha(usuarioRepository);
-
-        removerUsuario(usuarioRepository);
-
+            switch (opcao) {
+                case "1" :
+                    novoUsuario(usuarioRepository); break;
+                case "2":
+                    novoMotorista(motoristasrepository,usuarioRepository);break;
+                case "3":
+                    exibirUsuarios(usuarioRepository);break;
+                case "4":
+                    alterarSenha(usuarioRepository);break;
+                case"5":
+                    removerUsuario(usuarioRepository);break;
+                default:
+                    System.out.println("opção invalida");
+                    return;
+            }
+        }
     }
 
     static void novoUsuario(UsuarioRepository usuarioRepository) {//sem passa os parametros o metodo nao conseguiria acessar as variaveis de instancia
@@ -139,6 +156,7 @@ public class Main {
     static void alterarSenha (UsuarioRepository usuarioRepository) {
         Scanner sc = new Scanner(System.in);
 
+        exibirUsuarios(usuarioRepository);
         System.out.println("Digite o Usuario que deseja atualizar a senha");
         String user = sc.nextLine();
 
@@ -170,6 +188,7 @@ public class Main {
                         }
                     }
                 }else {
+                    exibirUsuarios(usuarioRepository);
                     System.out.println("Usuario nao encontrado, digite um usuario valido!!");
                     user = sc.nextLine();
                 }
@@ -184,6 +203,7 @@ public class Main {
     static void removerUsuario (UsuarioRepository usuarioRepository) {
         Scanner sc = new Scanner(System.in);
 
+        exibirUsuarios(usuarioRepository);
         System.out.println("Digite o usuario que sera removido: ");
         String user = sc.nextLine();
 
@@ -203,10 +223,10 @@ public class Main {
                 usuarioRepository.delete(usuarioencontrado);
                 encontrado = true;
                 System.out.println("Usuario deletado com sucesso!!");
-            }
-            {
+            }else {
                 System.out.println("Usuario não encontrado!!\n" +
                         "Digite um usuario valido: ");
+                exibirUsuarios(usuarioRepository);
                 user = sc.nextLine();
             }
         }
