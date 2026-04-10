@@ -92,9 +92,10 @@ public class Main {
 
                 if (confirmar.equals("s") || confirmar.equals("S")) {
                     System.out.println("Criação de pedido feito com Sucesso!");
-                    pedido.setClientes(cliente);      // lado ManyToOne aponta para o pai
 
-                    cliente.getPedidos().add(pedido); // lado OneToMany adiciona o filho
+                    pedido.setClientes(cliente);     // lado ManyToOne aponta para o pai
+                    cliente.getPedidos().add(pedido);// lado OneToMany adiciona o filho
+
                 } else if (confirmar.equals("n") || confirmar.equals("N")) {
                     return;
                 } else {
@@ -105,7 +106,7 @@ public class Main {
                 System.out.println("Adicionar mais um pedido?(s/n): ");
                 opcao = scanner.nextLine();
 
-                if (confirmar.equals("s") || confirmar.equals("S")) {
+                if (confirmar.equals("n") && confirmar.equals("N")) {
                     return;
                 }
             } while (!opcao.equals("n") && !opcao.equals("N"));
@@ -133,9 +134,9 @@ public class Main {
         MotoristasRepository motoristasRepository             = new MotoristasRepository(em);
 
         do { // Aqui será o menu principal de romaneios
-            System.out.println("\n======================================\n");
+            System.out.println("======================================\n");
             System.out.println("\t\tDUTRA MOVEIS(romaneios)");
-            System.out.println("\n======================================\n");
+            System.out.println("\n======================================");
             System.out.println("Selecione uma das opções:");
             System.out.println("(1) - Novo Romaneio");
             System.out.println("(2) - Ver Romaneios");
