@@ -1,10 +1,8 @@
 package org.example.models;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 
-@Entity(name = "usuario")
+@Entity
+@Table(name = "usuario")
 
 public class Usuarios {
     @Id

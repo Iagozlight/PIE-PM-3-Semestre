@@ -3,13 +3,15 @@
     import jakarta.persistence.*;
     import org.hibernate.sql.results.internal.StandardRowReader;
 
+    import java.time.LocalDate;
+
     @Entity
     @Table (name = "motorista")
 
     public class Motoristas {
 
         @OneToOne//relacionamento um pra um
-        @JoinColumn (name = "usuario_id")//cria uma coluna na tabela motoristas que guarda o id do usuario relacionado
+        @JoinColumn (name = "usuario_id", nullable = false)//cria uma coluna na tabela motoristas que guarda o id do usuario relacionado
         private Usuarios usuarios;
 
         public Usuarios getUsuarios() {
@@ -24,14 +26,22 @@
         @GeneratedValue (strategy = GenerationType.IDENTITY)
         long id;
         private String nome;
-        private String senha;
+        private LocalDate data_nascimento;
 
         public Motoristas () {};
 
-        public Motoristas(long id, String nome, String senha) {
+        public Motoristas(long id, String nome, String senha, LocalDate data_nascimento) {
             this.id = id;
             this.nome = nome;
-            this.senha = senha;
+            this.data_nascimento = data_nascimento;
+        }
+
+        public LocalDate getData_nascimento() {
+            return data_nascimento;
+        }
+
+        public void setData_nascimento(LocalDate data_nascimento) {
+            this.data_nascimento = data_nascimento;
         }
 
         public long getId() {
@@ -50,11 +60,4 @@
             this.nome = nome;
         }
 
-        public String getSenha() {
-            return senha;
-        }
-
-        public void setSenha(String senha) {
-            this.senha = senha;
-        }
     }

@@ -11,8 +11,9 @@
 
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">validate</property>
 
         <mapping class="org.example.models.Usuarios"/>
+        <mapping class="org.example.models.Motoristas"/>
     </session-factory>
 </hibernate-configuration>
