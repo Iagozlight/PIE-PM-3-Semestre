@@ -85,9 +85,15 @@ public class Main {
                                 }
                                 System.out.println("Selecione um veículo: ");
                                 int indexVeiculo = Integer.parseInt(scanner.nextLine());
-                                romaneioSelecionado.setVeiculo(veiculos.get(indexVeiculo));
-                                romaneiosRepository.update(romaneioSelecionado);
-                                System.out.println("Veículo atribuído com sucesso!");
+                                Veiculos veiculoSelecionado = veiculos.get(indexVeiculo);
+
+                                if (romaneiosRepository.veiculoEmUso(veiculoSelecionado)) {
+                                    System.out.println("Veículo já está em uso em outro romaneio!");
+                                } else {
+                                    romaneioSelecionado.setVeiculo(veiculoSelecionado);
+                                    romaneiosRepository.update(romaneioSelecionado);
+                                    System.out.println("Veículo atribuído com sucesso!");
+                                }
                                 break;
 
                             case "2":
@@ -97,9 +103,15 @@ public class Main {
                                 }
                                 System.out.println("Selecione um motorista: ");
                                 int indexMotorista = Integer.parseInt(scanner.nextLine());
-                                romaneioSelecionado.setMotorista(motoristas.get(indexMotorista));
-                                romaneiosRepository.update(romaneioSelecionado);
-                                System.out.println("Motorista atribuído com sucesso!");
+                                Motoristas motoristaSelecionado = motoristas.get(indexMotorista);
+
+                                if (romaneiosRepository.motoristaEmUso(motoristaSelecionado)) {
+                                    System.out.println("Motorista já está em uso em outro romaneio!");
+                                } else {
+                                    romaneioSelecionado.setMotorista(motoristaSelecionado);
+                                    romaneiosRepository.update(romaneioSelecionado);
+                                    System.out.println("Motorista atribuído com sucesso!");
+                                }
                                 break;
                             case "3":
                                 romaneiosRepository.delete(romaneioSelecionado);
