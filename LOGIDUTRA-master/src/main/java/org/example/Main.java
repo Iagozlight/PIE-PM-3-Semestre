@@ -59,7 +59,7 @@ public class Main {
             System.out.println("digite S para sair do loop ou C para cadastrar");
             String condição = sc.nextLine();
 
-            if (condição.equals("S") || condição.equals("s") ){
+            if (condição.equals("S") || condição.equals("s")) {
                 break;
             }
             if (condição.equals("C") || condição.equals("c")) {
@@ -77,10 +77,16 @@ public class Main {
                 System.out.println("Senha: ");
                 novo.setSenha(sc.nextLine());
 
-                usuarioRepository.create(novo);// substitui o lista.add(novo) pelo create do banco de dados
-
-                System.out.println("USUARIO CADASTRADO");
-
+                try {
+                    usuarioRepository.create(novo);
+                    System.out.println("Usuario cadastrado!!");
+                    return;
+                } catch (Exception e) {
+                    if (e.getMessage().contains("Usuario ja existente, escolha outro nome de usuario!")) {
+                        System.out.println("Nome de usuario ja em uso, escolha outro");
+                        novoUsuario(usuarioRepository);
+                    }
+                }
             }
         }
     }
