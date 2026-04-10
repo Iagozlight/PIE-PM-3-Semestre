@@ -49,8 +49,8 @@ public class Pedidos {
         this.quantidade = quantidade;
     }
 
-    public String getClientes() { return clientes; }
-    public void setClientes(ClientesRomaneio clientes) { this.clientes = clientes; }
+    public ClientesRomaneio getClientes() { return clientes; }
+    public void setClientesRomaneio(ClientesRomaneio clientes) { this.clientes = clientes; }
 
     @Override
     public String toString() {
