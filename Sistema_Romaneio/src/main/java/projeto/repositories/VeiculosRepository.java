@@ -36,11 +36,11 @@ public class VeiculosRepository {
     }
 
     public List<Veiculos> findAll() {
-        return em.createQuery("select v from veiculos v", Veiculos.class).getResultList();
+        return em.createQuery("select v from Veiculos v", Veiculos.class).getResultList();
     }
 
     public List<Veiculos> findByName(String prefixo) {
-        return em.createQuery("select v from veiculos v where v.nome like :prefixo", Veiculos.class)
+        return em.createQuery("select v from Veiculos v where v.nomeVeiculo like :prefixo", Veiculos.class)
                 .setParameter("prefixo", prefixo + "%")
                 .getResultList();
     }

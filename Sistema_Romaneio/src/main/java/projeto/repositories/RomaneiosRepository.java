@@ -37,11 +37,11 @@ public class RomaneiosRepository {
     }
 
     public List<Romaneios> findAll() {
-        return em.createQuery("select r from romaneios r", Romaneios.class).getResultList();
+        return em.createQuery("select r from Romaneios r", Romaneios.class).getResultList();
     }
 
     public List<Romaneios> findByData(LocalDate data) {
-        return em.createQuery("select r from romaneios r where r.data = :data", Romaneios.class)
+        return em.createQuery("select r from Romaneios r where r.data = :data", Romaneios.class)
                 .setParameter("data", data)
                 .getResultList();
     }

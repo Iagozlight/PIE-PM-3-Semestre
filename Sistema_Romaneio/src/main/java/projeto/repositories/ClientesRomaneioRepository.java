@@ -36,17 +36,17 @@ public class ClientesRomaneioRepository {
     }
 
     public List<ClientesRomaneio> findAll() {
-        return em.createQuery("select c from clientes_romaneio c", ClientesRomaneio.class).getResultList();
+        return em.createQuery("select c from ClientesRomaneio c", ClientesRomaneio.class).getResultList();
     }
 
     public List<ClientesRomaneio> findByName(String prefixo) {
-        return em.createQuery("select c from clientes_romaneio c where c.nome_cliente like :prefixo", ClientesRomaneio.class)
+        return em.createQuery("select c from ClientesRomaneio c where c.nome_cliente like :prefixo", ClientesRomaneio.class)
                 .setParameter("prefixo", prefixo + "%")
                 .getResultList();
     }
 
     public List<ClientesRomaneio> findSemRomaneio() {
-        return em.createQuery("select c from clientes_romaneio c where c.romaneio is null",
+        return em.createQuery("select c from ClientesRomaneio c where c.romaneio is null",
                 ClientesRomaneio.class).getResultList();
     }
 }

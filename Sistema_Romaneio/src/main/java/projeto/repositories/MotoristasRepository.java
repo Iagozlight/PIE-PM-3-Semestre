@@ -37,11 +37,11 @@ public class MotoristasRepository {
     }
 
     public List<Motoristas> findAll() {
-        return em.createQuery("select m from motoristas m", Motoristas.class).getResultList();
+        return em.createQuery("select m from Motoristas m", Motoristas.class).getResultList();
     }
 
     public List<Motoristas> findByName(String prefixo) {
-        return em.createQuery("select m from motoristas m where m.nome like :prefixo", Motoristas.class)
+        return em.createQuery("select m from Motoristas m where m.nome like :prefixo", Motoristas.class)
                 .setParameter("prefixo", prefixo + "%")
                 .getResultList();
     }

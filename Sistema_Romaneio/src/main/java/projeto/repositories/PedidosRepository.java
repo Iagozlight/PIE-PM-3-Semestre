@@ -36,11 +36,11 @@ public class PedidosRepository {
     }
 
     public List<Pedidos> findAll() {
-        return em.createQuery("select p from pedidos p", Pedidos.class).getResultList();
+        return em.createQuery("select p from Pedidos p", Pedidos.class).getResultList();
     }
 
     public List<Pedidos> findByName(String prefixo) {
-        return em.createQuery("select p from pedidos p where p.nome_produto like :prefixo", Pedidos.class)
+        return em.createQuery("select p from Pedidos p where p.nome_produto like :prefixo", Pedidos.class)
                 .setParameter("prefixo", prefixo + "%")
                 .getResultList();
     }
