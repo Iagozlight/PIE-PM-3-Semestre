@@ -94,9 +94,16 @@ public class Main {
         System.out.println("Nome do motorista: ");
         motoristas.setNome(sc.nextLine());
 
-        System.out.println("Data de nascimento: (ex DD/MM/AAAA)");
-        String dataStr = sc.nextLine();
-        LocalDate data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate data = null;
+        while (data == null) {
+            try {
+                System.out.println("Data de nascimento no formato DD/MM/AAAA");
+                String dataStr = sc.nextLine();
+                data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            } catch (Exception e) {
+                System.out.println("Formato invalido! Use DD/MM/AAAA");
+            }
+        }
         motoristas.setData_nascimento(data);
 
         List<Usuarios> lista = usuarioRepository.findAll();
@@ -119,10 +126,12 @@ public class Main {
             try {
                 motoristasrepository.create(motoristas);
                 System.out.println("Motorista cadastrado com sucesso!");
+                return;
             } catch (Exception e) {
                 if (e.getMessage().contains("Motorista deve ter mais de 24 anos")) {
                     System.out.println("Cadastro negado: pela questão do seguro, o motorista deve ter mais de 24 anos!");
                 }
+                return;
             }
 
         }else {
