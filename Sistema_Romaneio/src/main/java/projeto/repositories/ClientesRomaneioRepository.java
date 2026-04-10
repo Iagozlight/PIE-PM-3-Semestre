@@ -44,4 +44,9 @@ public class ClientesRomaneioRepository {
                 .setParameter("prefixo", prefixo + "%")
                 .getResultList();
     }
+
+    public List<ClientesRomaneio> findSemRomaneio() {
+        return em.createQuery("select c from clientes_romaneio c where c.romaneio is null",
+                ClientesRomaneio.class).getResultList();
+    }
 }

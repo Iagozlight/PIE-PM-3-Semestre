@@ -7,6 +7,7 @@ import projeto.repositories.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -105,6 +106,42 @@ public class Main {
 
     static void cadastrarRomaneio(RomaneiosRepository romaneiosRepository,
                                   ClientesRomaneioRepository clientesRomaneioRepository) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("==Cadastrar Romaneio==");
+        System.out.println("Data do Romaneio(dd/MM/yyyy): ");
+        String dataString = scanner.nextLine();
+        LocalDate dataRomaneio = LocalDate.parse(dataString, DateTimeFormatter.ofPattern("dd/MM/yyyy")); // Mudando formato da data
+
+        Romaneios romaneio = new Romaneios(null, dataRomaneio);
+
+        // Lista os clientes sem romaneio
+        List<ClientesRomaneio> clientesSemRomaneio = clientesRomaneioRepository.findSemRomaneio();
+
+        if (clientesSemRomaneio.isEmpty()) {
+            System.out.println("Nenhum Romaneio encontrado!");
+            return;
+        }
+
+        for (int i = 0; i < clientesSemRomaneio.size(); i++) { // Para ver os clientes disponíveis
+            System.out.println("(" + i + ") - " + clientesSemRomaneio.get(i).getNome_cliente());
+        }
+
+        System.out.println("Digite o número do cliente para adicionar (ou Q para finalizar): ");
+        String opcao = scanner.nextLine();
+
+         do{
+            int index = Integer.parseInt(opcao);
+            ClientesRomaneio cliente = clientesSemRomaneio.get(index);
+            cliente.setRomaneio(romaneio);
+            romaneio.getClientes().add(cliente);
+            System.out.println("Cliente " + cliente.getNome_cliente() + " adicionado!");
+            System.out.println("Adicionar mais um cliente? (ou Q para finalizar): ");
+            opcao = scanner.nextLine();
+        }while (!opcao.equals("q") || !opcao.equals("Q"));
+
+        romaneiosRepository.create(romaneio);
+        System.out.println("Romaneio cadastrado com sucesso!");
     }
 
     public static void main(String[] args) {
