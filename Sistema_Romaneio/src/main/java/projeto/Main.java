@@ -53,27 +53,13 @@ public class Main {
             String nomeCliente = scanner.nextLine();
             System.out.println("CPF: ");
             String cpfCliente = scanner.nextLine();
-            System.out.println("Dados do Cliente confirmado com Sucesso!");
-            ClientesRomaneio cliente = new ClientesRomaneio(null, nomeCliente, cpfCliente);
+            System.out.println("Dados do Cliente Confirmado!");
+            ClientesRomaneio cliente = new ClientesRomaneio(null,  nomeCliente, cpfCliente);
 
-            System.out.println("==Endereço==");
-            System.out.println("CEP: ");
-            String cepCasa = scanner.nextLine();
-            System.out.println("Rua: ");
-            String ruaCliente = scanner.nextLine();
-            System.out.println("Numero da casa: ");
-            String numeroCasa = scanner.nextLine();
-            System.out.println("Bairro: ");
-            String bairroCliente = scanner.nextLine();
-            System.out.println("Complemento(Opcional): ");
-            String complementoCasa = scanner.nextLine();
-            System.out.println("Referencia(Opcional): ");
-            String referenciaCasa = scanner.nextLine();
-            System.out.println("Endereço do Cliente confirmado com Sucesso!");
-            Endereco endereco = new Endereco(cepCasa, ruaCliente, numeroCasa, bairroCliente,
-                    complementoCasa, referenciaCasa);
+            Endereco endereco = Endereco.lerEndereco(scanner); // Lendo endereço do cliente
 
             cliente.setEndereco(endereco); // Ligando endereço ao cliente
+
             String opcao;
             do {
                 System.out.println("==Pedido==");
