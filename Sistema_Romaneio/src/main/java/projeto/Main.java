@@ -79,6 +79,11 @@ public class Main {
 
                         switch (escolha) {
                             case "1":
+                                if (romaneioSelecionado.getVeiculo() != null) {
+                                    System.out.println("Este romaneio já possui o veículo: "
+                                            + romaneioSelecionado.getVeiculo().getNomeVeiculo());
+                                    break;
+                                }
                                 List<Veiculos> veiculos = veiculosRepository.findAll();
                                 for (int i = 0; i < veiculos.size(); i++) {
                                     System.out.println("(" + i + ") - " + veiculos.get(i).getNomeVeiculo());
@@ -86,7 +91,6 @@ public class Main {
                                 System.out.println("Selecione um veículo: ");
                                 int indexVeiculo = Integer.parseInt(scanner.nextLine());
                                 Veiculos veiculoSelecionado = veiculos.get(indexVeiculo);
-
                                 if (romaneiosRepository.veiculoEmUso(veiculoSelecionado)) {
                                     System.out.println("Veículo já está em uso em outro romaneio!");
                                 } else {
@@ -97,6 +101,11 @@ public class Main {
                                 break;
 
                             case "2":
+                                if (romaneioSelecionado.getMotorista() != null) {
+                                    System.out.println("Este romaneio já possui o motorista: "
+                                            + romaneioSelecionado.getMotorista().getNome());
+                                    break;
+                                }
                                 List<Motoristas> motoristas = motoristasRepository.findAll();
                                 for (int i = 0; i < motoristas.size(); i++) {
                                     System.out.println("(" + i + ") - " + motoristas.get(i).getNome());
@@ -104,7 +113,6 @@ public class Main {
                                 System.out.println("Selecione um motorista: ");
                                 int indexMotorista = Integer.parseInt(scanner.nextLine());
                                 Motoristas motoristaSelecionado = motoristas.get(indexMotorista);
-
                                 if (romaneiosRepository.motoristaEmUso(motoristaSelecionado)) {
                                     System.out.println("Motorista já está em uso em outro romaneio!");
                                 } else {
