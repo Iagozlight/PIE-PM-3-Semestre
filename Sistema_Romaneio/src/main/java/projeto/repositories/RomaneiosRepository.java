@@ -28,7 +28,7 @@ public class RomaneiosRepository {
 
     public void update(Romaneios romaneios) {
         em.getTransaction().begin();
-        em.persist(romaneios);
+        em.merge(romaneios);
         em.getTransaction().commit();
     }
 

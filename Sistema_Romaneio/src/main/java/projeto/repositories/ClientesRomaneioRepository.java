@@ -25,7 +25,7 @@ public class ClientesRomaneioRepository {
 
     public void update(ClientesRomaneio clientesRomaneio) {
         em.getTransaction().begin();
-        em.persist(clientesRomaneio);
+        em.merge(clientesRomaneio);
         em.getTransaction().commit();
     }
 
@@ -48,5 +48,15 @@ public class ClientesRomaneioRepository {
     public List<ClientesRomaneio> findSemRomaneio() {
         return em.createQuery("select c from ClientesRomaneio c where c.romaneio is null",
                 ClientesRomaneio.class).getResultList();
+    }
+
+    public ClientesRomaneio findByCpf(String cpf) {
+        List<ClientesRomaneio> clientes = em.createQuery("select c from ClientesRomaneio c where c.cpf = :cpf", ClientesRomaneio.class)
+                .setParameter("cpf", cpf)
+                .getResultList();
+        if (clientes.isEmpty()) {
+            return null;
+        }
+        return clientes.get(0);
     }
 }

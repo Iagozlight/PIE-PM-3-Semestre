@@ -1,4 +1,4 @@
-package org.example.models;
+package projeto.models;
 import jakarta.persistence.*;
 
 @Entity

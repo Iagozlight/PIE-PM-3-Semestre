@@ -8,7 +8,7 @@ public class FlyWayconfig {
                 .dataSource(
                         "jdbc:postgresql://localhost:5433/postgres",
                         "postgres",
-                        "postgres"
+                        "03122007"
                 )
                 .baselineOnMigrate(true)
                 .load();

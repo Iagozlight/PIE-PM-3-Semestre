@@ -6,6 +6,7 @@ import projeto.models.*;
 import projeto.repositories.*;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
@@ -85,13 +86,19 @@ public class Main {
                                     break;
                                 }
                                 List<Veiculos> veiculos = veiculosRepository.findAll();
+                                if (veiculos.isEmpty()) {
+                                    System.out.println("Nenhum veÃ­culo cadastrado!");
+                                    break;
+                                }
                                 for (int i = 0; i < veiculos.size(); i++) {
                                     System.out.println("(" + i + ") - " + veiculos.get(i).getNomeVeiculo());
                                 }
                                 System.out.println("Selecione um veículo: ");
                                 int indexVeiculo = Integer.parseInt(scanner.nextLine());
                                 Veiculos veiculoSelecionado = veiculos.get(indexVeiculo);
-                                if (romaneiosRepository.veiculoEmUso(veiculoSelecionado)) {
+                                if (veiculoSelecionado.getDisponibilidade() == null || veiculoSelecionado.getDisponibilidade().equals(false)) {
+                                    System.out.println("VeÃ­culo indisponÃ­vel para romaneio!");
+                                } else if (romaneiosRepository.veiculoEmUso(veiculoSelecionado)) {
                                     System.out.println("Veículo já está em uso em outro romaneio!");
                                 } else {
                                     romaneioSelecionado.setVeiculo(veiculoSelecionado);
@@ -107,6 +114,10 @@ public class Main {
                                     break;
                                 }
                                 List<Motoristas> motoristas = motoristasRepository.findAll();
+                                if (motoristas.isEmpty()) {
+                                    System.out.println("Nenhum motorista cadastrado!");
+                                    break;
+                                }
                                 for (int i = 0; i < motoristas.size(); i++) {
                                     System.out.println("(" + i + ") - " + motoristas.get(i).getNome());
                                 }
@@ -243,7 +254,7 @@ public class Main {
         System.out.println("Romaneio criado com sucesso!");
     }
 
-    public static void main(String[] args) {
+    public static void romaneios() {
         Scanner scanner = new Scanner(System.in);
         Boolean rodando = true;
         EntityManager em = CustomizerFactory.getEntityManager(); //EntityManager é a API(JPA) responsavel por interagir com a database
@@ -279,5 +290,323 @@ public class Main {
                     System.out.println("Opção Inválida!");
             }
         }while(rodando.equals(true));
+    }
+
+    public static void espaco(String escolha) {
+        if (escolha == null || escolha.trim().isEmpty()) {
+            System.out.println("Entrada vazia.");
+            return;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // INICIO
+
+    public static void login() {
+        FlyWayconfig.migrate();
+
+        while (true) {
+            EntityManager em = CustomizerFactory.getEntityManager();// aqui cria o entitymanager que vai conversar com o banco
+            UsuarioRepository usuarioRepository = new UsuarioRepository(em);// o "em" é o EntityManager que será usado pelo repository para manipular o banco de dados
+            Motoristasrepository motoristasrepository = new Motoristasrepository(em);
+            String condicao;
+
+            Scanner sc = new Scanner(System.in);
+
+            System.out.println("Selecione uma opção\n" +
+                    "\n1: Cadastrar usuario" +
+                    "\n2: Novo motorista" +
+                    "\n3: Exibir usuarios" +
+                    "\n4: Alterar senha" +
+                    "\n5: Remover usuario");
+            String opcao = sc.nextLine();
+
+            switch (opcao) {
+                case "1" :
+                    novoUsuario(usuarioRepository); break;
+                case "2":
+                    novoMotorista(motoristasrepository,usuarioRepository);break;
+                case "3":
+                    exibirUsuarios(usuarioRepository);break;
+                case "4":
+                    alterarSenha(usuarioRepository);break;
+                case"5":
+                    removerUsuario(usuarioRepository);break;
+                default:
+                    System.out.println("opção invalida");
+                    return;
+            }
+        }
+    }
+
+    static void novoUsuario(UsuarioRepository usuarioRepository) {//sem passa os parametros o metodo nao conseguiria acessar as variaveis de instancia
+
+        while (true) { //depois ajusta isso
+            Scanner sc = new Scanner(System.in);
+
+            System.out.println("digite S para sair do loop ou C para cadastrar");
+            String condição = sc.nextLine();
+
+            if (condição.equals("S") || condição.equals("s")) {
+                break;
+            }
+            if (condição.equals("C") || condição.equals("c")) {
+                Usuarios novo = new Usuarios();
+                Motoristas motoristas = new Motoristas();
+
+                System.out.println("\nCADASTRO DE USUARIO");
+
+                System.out.println("Nome: ");
+                motoristas.setNome(sc.nextLine());
+
+                System.out.println("Usuario: ");
+                novo.setUsuario(sc.nextLine());
+
+                System.out.println("Senha: ");
+                novo.setSenha(sc.nextLine());
+
+                try {
+                    usuarioRepository.create(novo);
+                    System.out.println("Usuario cadastrado!!");
+                    return;
+                } catch (Exception e) {
+                    if (e.getMessage().contains("Usuario ja existente, escolha outro nome de usuario!")) {
+                        System.out.println("Nome de usuario ja em uso, escolha outro");
+                        novoUsuario(usuarioRepository);
+                    }
+                }
+            }
+        }
+    }
+
+    static  void novoMotorista ( Motoristasrepository motoristasrepository, UsuarioRepository usuarioRepository) {
+        Scanner sc = new Scanner(System.in);
+        Motoristas motoristas = new Motoristas();
+
+        Usuarios cadastrado = null;
+
+        System.out.println("Nome do motorista: ");
+        motoristas.setNome(sc.nextLine());
+
+        LocalDate data = null;
+        while (data == null) {
+            try {
+                System.out.println("Data de nascimento no formato DD/MM/AAAA");
+                String dataStr = sc.nextLine();
+                data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            } catch (Exception e) {
+                System.out.println("Formato invalido! Use DD/MM/AAAA");
+            }
+        }
+        motoristas.setData_nascimento(data);
+
+        List<Usuarios> lista = usuarioRepository.findAll();
+
+        System.out.println("Nome de Usuario desse motorista: ");
+        String user = sc.nextLine();
+
+        for (Usuarios u : lista) {
+            if (u.getUsuario().equals(user)){
+                cadastrado = u;
+            }
+        }
+        if (cadastrado != null) {
+            if (cadastrado.getUsuario().equals(user)) {
+                System.out.println("Motorista encontrado!!");
+            }
+
+            motoristas.setUsuarios(cadastrado);
+
+            try {
+                motoristasrepository.create(motoristas);
+                System.out.println("Motorista cadastrado com sucesso!");
+                return;
+            } catch (Exception e) {
+                if (e.getMessage().contains("Motorista deve ter mais de 24 anos")) {
+                    System.out.println("Cadastro negado: pela questão do seguro, o motorista deve ter mais de 24 anos!");
+                }
+                return;
+            }
+
+        }else {
+            String opcao;
+            do {
+                System.out.println("Motorista nao encontrado, necessita cadastrar como usuario primeiron\nSelecione uma opção:");
+                System.out.println("1- Cadastro de usuarios\n0-Sair");
+                opcao = sc.nextLine();
+                switch (opcao) {
+                    case "1":
+                        novoUsuario(usuarioRepository);
+                        novoMotorista(motoristasrepository, usuarioRepository);
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        System.out.println("Opçao invalida!!");
+                }
+            }
+            while (!opcao.equals("0"));
+        }
+    }
+
+    static void exibirUsuarios(UsuarioRepository usuarioRepository) {
+        List<Usuarios> lista = usuarioRepository.findAll();
+        for (Usuarios u : lista) {
+            System.out.println("Usuario: " + u.getUsuario());
+        }
+    }
+
+    static void alterarSenha (UsuarioRepository usuarioRepository) {
+        Scanner sc = new Scanner(System.in);
+
+        exibirUsuarios(usuarioRepository);
+        System.out.println("Digite o Usuario que deseja atualizar a senha");
+        String user = sc.nextLine();
+
+        boolean encontrado = false;
+        String senhaDigitada;
+        Usuarios usuarioencontrado = null;
+
+        while (encontrado == false) {
+            usuarioencontrado = null;//caso o usuario nao seja encontrado, reseta o valor pra null;
+            List<Usuarios> lista = usuarioRepository.findAll();
+            for (Usuarios u : lista) {
+                if (u.getUsuario().equals(user)){
+                    usuarioencontrado = u;
+                }
+            }
+            if (usuarioencontrado != null) {
+                if (usuarioencontrado.getUsuario().equals(user)) {// verificação desnecessaria, mas rodou assim entao deixei
+                    System.out.println("Senha antiga: ");
+                    senhaDigitada = sc.nextLine();
+
+                    if (senhaDigitada.equals(usuarioencontrado.getSenha())) {
+                        System.out.println("Nova Senha: ");
+                        String novaSenha = sc.nextLine();
+                        usuarioencontrado.setSenha(novaSenha);
+                        usuarioRepository.update(usuarioencontrado);// atualizando no banco de dados
+                        encontrado = true;
+
+                        System.out.println("Senha atualizada!!");
+                    }
+                }
+            }else {
+                exibirUsuarios(usuarioRepository);
+                System.out.println("Usuario nao encontrado, digite um usuario valido!!");
+                user = sc.nextLine();
+            }
+            //quando as duas forem verdadeiras vai significar que  senha ta errada mas o usuario ta correto, evita de cair direto na senha incorreta
+            if (encontrado == false && usuarioencontrado != null) {
+                System.out.println("Senha incorreta!!\nDigite novamente");
+                senhaDigitada = sc.nextLine();
+            }
+        }
+    }
+
+    static void removerUsuario (UsuarioRepository usuarioRepository) {
+        Scanner sc = new Scanner(System.in);
+
+        exibirUsuarios(usuarioRepository);
+        System.out.println("Digite o usuario que sera removido: ");
+        String user = sc.nextLine();
+
+        Usuarios usuarioencontrado = null;
+        boolean encontrado = false;
+
+        while (encontrado == false) {
+            usuarioencontrado = null;
+            List<Usuarios> lista = usuarioRepository.findAll();
+
+            for (Usuarios u : lista) {
+                if (u.getUsuario().equals(user)) {
+                    usuarioencontrado = u;
+                }
+            }
+            if (usuarioencontrado!= null){
+                usuarioRepository.delete(usuarioencontrado);
+                encontrado = true;
+                System.out.println("Usuario deletado com sucesso!!");
+            }else {
+                System.out.println("Usuario não encontrado!!\n" +
+                        "Digite um usuario valido: ");
+                exibirUsuarios(usuarioRepository);
+                user = sc.nextLine();
+            }
+        }
+    }
+
+    //FIM DO MATHEUS
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int logged = 0;
+        String escolha = "";
+        boolean[] admin = {false}; //A Booleana está por array, porque quando passamos por parametro normalmente ele apenas passa uma "cópia"//
+
+        System.out.println("=-=-= LOGI-DUTRA =-=-=");
+        do {
+            try {
+                System.out.println("1 =-=-= LOGIN =-=-=");
+                System.out.println("____________________");
+                escolha = sc.nextLine();
+
+                espaco(escolha);
+
+                switch (escolha) {
+                    case "1":
+                        logged = login(admin, sc);
+                        break;
+                    default:
+                        System.out.println("Opção inválida!");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Erro de entrada");
+                return;
+            }
+        } while (logged == 0);
+
+
+        do{
+            try {
+                System.out.println("1 =-=-= RELOGAR         =-=-=");
+                System.out.println("2 =-=-= ROMANEIOS       =-=-=");
+                System.out.println("0 =-=-= ENCERRAR        =-=-=");
+                escolha = sc.nextLine();
+
+                espaco(escolha);
+
+                switch(escolha) {
+                    case "1":
+                        login();
+                        break;
+                    case "2":
+                        romaneios();
+                        break;
+                    case "0":
+                        break;
+                    default:
+                        System.out.println("Indisponível");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Erro de entrada");
+            }
+        } while(!escolha.equals("0"));
     }
 }

@@ -25,7 +25,7 @@ public class VeiculosRepository {
 
     public void update(Veiculos veiculos) {
         em.getTransaction().begin();
-        em.persist(veiculos);
+        em.merge(veiculos);
         em.getTransaction().commit();
     }
 

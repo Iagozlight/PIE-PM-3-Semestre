@@ -25,7 +25,7 @@ public class PedidosRepository {
 
     public void update(Pedidos pedidos) {
         em.getTransaction().begin();
-        em.persist(pedidos);
+        em.merge(pedidos);
         em.getTransaction().commit();
     }
 

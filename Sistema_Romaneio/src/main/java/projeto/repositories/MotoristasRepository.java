@@ -26,7 +26,7 @@ public class MotoristasRepository {
 
     public void update(Motoristas motoristas) {
         em.getTransaction().begin();
-        em.persist(motoristas);
+        em.merge(motoristas);
         em.getTransaction().commit();
     }
 
@@ -44,6 +44,16 @@ public class MotoristasRepository {
         return em.createQuery("select m from Motoristas m where m.nome like :prefixo", Motoristas.class)
                 .setParameter("prefixo", prefixo + "%")
                 .getResultList();
+    }
+
+    public Motoristas findByUsuarioId(Long usuarioId) {
+        List<Motoristas> motoristas = em.createQuery("select m from Motoristas m where m.usuarios.id = :usuarioId", Motoristas.class)
+                .setParameter("usuarioId", usuarioId)
+                .getResultList();
+        if (motoristas.isEmpty()) {
+            return null;
+        }
+        return motoristas.get(0);
     }
 
 }

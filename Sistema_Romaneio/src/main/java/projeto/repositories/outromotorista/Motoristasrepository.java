@@ -1,8 +1,7 @@
-package org.example.Repository;
+package projeto.repositories.outromotorista;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
-import org.example.models.Motoristas;
+import projeto.models.outromotorista.Motoristas;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class Motoristasrepository {
 
     public void update (Motoristas motoristas) {
         em.getTransaction().begin();
-        em.persist(motoristas);
+        em.merge(motoristas);
         em.getTransaction().commit();
     }
 
