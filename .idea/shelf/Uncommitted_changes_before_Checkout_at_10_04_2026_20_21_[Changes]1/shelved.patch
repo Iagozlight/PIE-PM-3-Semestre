@@ -1,0 +1,184 @@
+Index: Sistema_Romaneio/src/main/java/projeto/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package projeto;\r\n\r\nimport jakarta.persistence.EntityManager;\r\nimport projeto.config.FlyWayconfig;\r\nimport projeto.models.ClientesRomaneio;\r\nimport projeto.models.Romaneios;\r\nimport projeto.repositories.ClientesRomaneioRepository;\r\nimport projeto.repositories.CustomizerFactory;\r\nimport projeto.repositories.PedidosRepository;\r\nimport projeto.repositories.RomaneiosRepository;\r\n\r\nimport java.time.LocalDate;\r\nimport java.time.format.DateTimeFormatter;\r\nimport java.util.Scanner;\r\n\r\npublic class Main {\r\n    public static void main(String[] args) {\r\n        Scanner scanner = new Scanner(System.in);\r\n        boolean rodando = true;\r\n        EntityManager em = CustomizerFactory.getEntityManager();\r\n        FlyWayconfig.migrate();\r\n\r\n        RomaneiosRepository romaneiosRepository = new RomaneiosRepository(em);\r\n        ClientesRomaneioRepository clientesRomaneioRepository = new ClientesRomaneioRepository(em);\r\n        PedidosRepository pedidosRepository = new PedidosRepository(em);\r\n\r\n//\r\n//        do {\r\n//            System.out.println(\"\\t\\tDUTRA MOVEIS(romaneios)\");\r\n//            System.out.println(\"Selecione uma das opções:\");\r\n//            System.out.println(\"(1) - Novo Romaneio\");\r\n//            System.out.println(\"(2) - Ver Romaneios\");\r\n//            System.out.println(\"(3) - Fechar\");\r\n//            int escolha = scanner.nextInt();\r\n//\r\n//            switch (escolha){\r\n//                case 1:\r\n//                    scanner.nextLine();\r\n//\r\n//                    System.out.println(\"\\t====Cadastro Cliente====\\n\");\r\n//                    String confirmar;\r\n//\r\n//                    do {\r\n//                        System.out.println(\"Data do Romaneio(dd/MM/yyyy): \");\r\n//                        String dataRomaneio = scanner.nextLine();\r\n//                        LocalDate data = LocalDate.parse(dataRomaneio, DateTimeFormatter.ofPattern(\"dd/MM/yyyy\"));\r\n//\r\n//                        Romaneios romaneio = new Romaneios(null, data);\r\n//\r\n//                        System.out.println(\"\\nConfirme os dados:\");\r\n//                        System.out.println(romaneio);\r\n//\r\n//                        System.out.println(\"Confirmar?(s/n): \");\r\n//                        confirmar = scanner.nextLine();\r\n//                    } while(!confirmar.equals(\"s\") || !confirmar.equals(\"S\"));\r\n//\r\n//\r\n//\r\n//                    do {\r\n//                        System.out.println(\"Nome: \\n\");\r\n//                        String nomeCliente = scanner.nextLine();\r\n//                        System.out.println(\"CEP: \");\r\n//                        String cep = scanner.nextLine();\r\n//                        System.out.println(\"Rua: \\n\");\r\n//                        String ruaCliente = scanner.nextLine();\r\n//                        System.out.println(\"Numero da casa: \\n\");\r\n//                        String numeroCasa = scanner.nextLine();\r\n//                        System.out.println(\"Bairro: \\n\");\r\n//                        String bairroCliente = scanner.nextLine();\r\n//                        ClientesRomaneio cliente = new ClientesRomaneio(null, nomeCliente, cep, ruaCliente,\r\n//                                numeroCasa, bairroCliente);\r\n//\r\n//                        System.out.println(\"\\nConfirme os dados:\");\r\n//                        System.out.println(cliente);\r\n//                    }\r\n//\r\n//                    System.out.println(\"\\nConfirme os dados:\");\r\n//                    System.out.println(romaneio);\r\n//\r\n//                    System.out.println(\"Confirmar?(s/n): \");\r\n//                    String confirmar = scanner.nextLine();\r\n//\r\n//                    if (confirmar.equals(\"s\") || confirmar.equals(\"S\")) {\r\n//                        System.out.println(\"Data romaneio cadastrado com sucesso!\");\r\n//                    } else {\r\n//                        System.out.println(\"Romaneio cancelado\");\r\n//                    }\r\n//\r\n//\r\n//                    break;\r\n//                case 2:\r\n//\r\n//                    break;\r\n//                case 3:\r\n//                    System.out.println(\"Encerrando...\");\r\n//                    rodando = false;\r\n//                    break;\r\n//            }\r\n//        } while (rodando);\r\n//\r\n//        scanner.close();\r\n//    }\r\n//}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Sistema_Romaneio/src/main/java/projeto/Main.java b/Sistema_Romaneio/src/main/java/projeto/Main.java
+--- a/Sistema_Romaneio/src/main/java/projeto/Main.java	(revision 10846012a43e03498269aa7701593fe5171de420)
++++ b/Sistema_Romaneio/src/main/java/projeto/Main.java	(date 1775858003641)
+@@ -24,80 +24,80 @@
+         ClientesRomaneioRepository clientesRomaneioRepository = new ClientesRomaneioRepository(em);
+         PedidosRepository pedidosRepository = new PedidosRepository(em);
+ 
+-//
+-//        do {
+-//            System.out.println("\t\tDUTRA MOVEIS(romaneios)");
+-//            System.out.println("Selecione uma das opções:");
+-//            System.out.println("(1) - Novo Romaneio");
+-//            System.out.println("(2) - Ver Romaneios");
+-//            System.out.println("(3) - Fechar");
+-//            int escolha = scanner.nextInt();
+-//
+-//            switch (escolha){
+-//                case 1:
+-//                    scanner.nextLine();
+-//
+-//                    System.out.println("\t====Cadastro Cliente====\n");
+-//                    String confirmar;
+-//
+-//                    do {
+-//                        System.out.println("Data do Romaneio(dd/MM/yyyy): ");
+-//                        String dataRomaneio = scanner.nextLine();
+-//                        LocalDate data = LocalDate.parse(dataRomaneio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+-//
+-//                        Romaneios romaneio = new Romaneios(null, data);
+-//
+-//                        System.out.println("\nConfirme os dados:");
+-//                        System.out.println(romaneio);
+-//
+-//                        System.out.println("Confirmar?(s/n): ");
+-//                        confirmar = scanner.nextLine();
+-//                    } while(!confirmar.equals("s") || !confirmar.equals("S"));
+-//
+-//
+-//
+-//                    do {
+-//                        System.out.println("Nome: \n");
+-//                        String nomeCliente = scanner.nextLine();
+-//                        System.out.println("CEP: ");
+-//                        String cep = scanner.nextLine();
+-//                        System.out.println("Rua: \n");
+-//                        String ruaCliente = scanner.nextLine();
+-//                        System.out.println("Numero da casa: \n");
+-//                        String numeroCasa = scanner.nextLine();
+-//                        System.out.println("Bairro: \n");
+-//                        String bairroCliente = scanner.nextLine();
++
++        do {
++            System.out.println("\t\tDUTRA MOVEIS(romaneios)");
++            System.out.println("Selecione uma das opções:");
++            System.out.println("(1) - Novo Romaneio");
++            System.out.println("(2) - Ver Romaneios");
++            System.out.println("(3) - Fechar");
++            int escolha = scanner.nextInt();
++
++            switch (escolha){
++                case 1:
++                    scanner.nextLine();
++
++                    System.out.println("\t====Cadastro Cliente====\n");
++                    String confirmar;
++
++                    do {
++                        System.out.println("Data do Romaneio(dd/MM/yyyy): ");
++                        String dataRomaneio = scanner.nextLine();
++                        LocalDate data = LocalDate.parse(dataRomaneio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
++
++                        Romaneios romaneio = new Romaneios(null, data);
++
++                        System.out.println("\nConfirme os dados:");
++                        System.out.println(romaneio);
++
++                        System.out.println("Confirmar?(s/n): ");
++                        confirmar = scanner.nextLine();
++                    } while(!confirmar.equals("s") || !confirmar.equals("S"));
++
++
++
++                    do {
++                        System.out.println("Nome: \n");
++                        String nomeCliente = scanner.nextLine();
++                        System.out.println("CEP: ");
++                        String cep = scanner.nextLine();
++                        System.out.println("Rua: \n");
++                        String ruaCliente = scanner.nextLine();
++                        System.out.println("Numero da casa: \n");
++                        String numeroCasa = scanner.nextLine();
++                        System.out.println("Bairro: \n");
++                        String bairroCliente = scanner.nextLine();
+ //                        ClientesRomaneio cliente = new ClientesRomaneio(null, nomeCliente, cep, ruaCliente,
+ //                                numeroCasa, bairroCliente);
+-//
+-//                        System.out.println("\nConfirme os dados:");
+-//                        System.out.println(cliente);
+-//                    }
+-//
+-//                    System.out.println("\nConfirme os dados:");
+-//                    System.out.println(romaneio);
+-//
+-//                    System.out.println("Confirmar?(s/n): ");
+-//                    String confirmar = scanner.nextLine();
+-//
+-//                    if (confirmar.equals("s") || confirmar.equals("S")) {
+-//                        System.out.println("Data romaneio cadastrado com sucesso!");
+-//                    } else {
+-//                        System.out.println("Romaneio cancelado");
+-//                    }
+-//
+-//
+-//                    break;
+-//                case 2:
+-//
+-//                    break;
+-//                case 3:
+-//                    System.out.println("Encerrando...");
+-//                    rodando = false;
+-//                    break;
+-//            }
+-//        } while (rodando);
+-//
+-//        scanner.close();
+-//    }
+-//}
+\ No newline at end of file
++
++                        System.out.println("\nConfirme os dados:");
++                        System.out.println(cliente);
++                    }
++
++                    System.out.println("\nConfirme os dados:");
++                    System.out.println(romaneio);
++
++                    System.out.println("Confirmar?(s/n): ");
++                    String confirmar = scanner.nextLine();
++
++                    if (confirmar.equals("s") || confirmar.equals("S")) {
++                        System.out.println("Data romaneio cadastrado com sucesso!");
++                    } else {
++                        System.out.println("Romaneio cancelado");
++                    }
++
++
++                    break;
++                case 2:
++
++                    break;
++                case 3:
++                    System.out.println("Encerrando...");
++                    rodando = false;
++                    break;
++            }
++        } while (rodando);
++
++        scanner.close();
++    }
++}
+\ No newline at end of file
+Index: .idea/modules.xml
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+deleted file mode 100644
+--- a/.idea/modules.xml	(revision 10846012a43e03498269aa7701593fe5171de420)
++++ /dev/null	(revision 10846012a43e03498269aa7701593fe5171de420)
+@@ -1,8 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectModuleManager">
+-    <modules>
+-      <module fileurl="file://$PROJECT_DIR$/.idea/PIE-PM-3-Semestre.iml" filepath="$PROJECT_DIR$/.idea/PIE-PM-3-Semestre.iml" />
+-    </modules>
+-  </component>
+-</project>
+\ No newline at end of file

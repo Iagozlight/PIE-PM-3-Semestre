@@ -1,0 +1,216 @@
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+deleted file mode 100644
+--- a/.idea/modules.xml	(revision 0c9516c2813504ab0741851def11c7b069a6d4ea)
++++ /dev/null	(revision 0c9516c2813504ab0741851def11c7b069a6d4ea)
+@@ -1,8 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectModuleManager">
+-    <modules>
+-      <module fileurl="file://$PROJECT_DIR$/.idea/PIE-PM-3-Semestre.iml" filepath="$PROJECT_DIR$/.idea/PIE-PM-3-Semestre.iml" />
+-    </modules>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"EntryPointsManager\">\r\n    <writeAnnotations>\r\n      <writeAnnotation name=\"jakarta.persistence.OneToMany\" />\r\n    </writeAnnotations>\r\n  </component>\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"MavenProjectsManager\">\r\n    <option name=\"originalFiles\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/Romaneios/pom.xml\" />\r\n        <option value=\"$PROJECT_DIR$/Sistema_Romaneios/pom.xml\" />\r\n        <option value=\"$PROJECT_DIR$/Sistema_Romaneio/pom.xml\" />\r\n      </list>\r\n    </option>\r\n    <option name=\"ignoredFiles\">\r\n      <set>\r\n        <option value=\"$PROJECT_DIR$/Romaneios/pom.xml\" />\r\n      </set>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_17\" default=\"true\" project-jdk-name=\"17\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 0c9516c2813504ab0741851def11c7b069a6d4ea)
++++ b/.idea/misc.xml	(date 1775871831401)
+@@ -9,15 +9,8 @@
+   <component name="MavenProjectsManager">
+     <option name="originalFiles">
+       <list>
+-        <option value="$PROJECT_DIR$/Romaneios/pom.xml" />
+-        <option value="$PROJECT_DIR$/Sistema_Romaneios/pom.xml" />
+-        <option value="$PROJECT_DIR$/Sistema_Romaneio/pom.xml" />
++        <option value="$PROJECT_DIR$/pom.xml" />
+       </list>
+-    </option>
+-    <option name="ignoredFiles">
+-      <set>
+-        <option value="$PROJECT_DIR$/Romaneios/pom.xml" />
+-      </set>
+     </option>
+   </component>
+   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK">
+Index: .idea/encodings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"Encoding\">\r\n    <file url=\"file://$PROJECT_DIR$/Romaneios/src/main/java\" charset=\"UTF-8\" />\r\n    <file url=\"file://$PROJECT_DIR$/Romaneios/src/main/resources\" charset=\"UTF-8\" />\r\n    <file url=\"file://$PROJECT_DIR$/Sistema_Romaneio/src/main/java\" charset=\"UTF-8\" />\r\n    <file url=\"file://$PROJECT_DIR$/Sistema_Romaneio/src/main/resources\" charset=\"UTF-8\" />\r\n    <file url=\"file://$PROJECT_DIR$/Sistema_Romaneios/src/main/java\" charset=\"UTF-8\" />\r\n    <file url=\"file://$PROJECT_DIR$/Sistema_Romaneios/src/main/resources\" charset=\"UTF-8\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/encodings.xml b/.idea/encodings.xml
+--- a/.idea/encodings.xml	(revision 0c9516c2813504ab0741851def11c7b069a6d4ea)
++++ b/.idea/encodings.xml	(date 1775871831401)
+@@ -7,5 +7,7 @@
+     <file url="file://$PROJECT_DIR$/Sistema_Romaneio/src/main/resources" charset="UTF-8" />
+     <file url="file://$PROJECT_DIR$/Sistema_Romaneios/src/main/java" charset="UTF-8" />
+     <file url="file://$PROJECT_DIR$/Sistema_Romaneios/src/main/resources" charset="UTF-8" />
++    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
++    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <annotationProcessing>\r\n      <profile name=\"Maven default annotation processors profile\" enabled=\"true\">\r\n        <sourceOutputDir name=\"target/generated-sources/annotations\" />\r\n        <sourceTestOutputDir name=\"target/generated-test-sources/test-annotations\" />\r\n        <outputRelativeToContentRoot value=\"true\" />\r\n        <module name=\"untitled\" />\r\n        <module name=\"Sistema_Romaneio\" />\r\n      </profile>\r\n    </annotationProcessing>\r\n    <bytecodeTargetLevel>\r\n      <module name=\"Romaneios\" target=\"17\" />\r\n      <module name=\"Sistema_Romaneios\" target=\"17\" />\r\n    </bytecodeTargetLevel>\r\n  </component>\r\n  <component name=\"JavacSettings\">\r\n    <option name=\"ADDITIONAL_OPTIONS_OVERRIDE\">\r\n      <module name=\"untitled\" options=\"--add-modules jdk.internal.le\" />\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+--- a/.idea/compiler.xml	(revision 0c9516c2813504ab0741851def11c7b069a6d4ea)
++++ b/.idea/compiler.xml	(date 1775871831400)
+@@ -6,6 +6,7 @@
+         <sourceOutputDir name="target/generated-sources/annotations" />
+         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+         <outputRelativeToContentRoot value="true" />
++        <module name="PIE-PM-3-Semestre" />
+         <module name="untitled" />
+         <module name="Sistema_Romaneio" />
+       </profile>
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+new file mode 100644
+--- /dev/null	(date 1775871831402)
++++ b/pom.xml	(date 1775871831402)
+@@ -0,0 +1,17 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <modelVersion>4.0.0</modelVersion>
++
++    <groupId>org.example</groupId>
++    <artifactId>PIE-PM-3-Semestre</artifactId>
++    <version>1.0-SNAPSHOT</version>
++
++    <properties>
++        <maven.compiler.source>17</maven.compiler.source>
++        <maven.compiler.target>17</maven.compiler.target>
++        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
++    </properties>
++
++</project>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"30929451-ca43-4b48-8d78-9db70ab1ff80\" name=\"Changes\" comment=\"Criado a Versão Final\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"main\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n    <option name=\"UPDATE_TYPE\" value=\"REBASE\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;Iagozlight&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/Iagozlight/PIE-PM-3-Semestre.git&quot;,\r\n    &quot;accountId&quot;: &quot;68571b55-4d02-45a2-883a-e59ea28dddef&quot;\r\n  }\r\n}</component>\r\n  <component name=\"McpProjectServerCommands\">\r\n    <commands />\r\n    <urls />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 2\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"3C2aW2qckXmYb2Te5A8fJ2IdH7E\" />\r\n  <component name=\"ProjectLevelVcsManager\">\r\n    <ConfirmationsSetting value=\"1\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"Application.Main (1).executor\": \"Run\",\r\n    \"Application.Main.executor\": \"Run\",\r\n    \"ModuleVcsDetector.initialDetectionPerformed\": \"true\",\r\n    \"RunOnceActivity.MCP Project settings loaded\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252\": \"true\",\r\n    \"RunOnceActivity.git.unshallow\": \"true\",\r\n    \"git-widget-placeholder\": \"Versao-Final\",\r\n    \"ignore.virus.scanning.warn.message\": \"true\",\r\n    \"kotlin-language-version-configured\": \"true\",\r\n    \"last_opened_file_path\": \"C:/Users/JOAQU/IdeaProjects/PIE-PM-3-Semestre\",\r\n    \"onboarding.tips.debug.path\": \"C:/Users/JOAQU/IdeaProjects/PIE-PM-3-Semestre/src/main/java/org/example/Main.java\",\r\n    \"project.structure.last.edited\": \"Modules\",\r\n    \"project.structure.proportion\": \"0.0\",\r\n    \"project.structure.side.proportion\": \"0.0\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\JOAQU\\IdeaProjects\\PIE-PM-3-Semestre\\.idea\\src\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Application.Main\">\r\n    <configuration name=\"Main (1)\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"UNNAMED_CLASS_CONFIGURATION\" value=\"true\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"Main\" />\r\n      <module name=\"PIE-PM-3-Semestre\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"Main\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"org.example.Main\" />\r\n      <module name=\"untitled\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"org.example.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"MainClass\" type=\"Application\" factoryName=\"Application\">\r\n      <module name=\"Menu_Principal\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"Application.MainClass\" />\r\n      <item itemvalue=\"Application.Main (1)\" />\r\n      <item itemvalue=\"Application.Main\" />\r\n    </list>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.Main\" />\r\n        <item itemvalue=\"Application.Main (1)\" />\r\n        <item itemvalue=\"Application.Main\" />\r\n        <item itemvalue=\"Application.Main (1)\" />\r\n        <item itemvalue=\"Application.Main\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.32098.37\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"30929451-ca43-4b48-8d78-9db70ab1ff80\" name=\"Changes\" comment=\"\" />\r\n      <created>1775586146274</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1775586146274</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Fiz o possível no código para a implementação de um Hibernate, afinal eu viajei nas 2 aulas que tiveram explicando a aplicação, então tive que dar meu jeito, vou aprimorando conforme o tempo\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1775594653430</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1775594653430</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Fiz o Menu teste apenas para ter uma ideia de como o código vai ficar no futuro e com a implementação de tudo, além disso eu concertei tudo do Hibernate e adicionei o FlyWay, e as indicações do meu amigo Thales\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1775607669203</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1775607669203</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"Fiz o Menu teste apenas para ter uma ideia de como o código vai ficar no futuro e com a implementação de tudo, além disso eu concertei tudo do Hibernate e adicionei o FlyWay, e as indicações do meu amigo Thales\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1775607674122</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1775607674122</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"Apenas reforcei as regras de negócio do teste para preparar o terreno\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1775686650151</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1775686650151</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"Adicionei alguns comentários no código, ajustei um pouco as regras de negócio, preparei um pouco o terreno para a entrada dos códigos de Mateus e de Thales, tentei implementar uma saída de Buffer mas vi que não era necessário, agora vou ver o que colocar ou ajustar a mais no código.\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1775689851248</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1775689851248</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"Deu tudo errado, vou criar uma Branch nova chamada Final, mas aqui está o meu fracasso kkkk\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1775857495364</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1775857495364</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"Criado a Versão Final\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1775870960123</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1775870960123</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"8\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Fiz o possível no código para a implementação de um Hibernate, afinal eu viajei nas 2 aulas que tiveram explicando a aplicação, então tive que dar meu jeito, vou aprimorando conforme o tempo\" />\r\n    <MESSAGE value=\"Fiz o Menu teste apenas para ter uma ideia de como o código vai ficar no futuro e com a implementação de tudo, além disso eu concertei tudo do Hibernate e adicionei o FlyWay, e as indicações do meu amigo Thales\" />\r\n    <MESSAGE value=\"Apenas reforcei as regras de negócio do teste para preparar o terreno\" />\r\n    <MESSAGE value=\"Adicionei alguns comentários no código, ajustei um pouco as regras de negócio, preparei um pouco o terreno para a entrada dos códigos de Mateus e de Thales, tentei implementar uma saída de Buffer mas vi que não era necessário, agora vou ver o que colocar ou ajustar a mais no código.\" />\r\n    <MESSAGE value=\"Deu tudo errado, vou criar uma Branch nova chamada Final, mas aqui está o meu fracasso kkkk\" />\r\n    <MESSAGE value=\"Criado a Versão Final\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Criado a Versão Final\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 0c9516c2813504ab0741851def11c7b069a6d4ea)
++++ b/.idea/workspace.xml	(date 1775871831402)
+@@ -4,7 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="30929451-ca43-4b48-8d78-9db70ab1ff80" name="Changes" comment="Criado a Versão Final" />
++    <list default="true" id="30929451-ca43-4b48-8d78-9db70ab1ff80" name="Changes" comment="" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -53,31 +53,31 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Application.Main (1).executor": "Run",
+-    "Application.Main.executor": "Run",
+-    "ModuleVcsDetector.initialDetectionPerformed": "true",
+-    "RunOnceActivity.MCP Project settings loaded": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+-    "RunOnceActivity.git.unshallow": "true",
+-    "git-widget-placeholder": "Versao-Final",
+-    "ignore.virus.scanning.warn.message": "true",
+-    "kotlin-language-version-configured": "true",
+-    "last_opened_file_path": "C:/Users/JOAQU/IdeaProjects/PIE-PM-3-Semestre",
+-    "onboarding.tips.debug.path": "C:/Users/JOAQU/IdeaProjects/PIE-PM-3-Semestre/src/main/java/org/example/Main.java",
+-    "project.structure.last.edited": "Modules",
+-    "project.structure.proportion": "0.0",
+-    "project.structure.side.proportion": "0.0"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Application.Main (1).executor&quot;: &quot;Run&quot;,
++    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
++    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;Versao-Final&quot;,
++    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
++    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/Users/JOAQU/IdeaProjects/PIE-PM-3-Semestre&quot;,
++    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/JOAQU/IdeaProjects/PIE-PM-3-Semestre/src/main/java/org/example/Main.java&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="RecentsManager">
+     <key name="MoveFile.RECENT_KEYS">
+       <recent name="C:\Users\JOAQU\IdeaProjects\PIE-PM-3-Semestre\.idea\src" />
+     </key>
+   </component>
+-  <component name="RunManager" selected="Application.Main">
++  <component name="RunManager">
+     <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+       <option name="UNNAMED_CLASS_CONFIGURATION" value="true" />
+       <option name="MAIN_CLASS_NAME" value="Main" />
+@@ -88,7 +88,6 @@
+     </configuration>
+     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
+-      <module name="untitled" />
+       <extension name="coverage">
+         <pattern>
+           <option name="PATTERN" value="org.example.*" />
+@@ -104,6 +103,26 @@
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
++    </configuration>
++    <configuration default="true" type="tests" factoryName="Doctests">
++      <option name="ENV_FILES" value="" />
++      <option name="INTERPRETER_OPTIONS" value="" />
++      <option name="PARENT_ENVS" value="true" />
++      <option name="SDK_HOME" value="" />
++      <option name="WORKING_DIRECTORY" value="" />
++      <option name="IS_MODULE_SDK" value="false" />
++      <option name="ADD_CONTENT_ROOTS" value="true" />
++      <option name="ADD_SOURCE_ROOTS" value="true" />
++      <module name="" />
++      <option name="RUN_TOOL" value="" />
++      <option name="SCRIPT_NAME" value="" />
++      <option name="CLASS_NAME" value="" />
++      <option name="METHOD_NAME" value="" />
++      <option name="FOLDER_NAME" value="" />
++      <option name="TEST_TYPE" value="TEST_SCRIPT" />
++      <option name="PATTERN" value="" />
++      <option name="USE_PATTERN" value="false" />
++      <method v="2" />
+     </configuration>
+     <list>
+       <item itemvalue="Application.MainClass" />
