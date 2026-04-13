@@ -19,7 +19,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String escolha;
 
-        do{
+        do {
             System.out.println("\t====(Submenu)Novo Romaneio====\n");
             System.out.println("(1) - Cadastrar Cliente");
             System.out.println("(2) - Cadastrar Romaneio");
@@ -28,15 +28,17 @@ public class Main {
 
             switch (escolha) {
                 case "1":
-                    cadastrarCliente(clientesRomaneioRepository, pedidosRepository); break;
+                    cadastrarCliente(clientesRomaneioRepository, pedidosRepository);
+                    break;
                 case "2":
-                    cadastrarRomaneio(romaneiosRepository, clientesRomaneioRepository); break;
+                    cadastrarRomaneio(romaneiosRepository, clientesRomaneioRepository);
+                    break;
                 case "0":
                     return;
                 default:
                     System.out.println("Opção Inválida!");
             }
-        } while(!escolha.equals("0"));
+        } while (!escolha.equals("0"));
     }
 
     static void verRomaneios(RomaneiosRepository romaneiosRepository,
@@ -52,7 +54,7 @@ public class Main {
             return;
         }
 
-        for (int i = 0; i<romaneios.size(); i++) {
+        for (int i = 0; i < romaneios.size(); i++) {
             System.out.println("(" + i + ") - " + romaneios.get(i).getData());
         }
 
@@ -260,11 +262,11 @@ public class Main {
         EntityManager em = CustomizerFactory.getEntityManager(); //EntityManager é a API(JPA) responsavel por interagir com a database
         FlyWayconfig.migrate(); //Flyway é uma ferramenta voltada para o versionamento e migração de banco de dados
 
-        RomaneiosRepository romaneiosRepository               = new RomaneiosRepository(em);
+        RomaneiosRepository romaneiosRepository = new RomaneiosRepository(em);
         ClientesRomaneioRepository clientesRomaneioRepository = new ClientesRomaneioRepository(em);
-        PedidosRepository pedidosRepository                   = new PedidosRepository(em);
-        VeiculosRepository veiculosRepository                 = new VeiculosRepository(em);
-        MotoristasRepository motoristasRepository             = new MotoristasRepository(em);
+        PedidosRepository pedidosRepository = new PedidosRepository(em);
+        VeiculosRepository veiculosRepository = new VeiculosRepository(em);
+        MotoristasRepository motoristasRepository = new MotoristasRepository(em);
 
         do { // Aqui será o menu principal de romaneios
             System.out.println("======================================\n");
@@ -278,10 +280,12 @@ public class Main {
 
             switch (escolha) {
                 case "1":
-                    novoRomaneio(romaneiosRepository, clientesRomaneioRepository, pedidosRepository); break;
+                    novoRomaneio(romaneiosRepository, clientesRomaneioRepository, pedidosRepository);
+                    break;
                 case "2":
                     verRomaneios(romaneiosRepository, clientesRomaneioRepository, veiculosRepository,
-                            motoristasRepository); break;
+                            motoristasRepository);
+                    break;
                 case "0":
                     System.out.println("Fechando...");
                     rodando = false;
@@ -289,7 +293,7 @@ public class Main {
                 default:
                     System.out.println("Opção Inválida!");
             }
-        }while(rodando.equals(true));
+        } while (rodando.equals(true));
     }
 
     public static void espaco(String escolha) {
@@ -300,23 +304,9 @@ public class Main {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // INICIO
 
-    public static void login() {
+    public static void login(Scanner sc) {
         FlyWayconfig.migrate();
 
         while (true) {
@@ -325,7 +315,7 @@ public class Main {
             Motoristasrepository motoristasrepository = new Motoristasrepository(em);
             String condicao;
 
-            Scanner sc = new Scanner(System.in);
+
 
             System.out.println("Selecione uma opção\n" +
                     "\n1: Cadastrar usuario" +
@@ -336,16 +326,21 @@ public class Main {
             String opcao = sc.nextLine();
 
             switch (opcao) {
-                case "1" :
-                    novoUsuario(usuarioRepository); break;
+                case "1":
+                    novoUsuario(usuarioRepository);
+                    break;
                 case "2":
-                    novoMotorista(motoristasrepository,usuarioRepository);break;
+                    novoMotorista(motoristasrepository, usuarioRepository);
+                    break;
                 case "3":
-                    exibirUsuarios(usuarioRepository);break;
+                    exibirUsuarios(usuarioRepository);
+                    break;
                 case "4":
-                    alterarSenha(usuarioRepository);break;
-                case"5":
-                    removerUsuario(usuarioRepository);break;
+                    alterarSenha(usuarioRepository);
+                    break;
+                case "5":
+                    removerUsuario(usuarioRepository);
+                    break;
                 default:
                     System.out.println("opção invalida");
                     return;
@@ -353,7 +348,7 @@ public class Main {
         }
     }
 
-    static void novoUsuario(UsuarioRepository usuarioRepository) {//sem passa os parametros o metodo nao conseguiria acessar as variaveis de instancia
+    static void novoUsuario(UsuarioRepository usuarioRepository) {  //sem passa os parametros o metodo nao conseguiria acessar as variaveis de instancia
 
         while (true) { //depois ajusta isso
             Scanner sc = new Scanner(System.in);
@@ -393,7 +388,7 @@ public class Main {
         }
     }
 
-    static  void novoMotorista ( Motoristasrepository motoristasrepository, UsuarioRepository usuarioRepository) {
+    static void novoMotorista(Motoristasrepository motoristasrepository, UsuarioRepository usuarioRepository) {
         Scanner sc = new Scanner(System.in);
         Motoristas motoristas = new Motoristas();
 
@@ -420,7 +415,7 @@ public class Main {
         String user = sc.nextLine();
 
         for (Usuarios u : lista) {
-            if (u.getUsuario().equals(user)){
+            if (u.getUsuario().equals(user)) {
                 cadastrado = u;
             }
         }
@@ -442,7 +437,7 @@ public class Main {
                 return;
             }
 
-        }else {
+        } else {
             String opcao;
             do {
                 System.out.println("Motorista nao encontrado, necessita cadastrar como usuario primeiron\nSelecione uma opção:");
@@ -470,7 +465,7 @@ public class Main {
         }
     }
 
-    static void alterarSenha (UsuarioRepository usuarioRepository) {
+    static void alterarSenha(UsuarioRepository usuarioRepository) {
         Scanner sc = new Scanner(System.in);
 
         exibirUsuarios(usuarioRepository);
@@ -485,7 +480,7 @@ public class Main {
             usuarioencontrado = null;//caso o usuario nao seja encontrado, reseta o valor pra null;
             List<Usuarios> lista = usuarioRepository.findAll();
             for (Usuarios u : lista) {
-                if (u.getUsuario().equals(user)){
+                if (u.getUsuario().equals(user)) {
                     usuarioencontrado = u;
                 }
             }
@@ -504,7 +499,7 @@ public class Main {
                         System.out.println("Senha atualizada!!");
                     }
                 }
-            }else {
+            } else {
                 exibirUsuarios(usuarioRepository);
                 System.out.println("Usuario nao encontrado, digite um usuario valido!!");
                 user = sc.nextLine();
@@ -517,7 +512,7 @@ public class Main {
         }
     }
 
-    static void removerUsuario (UsuarioRepository usuarioRepository) {
+    static void removerUsuario(UsuarioRepository usuarioRepository) {
         Scanner sc = new Scanner(System.in);
 
         exibirUsuarios(usuarioRepository);
@@ -536,11 +531,11 @@ public class Main {
                     usuarioencontrado = u;
                 }
             }
-            if (usuarioencontrado!= null){
+            if (usuarioencontrado != null) {
                 usuarioRepository.delete(usuarioencontrado);
                 encontrado = true;
                 System.out.println("Usuario deletado com sucesso!!");
-            }else {
+            } else {
                 System.out.println("Usuario não encontrado!!\n" +
                         "Digite um usuario valido: ");
                 exibirUsuarios(usuarioRepository);
@@ -563,13 +558,18 @@ public class Main {
             try {
                 System.out.println("1 =-=-= LOGIN =-=-=");
                 System.out.println("____________________");
-                escolha = sc.nextLine();
+                try {
+                    escolha = sc.nextLine();
+                } catch (IllegalStateException e) {
+                    System.out.println("Erro no Scanner (fechado inesperadamente)");
+                } catch (Exception e) {
+                    System.out.println("Erro inesperado: " + e.getMessage());
 
                 espaco(escolha);
 
                 switch (escolha) {
                     case "1":
-                        logged = login(admin, sc);
+                        login(sc);
                         break;
                     default:
                         System.out.println("Opção inválida!");
@@ -582,16 +582,20 @@ public class Main {
         } while (logged == 0);
 
 
-        do{
+        do {
+            System.out.println("1 =-=-= RELOGAR         =-=-=");
+            System.out.println("2 =-=-= ROMANEIOS       =-=-=");
+            System.out.println("0 =-=-= ENCERRAR        =-=-=");
             try {
-                System.out.println("1 =-=-= RELOGAR         =-=-=");
-                System.out.println("2 =-=-= ROMANEIOS       =-=-=");
-                System.out.println("0 =-=-= ENCERRAR        =-=-=");
                 escolha = sc.nextLine();
+            } catch (IllegalStateException e) {
+                System.out.println("Erro na hora de scanear o código");
+            } catch (Exception e) {
+                System.out.println("Erro: " + e.getMessage());
 
                 espaco(escolha);
 
-                switch(escolha) {
+                switch (escolha) {
                     case "1":
                         login();
                         break;
@@ -604,9 +608,9 @@ public class Main {
                         System.out.println("Indisponível");
                         break;
                 }
-            } catch (Exception e) {
-                System.out.println("Erro de entrada");
+
             }
-        } while(!escolha.equals("0"));
+            while (!escolha.equals("0")) ;
+        }
     }
 }
