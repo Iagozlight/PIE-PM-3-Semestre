@@ -319,7 +319,7 @@ public class Main {
         }
     }
 
-    public static void romaneios(Scanner sc) {
+    public static void romaneios(Scanner sc, SessaoUsuario sessao) {
         Boolean rodando = true;
         EntityManager em = CustomizerFactory.getEntityManager(); //EntityManager é a API(JPA) responsavel por interagir com a database
 
@@ -334,21 +334,32 @@ public class Main {
             System.out.println("\t\tDUTRA MOVEIS(romaneios)");
             System.out.println("\n======================================");
             System.out.println("Selecione uma das opções:");
-            System.out.println("(1) - Novo Romaneio");
-            System.out.println("(2) - Ver Romaneios");
-            System.out.println("(3) - Criar Veículos");
+            System.out.println("(1) - Ver Romaneios");
+            if (sessao.isAdmin()) {
+                System.out.println("(2) - Novo Romaneio");
+                System.out.println("(3) - Criar Veículos");
+            }
             System.out.println("(0) - Fechar");
             String escolha = sc.nextLine();
 
             switch (escolha) {
                 case "1":
-                    novoRomaneio(romaneiosRepository, clientesRomaneioRepository, pedidosRepository);
+                    verRomaneios(romaneiosRepository, clientesRomaneioRepository,
+                            veiculosRepository, motoristasRepository);
                     break;
                 case "2":
-                    verRomaneios(romaneiosRepository, clientesRomaneioRepository, veiculosRepository,
-                            motoristasRepository);
+                    if (!sessao.isAdmin()) {
+                        System.out.println("Acesso negado!");
+                        break;
+                    }
+                    novoRomaneio(romaneiosRepository, clientesRomaneioRepository, pedidosRepository);
                     break;
+
                 case "3":
+                    if (!sessao.isAdmin()) {
+                        System.out.println("Acesso negado!");
+                        break;
+                    }
                     cadastrarVeiculo(veiculosRepository, sc);
                     break;
                 case "0":
@@ -386,8 +397,10 @@ public class Main {
         public Motoristas getMotorista() { return motorista; }
     }
 
-    public static Usuarios autenticar(UsuarioRepository usuarioRepository, Scanner sc) {
-        System.out.println("\n--- TELA DE LOGIN ---");
+    public static SessaoUsuario autenticar(UsuarioRepository usuarioRepository,
+                                           MotoristasRepository motoristasRepository,
+                                           Scanner sc) {
+        System.out.println("\n-=-=- TELA DE LOGIN -=-=-");
         System.out.println("Usuário: ");
         String username = sc.nextLine();
         System.out.println("Senha: ");
@@ -396,13 +409,27 @@ public class Main {
         List<Usuarios> usuariosDb = usuarioRepository.findAll();
         for (Usuarios u : usuariosDb) {
             if (u.getUsuario().equals(username) && u.getSenha().equals(senha)) {
+                boolean isAdmin = u.temPermissao("ADMIN");
+
+                Motoristas motorista = null;
+                if (!isAdmin) {
+                    List<Motoristas> todos = motoristasRepository.findAll();
+                    for (Motoristas m : todos) {
+                        if (m.getUsuarios() != null && m.getUsuarios().getId().equals(u.getId())) {
+                            motorista = m;
+                            break;
+                        }
+                    }
+                }
+
                 System.out.println("Login realizado com sucesso! Bem-vindo, " + u.getUsuario());
-                return u; // Retorna o usuário logado
+                System.out.println("Perfil: " + (isAdmin ? "ADMIN" : "MOTORISTA"));
+                return new SessaoUsuario(u, isAdmin, motorista);
             }
         }
 
         System.out.println("Usuário ou senha incorretos!");
-        return null; // Falhou no login
+        return null;
     }
 
 
@@ -645,13 +672,14 @@ public class Main {
     //FIM DO MATHEUS
 
     public static void main(String[] args) {
-        Usuarios usuarioLogado = null;
+        SessaoUsuario sessao = null;
         EntityManager em = CustomizerFactory.getEntityManager();
         FlyWayconfig.migrate(); //Flyway é uma ferramenta voltada para o versionamento e migração de banco de dados
 
         Scanner sc = new Scanner(System.in);
 
         UsuarioRepository usuarioRepository = new UsuarioRepository(em);
+        MotoristasRepository motoristasRepository = new MotoristasRepository(em);
 
         Boolean logged = true;
         Boolean logado = false;
@@ -659,9 +687,9 @@ public class Main {
 
 
         System.out.println("=-=-= LOGI-DUTRA =-=-=");
-        while (usuarioLogado == null) {
-            usuarioLogado = autenticar(usuarioRepository, sc);
-            if (usuarioLogado == null) {
+        while (sessao == null) {
+            sessao = autenticar(usuarioRepository, motoristasRepository, sc);
+            if (sessao == null) {
                 System.out.println("Deseja tentar novamente? (1-Sim / 0-Sair)");
                 if (sc.nextLine().equals("0")) {
                     System.out.println("Encerrando...");
@@ -673,7 +701,9 @@ public class Main {
             do {
                 System.out.println("1 =-=-= RELOGAR         =-=-=");
                 System.out.println("2 =-=-= ROMANEIOS       =-=-=");
-                System.out.println("3 =-=-= CADASTRAR       =-=-=");
+                if (sessao.isAdmin()) {
+                    System.out.println("3 =-=-= CADASTRAR       =-=-=");
+                }
                 System.out.println("0 =-=-= ENCERRAR        =-=-=");
                 try {
                     escolha = sc.nextLine();
@@ -686,12 +716,16 @@ public class Main {
 
                 switch (escolha) {
                     case "1":
-                        autenticar(usuarioRepository, sc);
+                        autenticar(usuarioRepository, motoristasRepository, sc);
                         break;
                     case "2":
-                        romaneios(sc);
+                        romaneios(sc, sessao);
                         break;
                     case "3":
+                        if (!sessao.isAdmin()) {
+                            System.out.println("Acesso negado! Apenas administradores podem cadastrar.");
+                            break;
+                        }
                         login(sc);
                         break;
                     case "0":

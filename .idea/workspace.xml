@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30929451-ca43-4b48-8d78-9db70ab1ff80" name="Changes" comment="Feito algumas alterações no Login, alterei os Usuarios para ter as permissoes, alterei um pouco o menu, fiz uma autenticação, criei o cadastro de Veículos">
+    <list default="true" id="30929451-ca43-4b48-8d78-9db70ab1ff80" name="Changes" comment="Ajustei o código ainda mais, agora voltou a ficar funcional e coloquei as Permissões no Hibernate">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/config/FlyWayconfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/config/FlyWayconfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -327,7 +326,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776190342041</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Ajustei o código ainda mais, agora voltou a ficar funcional e coloquei as Permissões no Hibernate">
+      <option name="closed" value="true" />
+      <created>1776191719150</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1776191719150</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -351,7 +358,8 @@
     <MESSAGE value="Ajustei apenas algumas coisas, tipo deixar os Try Catchs mais específicos, e melhorei também algumas coisas, coisas que não faziam muito sentido como o Login no Main" />
     <MESSAGE value="FINALMENTE, Agora é só eu melhorar a logica por trás de tudo" />
     <MESSAGE value="Feito algumas alterações no Login, alterei os Usuarios para ter as permissoes, alterei um pouco o menu, fiz uma autenticação, criei o cadastro de Veículos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feito algumas alterações no Login, alterei os Usuarios para ter as permissoes, alterei um pouco o menu, fiz uma autenticação, criei o cadastro de Veículos" />
+    <MESSAGE value="Ajustei o código ainda mais, agora voltou a ficar funcional e coloquei as Permissões no Hibernate" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajustei o código ainda mais, agora voltou a ficar funcional e coloquei as Permissões no Hibernate" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
