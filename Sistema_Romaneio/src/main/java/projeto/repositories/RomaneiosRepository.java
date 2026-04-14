@@ -42,11 +42,30 @@ public class RomaneiosRepository {
         return em.createQuery("select r from Romaneios r", Romaneios.class).getResultList();
     }
 
-    public List<Romaneios> findByData(LocalDate data) {
-        return em.createQuery("select r from Romaneios r where r.data = :data", Romaneios.class)
-                .setParameter("data", data)
-                .getResultList();
+    public List<Romaneios> findAllCompletos() {
+        return em.createQuery(
+                "SELECT r FROM Romaneios r JOIN FETCH r.veiculo JOIN FETCH r.motorista ORDER BY r.data DESC",
+                Romaneios.class
+        ).getResultList();
     }
+
+    public List<Romaneios> findPendentes() {
+        return em.createQuery(
+                "SELECT r FROM Romaneios r LEFT JOIN FETCH r.veiculo LEFT JOIN FETCH r.motorista " +
+                        "WHERE r.veiculo IS NULL OR r.motorista IS NULL ORDER BY r.data DESC",
+                Romaneios.class
+        ).getResultList();
+    }
+
+    public List<Object[]> getRelatorioGeral() {
+        String jpql = "SELECT r.id, r.data, c.nome_cliente, p.nome_produto, p.quantidade " +
+                "FROM Romaneios r " +
+                "JOIN r.clientes c " +
+                "LEFT JOIN c.pedidos p " +
+                "ORDER BY r.data DESC";
+        return em.createQuery(jpql).getResultList();
+    }
+
 
     public boolean veiculoEmUso(Veiculos veiculo) {
         List<Romaneios> result = em.createQuery(
