@@ -716,7 +716,10 @@ public class Main {
 
                 switch (escolha) {
                     case "1":
-                        autenticar(usuarioRepository, motoristasRepository, sc);
+                        SessaoUsuario novaSessao = autenticar(usuarioRepository, motoristasRepository, sc);
+                        if (novaSessao != null) {
+                            sessao = novaSessao;
+                        }
                         break;
                     case "2":
                         romaneios(sc, sessao);

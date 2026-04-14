@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30929451-ca43-4b48-8d78-9db70ab1ff80" name="Changes" comment="Ajustei o código ainda mais, agora voltou a ficar funcional e coloquei as Permissões no Hibernate">
+    <list default="true" id="30929451-ca43-4b48-8d78-9db70ab1ff80" name="Changes" comment="Finalizei o principal, agora o código está funcionando e já está pronto para ser apresentado (com quase 1 semana de atraso), mas se a Grand Line não é o destino final dos piratas, então vamos para um novo mundo">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Usuarios.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Usuarios.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,7 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="28" />
+    <option name="cachedIndexableFilesCount" value="30" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -334,7 +334,23 @@
       <option name="project" value="LOCAL" />
       <updated>1776191719150</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Finalizei o principal, agora o código está funcionando e já está pronto para ser apresentado (com quase 1 semana de atraso), mas se a Grand Line não é o destino final dos piratas, então vamos para um novo mundo">
+      <option name="closed" value="true" />
+      <created>1776198950877</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1776198950877</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Finalizei o principal, agora o código está funcionando e já está pronto para ser apresentado (com quase 1 semana de atraso), mas se a Grand Line não é o destino final dos piratas, então vamos para um novo mundo">
+      <option name="closed" value="true" />
+      <created>1776198957778</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1776198957778</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -359,7 +375,8 @@
     <MESSAGE value="FINALMENTE, Agora é só eu melhorar a logica por trás de tudo" />
     <MESSAGE value="Feito algumas alterações no Login, alterei os Usuarios para ter as permissoes, alterei um pouco o menu, fiz uma autenticação, criei o cadastro de Veículos" />
     <MESSAGE value="Ajustei o código ainda mais, agora voltou a ficar funcional e coloquei as Permissões no Hibernate" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajustei o código ainda mais, agora voltou a ficar funcional e coloquei as Permissões no Hibernate" />
+    <MESSAGE value="Finalizei o principal, agora o código está funcionando e já está pronto para ser apresentado (com quase 1 semana de atraso), mas se a Grand Line não é o destino final dos piratas, então vamos para um novo mundo" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finalizei o principal, agora o código está funcionando e já está pronto para ser apresentado (com quase 1 semana de atraso), mas se a Grand Line não é o destino final dos piratas, então vamos para um novo mundo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
