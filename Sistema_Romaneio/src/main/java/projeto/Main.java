@@ -665,7 +665,7 @@ public class Main {
                 System.out.println("Deseja tentar novamente? (1-Sim / 0-Sair)");
                 if (sc.nextLine().equals("0")) {
                     System.out.println("Encerrando...");
-                    return; // Sai do programa
+                    return;
                 }
             }
         }
@@ -673,6 +673,7 @@ public class Main {
             do {
                 System.out.println("1 =-=-= RELOGAR         =-=-=");
                 System.out.println("2 =-=-= ROMANEIOS       =-=-=");
+                System.out.println("3 =-=-= CADASTRAR       =-=-=");
                 System.out.println("0 =-=-= ENCERRAR        =-=-=");
                 try {
                     escolha = sc.nextLine();
@@ -685,10 +686,13 @@ public class Main {
 
                 switch (escolha) {
                     case "1":
-                        login(sc);
+                        autenticar(usuarioRepository, sc);
                         break;
                     case "2":
                         romaneios(sc);
+                        break;
+                    case "3":
+                        login(sc);
                         break;
                     case "0":
                         break;

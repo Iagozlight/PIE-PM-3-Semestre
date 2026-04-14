@@ -10,7 +10,7 @@ public class FlyWayconfig {
                         "postgres",
                         "03122007"
                 )
-
+                .baselineOnMigrate(true)
                 .load();
 
         flyway.migrate();

@@ -4,50 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30929451-ca43-4b48-8d78-9db70ab1ff80" name="Changes" comment="FINALMENTE, Agora é só eu melhorar a logica por trás de tudo">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="30929451-ca43-4b48-8d78-9db70ab1ff80" name="Changes" comment="Feito algumas alterações no Login, alterei os Usuarios para ter as permissoes, alterei um pouco o menu, fiz uma autenticação, criei o cadastro de Veículos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/config/FlyWayconfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/config/FlyWayconfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/ClientesRomaneio.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Endereco.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Motoristas.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Pedidos.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Romaneios.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Usuarios.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Veiculos.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/repositories/MotoristasRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/repositories/MotoristasRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/repositories/outromotorista/Motoristasrepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V10__insert_data.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V1__create_database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V1__create_database.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V3__create_motoristas.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V3__create_motoristas.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V4__trigger_idade_motorista.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V4__trigger_idade_motorista.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V5__fk_motorista_usuario.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V5__fk_motorista_usuario.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V6__remove_senha_motorista.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V6__remove_senha_motorista.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V7__cascade_fk_motorista.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V7__cascade_fk_motorista.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V8__trigger_usuario_unico.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V8__trigger_usuario_unico.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V9__create_database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V9__insert_data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/hibernate.cfg.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/db/migration/V1__create_database.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/db/migration/V2__insert_data.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/hibernate.cfg.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/config/FlyWayconfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/models/ClientesRomaneio.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/models/Endereco.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/models/Motoristas.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/models/Pedidos.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/models/Romaneios.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/models/Veiculos.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/repositories/ClientesRomaneioRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/repositories/CustomizerFactory.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/repositories/MotoristasRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/repositories/PedidosRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/repositories/RomaneiosRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/repositories/VeiculosRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -359,7 +319,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776108087747</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Feito algumas alterações no Login, alterei os Usuarios para ter as permissoes, alterei um pouco o menu, fiz uma autenticação, criei o cadastro de Veículos">
+      <option name="closed" value="true" />
+      <created>1776190342041</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1776190342041</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -382,7 +350,8 @@
     <MESSAGE value="Criado a Versão Final" />
     <MESSAGE value="Ajustei apenas algumas coisas, tipo deixar os Try Catchs mais específicos, e melhorei também algumas coisas, coisas que não faziam muito sentido como o Login no Main" />
     <MESSAGE value="FINALMENTE, Agora é só eu melhorar a logica por trás de tudo" />
-    <option name="LAST_COMMIT_MESSAGE" value="FINALMENTE, Agora é só eu melhorar a logica por trás de tudo" />
+    <MESSAGE value="Feito algumas alterações no Login, alterei os Usuarios para ter as permissoes, alterei um pouco o menu, fiz uma autenticação, criei o cadastro de Veículos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feito algumas alterações no Login, alterei os Usuarios para ter as permissoes, alterei um pouco o menu, fiz uma autenticação, criei o cadastro de Veículos" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
