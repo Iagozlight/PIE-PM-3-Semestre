@@ -1,1 +1,1 @@
-alter table motorista drop column senha;
+-- alter table motoristas drop column senha;

@@ -1,6 +1,6 @@
-alter table motorista
+alter table motoristas
 drop constraint fk_motorista_usuario;
 
-alter table motorista
+alter table motoristas
 add constraint fk_motorista_usuario
-foreign key (usuario_id) references usuario(id) on delete cascade;
+foreign key (usuario_id) references usuarios(id) on delete cascade;

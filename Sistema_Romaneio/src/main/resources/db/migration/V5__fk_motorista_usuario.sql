@@ -1,3 +1,3 @@
-alter table motorista
+ALTER TABLE motoristas
 add constraint fk_motorista_usuario
-foreign key (usuario_id) references usuario(id);
+foreign key (usuario_id) references usuarios(id);

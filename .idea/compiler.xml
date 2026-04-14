@@ -6,12 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="PIE-PM-3-Semestre" />
+        <module name="untitled (2) (projeto)" />
         <module name="untitled" />
-        <module name="Sistema_Romaneio" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="logi-dutra" target="17" />
+      <module name="PIE-PM-3-Semestre" target="1.5" />
       <module name="Romaneios" target="17" />
       <module name="Sistema_Romaneios" target="17" />
     </bytecodeTargetLevel>

@@ -4,9 +4,50 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30929451-ca43-4b48-8d78-9db70ab1ff80" name="Changes" comment="">
+    <list default="true" id="30929451-ca43-4b48-8d78-9db70ab1ff80" name="Changes" comment="FINALMENTE, Agora é só eu melhorar a logica por trás de tudo">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/config/FlyWayconfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/config/FlyWayconfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/ClientesRomaneio.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Endereco.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Motoristas.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Pedidos.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Romaneios.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Usuarios.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/models/Veiculos.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/repositories/MotoristasRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/repositories/MotoristasRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/repositories/outromotorista/Motoristasrepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V10__insert_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V1__create_database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V1__create_database.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V3__create_motoristas.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V3__create_motoristas.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V4__trigger_idade_motorista.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V4__trigger_idade_motorista.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V5__fk_motorista_usuario.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V5__fk_motorista_usuario.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V6__remove_senha_motorista.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V6__remove_senha_motorista.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V7__cascade_fk_motorista.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V7__cascade_fk_motorista.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V8__trigger_usuario_unico.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V8__trigger_usuario_unico.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V9__create_database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/db/migration/V9__insert_data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/hibernate.cfg.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/db/migration/V1__create_database.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/db/migration/V2__insert_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/hibernate.cfg.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/config/FlyWayconfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/models/ClientesRomaneio.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/models/Endereco.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/models/Motoristas.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/models/Pedidos.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/models/Romaneios.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/models/Veiculos.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/repositories/ClientesRomaneioRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/repositories/CustomizerFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/repositories/MotoristasRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/repositories/PedidosRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/repositories/RomaneiosRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/target/classes/projeto/repositories/VeiculosRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,7 +55,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="92" />
+    <option name="cachedIndexableFilesCount" value="28" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -30,6 +71,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -44,6 +86,9 @@
     &quot;accountId&quot;: &quot;68571b55-4d02-45a2-883a-e59ea28dddef&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Sistema_Romaneio/src/main/resources/hibernate.cfg.xml" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -64,6 +109,7 @@
     &quot;Application.Main (1).executor&quot;: &quot;Run&quot;,
     &quot;Application.Main.executor&quot;: &quot;Run&quot;,
     &quot;Application.projeto.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.PIE-PM-3-Semestre [org.apache.maven.plugins:maven-resources-plugin:3.3.1:copy-resources].executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -72,23 +118,29 @@
     &quot;git-widget-placeholder&quot;: &quot;Versao-Final&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/JOAQU/IdeaProjects/PIE-PM-3-Semestre&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/JOAQU/IdeaProjects/PIE-PM-3-Semestre/logi-dutra/src/main/java/org/example/Repository&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/JOAQU/IdeaProjects/PIE-PM-3-Semestre/src/main/java/org/example/Main.java&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\JOAQU\IdeaProjects\PIE-PM-3-Semestre\logi-dutra\src\main\java\org\example\Repository" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\JOAQU\IdeaProjects\PIE-PM-3-Semestre\Sistema_Romaneio\src\main\resources\db\migration" />
-      <recent name="C:\Users\JOAQU\IdeaProjects\PIE-PM-3-Semestre\Sistema_Romaneio\src\main\java\projeto\repositories\outromotorista" />
-      <recent name="C:\Users\JOAQU\IdeaProjects\PIE-PM-3-Semestre\Sistema_Romaneio\src\main\java\projeto\repositories" />
-      <recent name="C:\Users\JOAQU\IdeaProjects\PIE-PM-3-Semestre\Sistema_Romaneio\src\main\java\projeto\models\outromotorista" />
       <recent name="C:\Users\JOAQU\IdeaProjects\PIE-PM-3-Semestre\Sistema_Romaneio\src\main\java\projeto\models" />
+      <recent name="C:\Users\JOAQU\IdeaProjects\PIE-PM-3-Semestre\logi-dutra\src\main\java\org\example\Repository" />
+      <recent name="C:\Users\JOAQU\IdeaProjects\PIE-PM-3-Semestre\logi-dutra\src\main\java\org\example\models" />
+      <recent name="C:\Users\JOAQU\IdeaProjects\PIE-PM-3-Semestre\Sistema_Romaneio" />
+      <recent name="C:\Users\JOAQU\IdeaProjects\PIE-PM-3-Semestre\Sistema_Romaneio\src" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.example.Repository" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager">
     <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="UNNAMED_CLASS_CONFIGURATION" value="true" />
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -116,18 +168,115 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="projeto.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="projeto.Main" />
+      <module name="PIE-PM-3-Semestre" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="projeto.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="logi-dutra" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="logi-dutra" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="logi-dutra" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="logi-dutra" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Autodetect">
+      <module name="logi-dutra" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <module name="logi-dutra" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Application.MainClass" />
+      <item itemvalue="Application.projeto.Main" />
       <item itemvalue="Application.Main (1)" />
       <item itemvalue="Application.Main" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.projeto.Main" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main (1)" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main (1)" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -202,7 +351,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775870960123</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Ajustei apenas algumas coisas, tipo deixar os Try Catchs mais específicos, e melhorei também algumas coisas, coisas que não faziam muito sentido como o Login no Main">
+      <option name="closed" value="true" />
+      <created>1776108087747</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1776108087747</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -223,6 +380,28 @@
     <MESSAGE value="Adicionei alguns comentários no código, ajustei um pouco as regras de negócio, preparei um pouco o terreno para a entrada dos códigos de Mateus e de Thales, tentei implementar uma saída de Buffer mas vi que não era necessário, agora vou ver o que colocar ou ajustar a mais no código." />
     <MESSAGE value="Deu tudo errado, vou criar uma Branch nova chamada Final, mas aqui está o meu fracasso kkkk" />
     <MESSAGE value="Criado a Versão Final" />
-    <option name="LAST_COMMIT_MESSAGE" value="Criado a Versão Final" />
+    <MESSAGE value="Ajustei apenas algumas coisas, tipo deixar os Try Catchs mais específicos, e melhorei também algumas coisas, coisas que não faziam muito sentido como o Login no Main" />
+    <MESSAGE value="FINALMENTE, Agora é só eu melhorar a logica por trás de tudo" />
+    <option name="LAST_COMMIT_MESSAGE" value="FINALMENTE, Agora é só eu melhorar a logica por trás de tudo" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/logi-dutra/src/main/java/org/example/Main.java</url>
+          <line>565</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Main.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="org.postgresql.util.PSQLException" package="org.postgresql.util" />
+          <option name="timeStamp" value="5" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
