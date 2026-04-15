@@ -671,10 +671,14 @@ public class Main {
 
     //FIM DO MATHEUS
 
+
+
     public static void main(String[] args) {
         SessaoUsuario sessao = null;
         EntityManager em = CustomizerFactory.getEntityManager();
         FlyWayconfig.migrate(); //Flyway é uma ferramenta voltada para o versionamento e migração de banco de dados
+
+
 
         Scanner sc = new Scanner(System.in);
 
@@ -732,6 +736,7 @@ public class Main {
                         login(sc);
                         break;
                     case "0":
+                        System.out.println("Encerrando...");
                         break;
                     default:
                         System.out.println("Indisponível");

@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30929451-ca43-4b48-8d78-9db70ab1ff80" name="Changes" comment="95% pronto">
+    <list default="true" id="30929451-ca43-4b48-8d78-9db70ab1ff80" name="Changes" comment="99% pronto">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/repositories/RomaneiosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/repositories/RomaneiosRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sistema_Romaneio/src/main/java/projeto/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -358,7 +358,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776206523177</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="99% pronto">
+      <option name="closed" value="true" />
+      <created>1776209571638</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1776209571638</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -385,7 +393,8 @@
     <MESSAGE value="Ajustei o código ainda mais, agora voltou a ficar funcional e coloquei as Permissões no Hibernate" />
     <MESSAGE value="Finalizei o principal, agora o código está funcionando e já está pronto para ser apresentado (com quase 1 semana de atraso), mas se a Grand Line não é o destino final dos piratas, então vamos para um novo mundo" />
     <MESSAGE value="95% pronto" />
-    <option name="LAST_COMMIT_MESSAGE" value="95% pronto" />
+    <MESSAGE value="99% pronto" />
+    <option name="LAST_COMMIT_MESSAGE" value="99% pronto" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
