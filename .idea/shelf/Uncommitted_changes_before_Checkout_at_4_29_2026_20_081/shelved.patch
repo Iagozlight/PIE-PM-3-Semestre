@@ -1,0 +1,33 @@
+Index: .idea/PIE-PM-3-Semestre.iml
+===================================================================
+diff --git a/.idea/PIE-PM-3-Semestre.iml b/.idea/PIE-PM-3-Semestre.iml
+deleted file mode 100644
+--- a/.idea/PIE-PM-3-Semestre.iml	(revision 2f960b54cd02db8660f36983088b8f078afe7ada)
++++ /dev/null	(revision 2f960b54cd02db8660f36983088b8f078afe7ada)
+@@ -1,9 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module type="JAVA_MODULE" version="4">
+-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$" />
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/modules.xml
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+deleted file mode 100644
+--- a/.idea/modules.xml	(revision 2f960b54cd02db8660f36983088b8f078afe7ada)
++++ /dev/null	(revision 2f960b54cd02db8660f36983088b8f078afe7ada)
+@@ -1,8 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectModuleManager">
+-    <modules>
+-      <module fileurl="file://$PROJECT_DIR$/.idea/PIE-PM-3-Semestre.iml" filepath="$PROJECT_DIR$/.idea/PIE-PM-3-Semestre.iml" />
+-    </modules>
+-  </component>
+-</project>
+\ No newline at end of file
