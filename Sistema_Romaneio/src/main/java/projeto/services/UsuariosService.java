@@ -1,4 +1,4 @@
-package projeto.Services;
+package projeto.services;
 
 public class UsuariosService {
 }

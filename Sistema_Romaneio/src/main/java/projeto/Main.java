@@ -88,7 +88,7 @@ public class Main {
                                 }
                                 List<Veiculos> veiculos = veiculosRepository.findAll();
                                 if (veiculos.isEmpty()) {
-                                    System.out.println("Nenhum veÃ­culo cadastrado!");
+                                    System.out.println("Nenhum veículo cadastrado!");
                                     break;
                                 }
                                 for (int i = 0; i < veiculos.size(); i++) {
@@ -98,7 +98,7 @@ public class Main {
                                 int indexVeiculo = Integer.parseInt(scanner.nextLine());
                                 Veiculos veiculoSelecionado = veiculos.get(indexVeiculo);
                                 if (veiculoSelecionado.getDisponibilidade() == null || veiculoSelecionado.getDisponibilidade().equals(false)) {
-                                    System.out.println("VeÃ­culo indisponÃ­vel para romaneio!");
+                                    System.out.println("Veículo indisponível para romaneio!");
                                 } else if (romaneiosRepository.veiculoEmUso(veiculoSelecionado)) {
                                     System.out.println("Veículo já está em uso em outro romaneio!");
                                 } else {
@@ -216,64 +216,6 @@ public class Main {
 
         clientesRomaneioRepository.create(cliente);
         System.out.println("Cliente salvo com sucesso!");
-    }
-
-    static void cadastrarRomaneio(RomaneiosRepository romaneiosRepository,
-                                  ClientesRomaneioRepository clientesRomaneioRepository) {
-        Scanner scanner = new Scanner(System.in);
-        LocalDate dataRomaneio = null;
-
-        System.out.println("==Cadastrar Romaneio==");
-        while (dataRomaneio == null) {
-            try {
-
-                System.out.println("Data do Romaneio(dd/MM/yyyy): ");
-                String dataString = scanner.nextLine();
-
-                dataRomaneio = LocalDate.parse(dataString, DateTimeFormatter.ofPattern("dd/MM/yyyy")); // Mudando formato da data
-            } catch (DateTimeParseException e) {
-                System.out.println("Data inválida! Use o formato correto: dd/MM/yyyy");
-            }
-        }
-        Romaneios romaneio = new Romaneios(null, dataRomaneio);
-
-        // Lista os clientes sem romaneio
-        List<ClientesRomaneio> clientesSemRomaneio = clientesRomaneioRepository.findSemRomaneio();
-
-        if (clientesSemRomaneio.isEmpty()) {
-            System.out.println("Nenhum cliente disponível para adicionar!");
-            return;
-        }
-
-        for (int i = 0; i < clientesSemRomaneio.size(); i++) { // Mostra os clientes disponiveis
-            System.out.println("(" + i + ") - " + clientesSemRomaneio.get(i).getNome_cliente());
-        }
-
-        System.out.println("Digite o número do cliente para adicionar (ou Q para finalizar): ");
-        String opcao = scanner.nextLine(); // inicializa aqui com o primeiro valor
-
-        while (!opcao.equals("Q") && !opcao.equals("q")) {
-            try {
-                int index = Integer.parseInt(opcao);
-
-                if (index < 0 || index >= clientesSemRomaneio.size()) {
-                    System.out.println("Número inválido! Escolha entre 0 e " + (clientesSemRomaneio.size() - 1));
-                } else {
-                    ClientesRomaneio cliente = clientesSemRomaneio.get(index);
-                    cliente.setRomaneio(romaneio);
-                    romaneio.getClientes().add(cliente);
-                    System.out.println("Cliente " + cliente.getNome_cliente() + " adicionado!");
-                }
-
-            } catch (NumberFormatException e) {
-                System.out.println("Digite um número válido ou Q para finalizar!");
-            }
-
-            System.out.println("Adicionar mais um cliente? (ou Q para finalizar): ");
-            opcao = scanner.nextLine();
-        }
-        romaneiosRepository.create(romaneio);
-        System.out.println("Romaneio criado com sucesso!");
     }
 
     static void cadastrarVeiculo(VeiculosRepository veiculosRepository, Scanner sc) {
@@ -670,8 +612,6 @@ public class Main {
     }
 
     //FIM DO MATHEUS
-
-
 
     public static void main(String[] args) {
         SessaoUsuario sessao = null;
