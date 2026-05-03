@@ -4,8 +4,7 @@ import jakarta.persistence.EntityManager;
 import projeto.config.FlyWayconfig;
 import projeto.models.*;
 import projeto.repositories.*;
-import projeto.services.ClientesService;
-import projeto.services.VeiculosService;
+import projeto.services.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,11 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class Main {
-    static void novoRomaneio(RomaneiosRepository romaneiosRepository,
-                             ClientesRomaneioRepository clientesRomaneioRepository, PedidosRepository pedidosRepository,
-                             ClientesService clientesService) { //sem passa os parametros o metodo nao conseguiria acessar as variaveis de instancia
+
+    // ==================== ROMANEIOS ====================
+
+    static void novoRomaneio(RomaneiosService romaneiosService,
+                             ClientesService clientesService,
+                             ClientesRomaneioRepository clientesRomaneioRepository,
+                             RomaneiosRepository romaneiosRepository) {
         Scanner scanner = new Scanner(System.in);
         String escolha;
 
@@ -34,7 +36,7 @@ public class Main {
                     cadastrarCliente(clientesService);
                     break;
                 case "2":
-                    cadastrarRomaneio(romaneiosRepository,clientesRomaneioRepository);
+                    cadastrarRomaneio(romaneiosService, clientesRomaneioRepository, romaneiosRepository, scanner);
                     break;
                 case "0":
                     return;
@@ -44,13 +46,12 @@ public class Main {
         } while (!escolha.equals("0"));
     }
 
-    static void verRomaneios(RomaneiosRepository romaneiosRepository,
-                             ClientesRomaneioRepository clientesRomaneioRepository,
+    static void verRomaneios(RomaneiosService romaneiosService,
                              VeiculosRepository veiculosRepository,
                              MotoristasRepository motoristasRepository) {
         Scanner scanner = new Scanner(System.in);
 
-        List<Romaneios> romaneios = romaneiosRepository.findAll();
+        List<Romaneios> romaneios = romaneiosService.listarRomaneios();
 
         if (romaneios.isEmpty()) {
             System.out.println("Nenhum Romaneio encontrado!");
@@ -72,7 +73,7 @@ public class Main {
                     System.out.println("Número inválido! Escolha entre 0 e " + (romaneios.size() - 1));
                 } else {
                     Romaneios romaneioSelecionado = romaneios.get(index);
-                    System.out.println("\n" + romaneioSelecionado); // mostra os detalhes
+                    System.out.println("\n" + romaneioSelecionado);
 
                     String escolha;
                     do {
@@ -85,11 +86,6 @@ public class Main {
 
                         switch (escolha) {
                             case "1":
-                                if (romaneioSelecionado.getVeiculo() != null) {
-                                    System.out.println("Este romaneio já possui o veículo: "
-                                            + romaneioSelecionado.getVeiculo().getNomeVeiculo());
-                                    break;
-                                }
                                 List<Veiculos> veiculos = veiculosRepository.findAll();
                                 if (veiculos.isEmpty()) {
                                     System.out.println("Nenhum veículo cadastrado!");
@@ -101,23 +97,11 @@ public class Main {
                                 System.out.println("Selecione um veículo: ");
                                 int indexVeiculo = Integer.parseInt(scanner.nextLine());
                                 Veiculos veiculoSelecionado = veiculos.get(indexVeiculo);
-                                if (veiculoSelecionado.getDisponibilidade() == null || veiculoSelecionado.getDisponibilidade().equals(false)) {
-                                    System.out.println("Veículo indisponível para romaneio!");
-                                } else if (romaneiosRepository.veiculoEmUso(veiculoSelecionado)) {
-                                    System.out.println("Veículo já está em uso em outro romaneio!");
-                                } else {
-                                    romaneioSelecionado.setVeiculo(veiculoSelecionado);
-                                    romaneiosRepository.update(romaneioSelecionado);
-                                    System.out.println("Veículo atribuído com sucesso!");
-                                }
+                                String msgVeiculo = romaneiosService.atribuirVeiculo(romaneioSelecionado, veiculoSelecionado);
+                                System.out.println(msgVeiculo);
                                 break;
 
                             case "2":
-                                if (romaneioSelecionado.getMotorista() != null) {
-                                    System.out.println("Este romaneio já possui o motorista: "
-                                            + romaneioSelecionado.getMotorista().getNome());
-                                    break;
-                                }
                                 List<Motoristas> motoristas = motoristasRepository.findAll();
                                 if (motoristas.isEmpty()) {
                                     System.out.println("Nenhum motorista cadastrado!");
@@ -129,16 +113,12 @@ public class Main {
                                 System.out.println("Selecione um motorista: ");
                                 int indexMotorista = Integer.parseInt(scanner.nextLine());
                                 Motoristas motoristaSelecionado = motoristas.get(indexMotorista);
-                                if (romaneiosRepository.motoristaEmUso(motoristaSelecionado)) {
-                                    System.out.println("Motorista já está em uso em outro romaneio!");
-                                } else {
-                                    romaneioSelecionado.setMotorista(motoristaSelecionado);
-                                    romaneiosRepository.update(romaneioSelecionado);
-                                    System.out.println("Motorista atribuído com sucesso!");
-                                }
+                                String msgMotorista = romaneiosService.atribuirMotorista(romaneioSelecionado, motoristaSelecionado);
+                                System.out.println(msgMotorista);
                                 break;
+
                             case "3":
-                                romaneiosRepository.delete(romaneioSelecionado);
+                                romaneiosService.deletarRomaneio(romaneioSelecionado);
                                 System.out.println("Romaneio deletado!");
                                 return;
                             case "0":
@@ -161,23 +141,20 @@ public class Main {
     static void cadastrarCliente(ClientesService clientesService) {
         Scanner scanner = new Scanner(System.in);
         String confirmar;
-        String cpfCliente;
 
         System.out.println("=====Cadastrar Cliente======");
         System.out.println("Nome do Cliente: ");
         String nomeCliente = scanner.nextLine();
-
         System.out.println("CPF: ");
-        cpfCliente = scanner.nextLine();
-
+        String cpfCliente = scanner.nextLine();
         System.out.println("Dados do Cliente Confirmado!");
 
-        Endereco endereco = Endereco.lerEndereco(scanner); // Le o endereço e cadastra
+        Endereco endereco = Endereco.lerEndereco(scanner);
 
         List<Pedidos> listaPedidos = new ArrayList<>();
 
         String opcao;
-        do { // Loop para escolher se quer cadastrar mais de um pedido
+        do {
             System.out.println("==Pedido==");
             System.out.println("Nome do Produto: ");
             String nomeProduto = scanner.nextLine();
@@ -188,14 +165,12 @@ public class Main {
 
             System.out.println("Confirme os dados abaixo:");
             System.out.println(pedido);
-
             System.out.println("Confirmar?(s/n): ");
             confirmar = scanner.nextLine();
 
             if (confirmar.equals("s") || confirmar.equals("S")) {
                 System.out.println("Pedido adicionado com Sucesso!");
                 listaPedidos.add(pedido);
-
             } else if (confirmar.equals("n") || confirmar.equals("N")) {
                 System.out.println("Pedido cancelado!");
             } else {
@@ -215,61 +190,57 @@ public class Main {
         }
     }
 
-    static void cadastrarRomaneio(RomaneiosRepository romaneiosRepository,
-                                  ClientesRomaneioRepository clientesRomaneioRepository) {
-        Scanner scanner = new Scanner(System.in);
+    static void cadastrarRomaneio(RomaneiosService romaneiosService,
+                                  ClientesRomaneioRepository clientesRomaneioRepository,
+                                  RomaneiosRepository romaneiosRepository,
+                                  Scanner scanner) {
         LocalDate dataRomaneio = null;
 
         System.out.println("==Cadastrar Romaneio==");
         while (dataRomaneio == null) {
             try {
-
                 System.out.println("Data do Romaneio(dd/MM/yyyy): ");
                 String dataString = scanner.nextLine();
-
-                dataRomaneio = LocalDate.parse(dataString, DateTimeFormatter.ofPattern("dd/MM/yyyy")); // Mudando formato da data
+                dataRomaneio = LocalDate.parse(dataString, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             } catch (DateTimeParseException e) {
                 System.out.println("Data inválida! Use o formato correto: dd/MM/yyyy");
             }
         }
-        Romaneios romaneio = new Romaneios(null, dataRomaneio);
 
-        // Lista os clientes sem romaneio
-        List<ClientesRomaneio> clientesSemRomaneio = clientesRomaneioRepository.findSemRomaneio();
+        List<ClientesRomaneio> clientesSemRomaneio = romaneiosService.listarClientesSemRomaneio();
 
         if (clientesSemRomaneio.isEmpty()) {
             System.out.println("Nenhum cliente disponível para adicionar!");
             return;
         }
 
-        for (int i = 0; i < clientesSemRomaneio.size(); i++) { // Mostra os clientes disponiveis
+        for (int i = 0; i < clientesSemRomaneio.size(); i++) {
             System.out.println("(" + i + ") - " + clientesSemRomaneio.get(i).getNome_cliente());
         }
 
         System.out.println("Digite o número do cliente para adicionar (ou Q para finalizar): ");
-        String opcao = scanner.nextLine(); // inicializa aqui com o primeiro valor
+        String opcao = scanner.nextLine();
+
+        List<ClientesRomaneio> clientesSelecionados = new ArrayList<>();
 
         while (!opcao.equals("Q") && !opcao.equals("q")) {
             try {
                 int index = Integer.parseInt(opcao);
-
                 if (index < 0 || index >= clientesSemRomaneio.size()) {
                     System.out.println("Número inválido! Escolha entre 0 e " + (clientesSemRomaneio.size() - 1));
                 } else {
                     ClientesRomaneio cliente = clientesSemRomaneio.get(index);
-                    cliente.setRomaneio(romaneio);
-                    romaneio.getClientes().add(cliente);
+                    clientesSelecionados.add(cliente);
                     System.out.println("Cliente " + cliente.getNome_cliente() + " adicionado!");
                 }
-
             } catch (NumberFormatException e) {
                 System.out.println("Digite um número válido ou Q para finalizar!");
             }
-
             System.out.println("Adicionar mais um cliente? (ou Q para finalizar): ");
             opcao = scanner.nextLine();
         }
-        romaneiosRepository.create(romaneio);
+
+        romaneiosService.criarRomaneio(dataRomaneio, clientesSelecionados);
         System.out.println("Romaneio criado com sucesso!");
     }
 
@@ -288,97 +259,11 @@ public class Main {
         }
     }
 
-    public static void romaneios(Scanner sc, SessaoUsuario sessao) {
-    }
-
-    public static void espaco(String escolha) {
-        if (escolha == null || escolha.trim().isEmpty()) {
-            System.out.println("Entrada vazia.");
-            return;
-        }
-    }
-
-    // INICIO MATEUS
-
-    static class SessaoUsuario {
-        private final Usuarios usuario; //é um modificador utilizado para declarar campos (variáveis) que são imutáveis e restritos apenas à classe onde foram definidos
-        private final boolean isAdmin;
-        private final Motoristas motorista; // null se for admin
-
-        public SessaoUsuario(Usuarios usuario, boolean isAdmin, Motoristas motorista) {
-            this.usuario = usuario;
-            this.isAdmin = isAdmin;
-            this.motorista = motorista;
-        }
-
-        public boolean isAdmin() { return isAdmin; }
-        public Usuarios getUsuario() { return usuario; }
-        public Motoristas getMotorista() { return motorista; }
-    }
-
-    public static SessaoUsuario autenticar(UsuarioRepository usuarioRepository,
-                                           MotoristasRepository motoristasRepository,
-                                           Scanner sc) {
-        System.out.println("\n-=-=- TELA DE LOGIN -=-=-");
-        System.out.println("Usuário: ");
-        String username = sc.nextLine();
-        System.out.println("Senha: ");
-        String senha = sc.nextLine();
-
-        List<Usuarios> usuariosDb = usuarioRepository.findAll();
-        for (Usuarios u : usuariosDb) {
-            if (u.getUsuario().equals(username) && u.getSenha().equals(senha)) {
-                boolean isAdmin = u.temPermissao("ADMIN");
-
-                Motoristas motorista = null;
-                if (!isAdmin) {
-                    List<Motoristas> todos = motoristasRepository.findAll();
-                    for (Motoristas m : todos) {
-                        if (m.getUsuarios() != null && m.getUsuarios().getId().equals(u.getId())) {
-                            motorista = m;
-                            break;
-                        }
-                    }
-                }
-
-                System.out.println("Login realizado com sucesso! Bem-vindo, " + u.getUsuario());
-                System.out.println("Perfil: " + (isAdmin ? "ADMIN" : "MOTORISTA"));
-                return new SessaoUsuario(u, isAdmin, motorista);
-            }
-        }
-
-        System.out.println("Usuário ou senha incorretos!");
-        return null;
-    }
-
-    public static void login(Scanner sc) {
-        while (true) {
-            EntityManager em = CustomizerFactory.getEntityManager();// aqui cria o entitymanager que vai conversar com o banco
-            UsuarioRepository usuarioRepository = new UsuarioRepository(em);// o "em" é o EntityManager que será usado pelo repository para manipular o banco de dados
-            MotoristasRepository motoristasrepository = new MotoristasRepository(em);
-
-            System.out.println("Selecione uma opção\n" +
-                    "\n1: Cadastrar usuario" +
-
-
-            static void cadastrarVeiculo(VeiculosService veiculosService, Scanner sc) {
-        System.out.println("=== Cadastro de Veículo ===");
-        System.out.println("Nome do veículo: ");
-        String nome = sc.nextLine();
-        System.out.println("Placa (ex: ABC1D23): ");
-        String placa = sc.nextLine();
-
-        try {
-            veiculosService.criarVeiculo(nome, placa);
-            System.out.println("Veículo cadastrado com sucesso!");
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+    // ==================== ROMANEIOS MENU ====================
 
     public static void romaneios(Scanner sc, SessaoUsuario sessao) {
         Boolean rodando = true;
-        EntityManager em = CustomizerFactory.getEntityManager(); //EntityManager é a API(JPA) responsavel por interagir com a database
+        EntityManager em = CustomizerFactory.getEntityManager();
 
         RomaneiosRepository romaneiosRepository = new RomaneiosRepository(em);
         ClientesRomaneioRepository clientesRomaneioRepository = new ClientesRomaneioRepository(em);
@@ -386,7 +271,11 @@ public class Main {
         VeiculosRepository veiculosRepository = new VeiculosRepository(em);
         MotoristasRepository motoristasRepository = new MotoristasRepository(em);
 
-        do { // Aqui será o menu principal de romaneios
+        RomaneiosService romaneiosService = new RomaneiosService(romaneiosRepository, clientesRomaneioRepository);
+        ClientesService clientesService = new ClientesService(clientesRomaneioRepository);
+        VeiculosService veiculosService = new VeiculosService(veiculosRepository);
+
+        do {
             System.out.println("======================================\n");
             System.out.println("\t\tDUTRA MOVEIS(romaneios)");
             System.out.println("\n======================================");
@@ -401,23 +290,21 @@ public class Main {
 
             switch (escolha) {
                 case "1":
-                    verRomaneios(romaneiosRepository, clientesRomaneioRepository,
-                            veiculosRepository, motoristasRepository);
+                    verRomaneios(romaneiosService, veiculosRepository, motoristasRepository);
                     break;
                 case "2":
                     if (!sessao.isAdmin()) {
                         System.out.println("Acesso negado!");
                         break;
                     }
-                    novoRomaneio(romaneiosRepository, clientesRomaneioRepository, pedidosRepository);
+                    novoRomaneio(romaneiosService, clientesService, clientesRomaneioRepository, romaneiosRepository);
                     break;
-
                 case "3":
                     if (!sessao.isAdmin()) {
                         System.out.println("Acesso negado!");
                         break;
                     }
-                    cadastrarVeiculo(veiculosRepository, sc);
+                    cadastrarVeiculo(veiculosService, sc);
                     break;
                 case "0":
                     System.out.println("Fechando...");
@@ -429,19 +316,12 @@ public class Main {
         } while (rodando.equals(true));
     }
 
-    public static void espaco(String escolha) {
-        if (escolha == null || escolha.trim().isEmpty()) {
-            System.out.println("Entrada vazia.");
-            return;
-        }
-    }
-
-    // INICIO MATEUS
+    // ==================== USUARIOS ====================
 
     static class SessaoUsuario {
-        private final Usuarios usuario; //é um modificador utilizado para declarar campos (variáveis) que são imutáveis e restritos apenas à classe onde foram definidos
+        private final Usuarios usuario;
         private final boolean isAdmin;
-        private final Motoristas motorista; // null se for admin
+        private final Motoristas motorista;
 
         public SessaoUsuario(Usuarios usuario, boolean isAdmin, Motoristas motorista) {
             this.usuario = usuario;
@@ -454,48 +334,25 @@ public class Main {
         public Motoristas getMotorista() { return motorista; }
     }
 
-    public static SessaoUsuario autenticar(UsuarioRepository usuarioRepository,
-                                           MotoristasRepository motoristasRepository,
-                                           Scanner sc) {
+    public static SessaoUsuario autenticar(UsuariosService usuariosService, Scanner sc) {
         System.out.println("\n-=-=- TELA DE LOGIN -=-=-");
         System.out.println("Usuário: ");
         String username = sc.nextLine();
         System.out.println("Senha: ");
         String senha = sc.nextLine();
 
-        List<Usuarios> usuariosDb = usuarioRepository.findAll();
-        for (Usuarios u : usuariosDb) {
-            if (u.getUsuario().equals(username) && u.getSenha().equals(senha)) {
-                boolean isAdmin = u.temPermissao("ADMIN");
-
-                Motoristas motorista = null;
-                if (!isAdmin) {
-                    List<Motoristas> todos = motoristasRepository.findAll();
-                    for (Motoristas m : todos) {
-                        if (m.getUsuarios() != null && m.getUsuarios().getId().equals(u.getId())) {
-                            motorista = m;
-                            break;
-                        }
-                    }
-                }
-
-                System.out.println("Login realizado com sucesso! Bem-vindo, " + u.getUsuario());
-                System.out.println("Perfil: " + (isAdmin ? "ADMIN" : "MOTORISTA"));
-                return new SessaoUsuario(u, isAdmin, motorista);
-            }
+        SessaoUsuario sessao = usuariosService.autenticar(username, senha);
+        if (sessao != null) {
+            System.out.println("Login realizado com sucesso! Bem-vindo, " + username);
+            System.out.println("Perfil: " + (sessao.isAdmin() ? "ADMIN" : "MOTORISTA"));
+        } else {
+            System.out.println("Usuário ou senha incorretos!");
         }
-
-        System.out.println("Usuário ou senha incorretos!");
-        return null;
+        return sessao;
     }
 
-
-    public static void login(Scanner sc) {
+    public static void login(UsuariosService usuariosService, Scanner sc) {
         while (true) {
-            EntityManager em = CustomizerFactory.getEntityManager();// aqui cria o entitymanager que vai conversar com o banco
-            UsuarioRepository usuarioRepository = new UsuarioRepository(em);// o "em" é o EntityManager que será usado pelo repository para manipular o banco de dados
-            MotoristasRepository motoristasrepository = new MotoristasRepository(em);
-
             System.out.println("Selecione uma opção\n" +
                     "\n1: Cadastrar usuario" +
                     "\n2: Novo motorista" +
@@ -507,77 +364,57 @@ public class Main {
 
             switch (opcao) {
                 case "1":
-                    novoUsuario(usuarioRepository);
+                    novoUsuario(usuariosService, sc);
                     break;
                 case "2":
-                    novoMotorista(motoristasrepository, usuarioRepository);
+                    novoMotorista(usuariosService, sc);
                     break;
                 case "3":
-                    exibirUsuarios(usuarioRepository);
+                    exibirUsuarios(usuariosService);
                     break;
                 case "4":
-                    alterarSenha(usuarioRepository);
+                    alterarSenha(usuariosService, sc);
                     break;
                 case "5":
-                    removerUsuario(usuarioRepository);
+                    removerUsuario(usuariosService, sc);
                     break;
                 case "0":
                     return;
                 default:
-                    System.out.println("opção invalida");
-                    return;
+                    System.out.println("Opção inválida");
             }
         }
     }
 
-    static void novoUsuario(UsuarioRepository usuarioRepository) {  //sem passa os parametros o metodo nao conseguiria acessar as variaveis de instancia
+    static void novoUsuario(UsuariosService usuariosService, Scanner sc) {
+        while (true) {
+            System.out.println("Digite S para sair ou C para cadastrar");
+            String condicao = sc.nextLine();
 
-        while (true) { //depois ajusta isso
-            Scanner sc = new Scanner(System.in);
-
-            System.out.println("digite S para sair do loop ou C para cadastrar");
-            String condição = sc.nextLine();
-
-            if (condição.equals("S") || condição.equals("s")) {
+            if (condicao.equals("S") || condicao.equals("s")) {
                 break;
             }
-            if (condição.equals("C") || condição.equals("c")) {
-                Usuarios novo = new Usuarios();
-                Motoristas motoristas = new Motoristas();
-
+            if (condicao.equals("C") || condicao.equals("c")) {
                 System.out.println("\nCADASTRO DE USUARIO");
-
-                System.out.println("Nome: ");
-                motoristas.setNome(sc.nextLine());
-
                 System.out.println("Usuario: ");
-                novo.setUsuario(sc.nextLine());
-
+                String username = sc.nextLine();
                 System.out.println("Senha: ");
-                novo.setSenha(sc.nextLine());
+                String senha = sc.nextLine();
 
                 try {
-                    usuarioRepository.create(novo);
+                    usuariosService.criarUsuario(username, senha);
                     System.out.println("Usuario cadastrado!!");
                     return;
-                } catch (Exception e) {
-                    if (e.getMessage().contains("Usuario ja existente, escolha outro nome de usuario!")) {
-                        System.out.println("Nome de usuario ja em uso, escolha outro");
-                        novoUsuario(usuarioRepository);
-                    }
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
                 }
             }
         }
     }
 
-    static void novoMotorista(MotoristasRepository motoristasrepository, UsuarioRepository usuarioRepository) {
-        Scanner sc = new Scanner(System.in);
-        Motoristas motoristas = new Motoristas();
-
-        Usuarios cadastrado = null;
-
+    static void novoMotorista(UsuariosService usuariosService, Scanner sc) {
         System.out.println("Nome do motorista: ");
-        motoristas.setNome(sc.nextLine());
+        String nome = sc.nextLine();
 
         LocalDate data = null;
         while (data == null) {
@@ -589,165 +426,78 @@ public class Main {
                 System.out.println("Formato invalido! Use DD/MM/AAAA");
             }
         }
-        motoristas.setData_nascimento(data);
-
-        List<Usuarios> lista = usuarioRepository.findAll();
 
         System.out.println("Nome de Usuario desse motorista: ");
-        String user = sc.nextLine();
+        String username = sc.nextLine();
 
-        for (Usuarios u : lista) {
-            if (u.getUsuario().equals(user)) {
-                cadastrado = u;
-            }
-        }
-        if (cadastrado != null) {
-            if (cadastrado.getUsuario().equals(user)) {
-                System.out.println("Motorista encontrado!!");
-            }
-
-            motoristas.setUsuarios(cadastrado);
-
-            try {
-                motoristasrepository.create(motoristas);
-                System.out.println("Motorista cadastrado com sucesso!");
-                return;
-            } catch (Exception e) {
-                if (e.getMessage().contains("Motorista deve ter mais de 24 anos")) {
-                    System.out.println("Cadastro negado: pela questão do seguro, o motorista deve ter mais de 24 anos!");
-                }
-                return;
-            }
-
-        } else {
-            String opcao;
-            do {
-                System.out.println("Motorista nao encontrado, necessita cadastrar como usuario primeiron\nSelecione uma opção:");
-                System.out.println("1- Cadastro de usuarios\n0-Sair");
-                opcao = sc.nextLine();
-                switch (opcao) {
-                    case "1":
-                        novoUsuario(usuarioRepository);
-                        novoMotorista(motoristasrepository, usuarioRepository);
-                        break;
-                    case "0":
-                        return;
-                    default:
-                        System.out.println("Opçao invalida!!");
-                }
-            }
-            while (!opcao.equals("0"));
+        try {
+            usuariosService.criarMotorista(nome, data, username);
+            System.out.println("Motorista cadastrado com sucesso!");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    static void exibirUsuarios(UsuarioRepository usuarioRepository) {
-        List<Usuarios> lista = usuarioRepository.findAll();
+    static void exibirUsuarios(UsuariosService usuarioService) {
+        List<Usuarios> lista = usuarioService.listarUsuarios();
         for (Usuarios u : lista) {
             System.out.println("Usuario: " + u.getUsuario());
         }
     }
 
-    static void alterarSenha(UsuarioRepository usuarioRepository) {
-        Scanner sc = new Scanner(System.in);
-
-        exibirUsuarios(usuarioRepository);
+    static void alterarSenha(UsuariosService usuariosService, Scanner sc) {
+        exibirUsuarios(usuariosService);
         System.out.println("Digite o Usuario que deseja atualizar a senha");
         String user = sc.nextLine();
+        System.out.println("Senha antiga: ");
+        String senhaAntiga = sc.nextLine();
+        System.out.println("Nova Senha: ");
+        String novaSenha = sc.nextLine();
 
-        boolean encontrado = false;
-        String senhaDigitada;
-        Usuarios usuarioencontrado = null;
-
-        while (encontrado == false) {
-            usuarioencontrado = null;//caso o usuario nao seja encontrado, reseta o valor pra null;
-            List<Usuarios> lista = usuarioRepository.findAll();
-            for (Usuarios u : lista) {
-                if (u.getUsuario().equals(user)) {
-                    usuarioencontrado = u;
-                }
-            }
-            if (usuarioencontrado != null) {
-                if (usuarioencontrado.getUsuario().equals(user)) {// verificação desnecessaria, mas rodou assim entao deixei
-                    System.out.println("Senha antiga: ");
-                    senhaDigitada = sc.nextLine();
-
-                    if (senhaDigitada.equals(usuarioencontrado.getSenha())) {
-                        System.out.println("Nova Senha: ");
-                        String novaSenha = sc.nextLine();
-                        usuarioencontrado.setSenha(novaSenha);
-                        usuarioRepository.update(usuarioencontrado);// atualizando no banco de dados
-                        encontrado = true;
-
-                        System.out.println("Senha atualizada!!");
-                    }
-                }
-            } else {
-                exibirUsuarios(usuarioRepository);
-                System.out.println("Usuario nao encontrado, digite um usuario valido!!");
-                user = sc.nextLine();
-            }
-            //quando as duas forem verdadeiras vai significar que  senha ta errada mas o usuario ta correto, evita de cair direto na senha incorreta
-            if (encontrado == false && usuarioencontrado != null) {
-                System.out.println("Senha incorreta!!\nDigite novamente");
-                senhaDigitada = sc.nextLine();
-            }
+        try {
+            usuariosService.alterarSenha(user, senhaAntiga, novaSenha);
+            System.out.println("Senha atualizada!!");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    static void removerUsuario(UsuarioRepository usuarioRepository) {
-        Scanner sc = new Scanner(System.in);
-
-        exibirUsuarios(usuarioRepository);
+    static void removerUsuario(UsuariosService usuariosService, Scanner sc) {
+        exibirUsuarios(usuariosService);
         System.out.println("Digite o usuario que sera removido: ");
         String user = sc.nextLine();
 
-        Usuarios usuarioencontrado = null;
-        boolean encontrado = false;
-
-        while (encontrado == false) {
-            usuarioencontrado = null;
-            List<Usuarios> lista = usuarioRepository.findAll();
-
-            for (Usuarios u : lista) {
-                if (u.getUsuario().equals(user)) {
-                    usuarioencontrado = u;
-                }
-            }
-            if (usuarioencontrado != null) {
-                usuarioRepository.delete(usuarioencontrado);
-                encontrado = true;
-                System.out.println("Usuario deletado com sucesso!!");
-            } else {
-                System.out.println("Usuario não encontrado!!\n" +
-                        "Digite um usuario valido: ");
-                exibirUsuarios(usuarioRepository);
-                user = sc.nextLine();
-            }
+        try {
+            usuariosService.removerUsuario(user);
+            System.out.println("Usuario deletado com sucesso!!");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    //FIM DO MATHEUS
+    public static void espaco(String escolha) {
+        if (escolha == null || escolha.trim().isEmpty()) {
+            System.out.println("Entrada vazia.");
+        }
+    }
+
+    // ==================== MAIN ====================
 
     public static void main(String[] args) {
-        SessaoUsuario sessao = null;
-        EntityManager em = CustomizerFactory.getEntityManager();
-        FlyWayconfig.migrate(); //Flyway é uma ferramenta voltada para o versionamento e migração de banco de dados
-
-
-
         Scanner sc = new Scanner(System.in);
+        EntityManager em = CustomizerFactory.getEntityManager();
+        FlyWayconfig.migrate();
 
         UsuarioRepository usuarioRepository = new UsuarioRepository(em);
         MotoristasRepository motoristasRepository = new MotoristasRepository(em);
+        UsuariosService usuariosService = new UsuariosService(usuarioRepository, motoristasRepository);
 
-        Boolean logged = true;
-        Boolean logado = false;
+        SessaoUsuario sessao = null;
         String escolha = "";
-
 
         System.out.println("=-=-= LOGI-DUTRA =-=-=");
         while (sessao == null) {
-            sessao = autenticar(usuarioRepository, motoristasRepository, sc);
+            sessao = autenticar(usuariosService, sc);
             if (sessao == null) {
                 System.out.println("Deseja tentar novamente? (1-Sim / 0-Sair)");
                 if (sc.nextLine().equals("0")) {
@@ -757,47 +507,46 @@ public class Main {
             }
         }
 
-            do {
-                System.out.println("1 =-=-= RELOGAR         =-=-=");
-                System.out.println("2 =-=-= ROMANEIOS       =-=-=");
-                if (sessao.isAdmin()) {
-                    System.out.println("3 =-=-= CADASTRAR       =-=-=");
-                }
-                System.out.println("0 =-=-= ENCERRAR        =-=-=");
-                try {
-                    escolha = sc.nextLine();
-                } catch (IllegalStateException e) {
-                    System.out.println("Erro na hora de scanear o código");
-                } catch (Exception e) {
-                    System.out.println("Erro: " + e.getMessage());
-                }
-                espaco(escolha);
+        do {
+            System.out.println("1 =-=-= RELOGAR         =-=-=");
+            System.out.println("2 =-=-= ROMANEIOS       =-=-=");
+            if (sessao.isAdmin()) {
+                System.out.println("3 =-=-= CADASTRAR       =-=-=");
+            }
+            System.out.println("0 =-=-= ENCERRAR        =-=-=");
 
-                switch (escolha) {
-                    case "1":
-                        SessaoUsuario novaSessao = autenticar(usuarioRepository, motoristasRepository, sc);
-                        if (novaSessao != null) {
-                            sessao = novaSessao;
-                        }
+            try {
+                escolha = sc.nextLine();
+            } catch (Exception e) {
+                System.out.println("Erro: " + e.getMessage());
+            }
+            espaco(escolha);
+
+            switch (escolha) {
+                case "1":
+                    SessaoUsuario novaSessao = autenticar(usuariosService, sc);
+                    if (novaSessao != null) {
+                        sessao = novaSessao;
+                    }
+                    break;
+                case "2":
+                    romaneios(sc, sessao);
+                    break;
+                case "3":
+                    if (!sessao.isAdmin()) {
+                        System.out.println("Acesso negado!");
                         break;
-                    case "2":
-                        romaneios(sc, sessao);
-                        break;
-                    case "3":
-                        if (!sessao.isAdmin()) {
-                            System.out.println("Acesso negado! Apenas administradores podem cadastrar.");
-                            break;
-                        }
-                        login(sc);
-                        break;
-                    case "0":
-                        System.out.println("Encerrando...");
-                        break;
-                    default:
-                        System.out.println("Indisponível");
-                        break;
-                }
-            } while (!escolha.equals("0"));
-        }
+                    }
+                    login(usuariosService, sc);
+                    break;
+                case "0":
+                    System.out.println("Encerrando...");
+                    break;
+                default:
+                    System.out.println("Indisponível");
+            }
+        } while (!escolha.equals("0"));
+
+        sc.close();
     }
-
+}
