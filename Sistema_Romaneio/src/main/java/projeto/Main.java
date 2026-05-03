@@ -5,6 +5,7 @@ import projeto.config.FlyWayconfig;
 import projeto.models.*;
 import projeto.repositories.*;
 import projeto.services.ClientesService;
+import projeto.services.VeiculosService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,8 +16,9 @@ import java.util.Scanner;
 
 
 public class Main {
-    static void novoRomaneio(RomaneiosRepository romaneiosRepository, ClientesRomaneioRepository clientesRomaneioRepository,
-                             PedidosRepository pedidosRepository) { //sem passa os parametros o metodo nao conseguiria acessar as variaveis de instancia
+    static void novoRomaneio(RomaneiosRepository romaneiosRepository,
+                             ClientesRomaneioRepository clientesRomaneioRepository, PedidosRepository pedidosRepository,
+                             ClientesService clientesService) { //sem passa os parametros o metodo nao conseguiria acessar as variaveis de instancia
         Scanner scanner = new Scanner(System.in);
         String escolha;
 
@@ -29,10 +31,10 @@ public class Main {
 
             switch (escolha) {
                 case "1":
-                    cadastrarCliente(ClientesService clientesService);
+                    cadastrarCliente(clientesService);
                     break;
                 case "2":
-                    cadastrarRomaneio(romaneiosRepository, clientesRomaneioRepository);
+                    cadastrarRomaneio(romaneiosRepository,clientesRomaneioRepository);
                     break;
                 case "0":
                     return;
@@ -213,46 +215,164 @@ public class Main {
         }
     }
 
-    static void cadastrarVeiculo(VeiculosRepository veiculosRepository, Scanner sc) {
+    static void cadastrarRomaneio(RomaneiosRepository romaneiosRepository,
+                                  ClientesRomaneioRepository clientesRomaneioRepository) {
+        Scanner scanner = new Scanner(System.in);
+        LocalDate dataRomaneio = null;
 
+        System.out.println("==Cadastrar Romaneio==");
+        while (dataRomaneio == null) {
+            try {
+
+                System.out.println("Data do Romaneio(dd/MM/yyyy): ");
+                String dataString = scanner.nextLine();
+
+                dataRomaneio = LocalDate.parse(dataString, DateTimeFormatter.ofPattern("dd/MM/yyyy")); // Mudando formato da data
+            } catch (DateTimeParseException e) {
+                System.out.println("Data inválida! Use o formato correto: dd/MM/yyyy");
+            }
+        }
+        Romaneios romaneio = new Romaneios(null, dataRomaneio);
+
+        // Lista os clientes sem romaneio
+        List<ClientesRomaneio> clientesSemRomaneio = clientesRomaneioRepository.findSemRomaneio();
+
+        if (clientesSemRomaneio.isEmpty()) {
+            System.out.println("Nenhum cliente disponível para adicionar!");
+            return;
+        }
+
+        for (int i = 0; i < clientesSemRomaneio.size(); i++) { // Mostra os clientes disponiveis
+            System.out.println("(" + i + ") - " + clientesSemRomaneio.get(i).getNome_cliente());
+        }
+
+        System.out.println("Digite o número do cliente para adicionar (ou Q para finalizar): ");
+        String opcao = scanner.nextLine(); // inicializa aqui com o primeiro valor
+
+        while (!opcao.equals("Q") && !opcao.equals("q")) {
+            try {
+                int index = Integer.parseInt(opcao);
+
+                if (index < 0 || index >= clientesSemRomaneio.size()) {
+                    System.out.println("Número inválido! Escolha entre 0 e " + (clientesSemRomaneio.size() - 1));
+                } else {
+                    ClientesRomaneio cliente = clientesSemRomaneio.get(index);
+                    cliente.setRomaneio(romaneio);
+                    romaneio.getClientes().add(cliente);
+                    System.out.println("Cliente " + cliente.getNome_cliente() + " adicionado!");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Digite um número válido ou Q para finalizar!");
+            }
+
+            System.out.println("Adicionar mais um cliente? (ou Q para finalizar): ");
+            opcao = scanner.nextLine();
+        }
+        romaneiosRepository.create(romaneio);
+        System.out.println("Romaneio criado com sucesso!");
+    }
+
+    static void cadastrarVeiculo(VeiculosService veiculosService, Scanner sc) {
         System.out.println("=== Cadastro de Veículo ===");
-
-        String nome;
-        while (true) {
-            System.out.println("Nome do veículo: ");
-            nome = sc.nextLine();
-
-            if (nome == null || nome.trim().isEmpty()) {
-                System.out.println("Nome não pode ser vazio!");
-            } else {
-                break;
-            }
-        }
-
-        String placa;
-        while (true) {
-            System.out.println("Placa (ex: ABC1D23): ");
-            placa = sc.nextLine();
-
-            if (placa == null || placa.trim().isEmpty()) {
-                System.out.println("Placa não pode ser vazia!");
-            } else if (placa.length() < 7) {
-                System.out.println("Placa inválida! Deve ter pelo menos 7 caracteres.");
-            } else {
-                break;
-            }
-        }
-
-        Boolean disponibilidade = true; // todo veículo novo começa disponível
-
-        Veiculos veiculo = new Veiculos(null, nome, placa, disponibilidade);
+        System.out.println("Nome do veículo: ");
+        String nome = sc.nextLine();
+        System.out.println("Placa (ex: ABC1D23): ");
+        String placa = sc.nextLine();
 
         try {
-            veiculosRepository.create(veiculo);
+            veiculosService.criarVeiculo(nome, placa);
             System.out.println("Veículo cadastrado com sucesso!");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
-        } catch (Exception e) {
-            System.out.println("Erro ao cadastrar veículo: " + e.getMessage());
+    public static void romaneios(Scanner sc, SessaoUsuario sessao) {
+    }
+
+    public static void espaco(String escolha) {
+        if (escolha == null || escolha.trim().isEmpty()) {
+            System.out.println("Entrada vazia.");
+            return;
+        }
+    }
+
+    // INICIO MATEUS
+
+    static class SessaoUsuario {
+        private final Usuarios usuario; //é um modificador utilizado para declarar campos (variáveis) que são imutáveis e restritos apenas à classe onde foram definidos
+        private final boolean isAdmin;
+        private final Motoristas motorista; // null se for admin
+
+        public SessaoUsuario(Usuarios usuario, boolean isAdmin, Motoristas motorista) {
+            this.usuario = usuario;
+            this.isAdmin = isAdmin;
+            this.motorista = motorista;
+        }
+
+        public boolean isAdmin() { return isAdmin; }
+        public Usuarios getUsuario() { return usuario; }
+        public Motoristas getMotorista() { return motorista; }
+    }
+
+    public static SessaoUsuario autenticar(UsuarioRepository usuarioRepository,
+                                           MotoristasRepository motoristasRepository,
+                                           Scanner sc) {
+        System.out.println("\n-=-=- TELA DE LOGIN -=-=-");
+        System.out.println("Usuário: ");
+        String username = sc.nextLine();
+        System.out.println("Senha: ");
+        String senha = sc.nextLine();
+
+        List<Usuarios> usuariosDb = usuarioRepository.findAll();
+        for (Usuarios u : usuariosDb) {
+            if (u.getUsuario().equals(username) && u.getSenha().equals(senha)) {
+                boolean isAdmin = u.temPermissao("ADMIN");
+
+                Motoristas motorista = null;
+                if (!isAdmin) {
+                    List<Motoristas> todos = motoristasRepository.findAll();
+                    for (Motoristas m : todos) {
+                        if (m.getUsuarios() != null && m.getUsuarios().getId().equals(u.getId())) {
+                            motorista = m;
+                            break;
+                        }
+                    }
+                }
+
+                System.out.println("Login realizado com sucesso! Bem-vindo, " + u.getUsuario());
+                System.out.println("Perfil: " + (isAdmin ? "ADMIN" : "MOTORISTA"));
+                return new SessaoUsuario(u, isAdmin, motorista);
+            }
+        }
+
+        System.out.println("Usuário ou senha incorretos!");
+        return null;
+    }
+
+    public static void login(Scanner sc) {
+        while (true) {
+            EntityManager em = CustomizerFactory.getEntityManager();// aqui cria o entitymanager que vai conversar com o banco
+            UsuarioRepository usuarioRepository = new UsuarioRepository(em);// o "em" é o EntityManager que será usado pelo repository para manipular o banco de dados
+            MotoristasRepository motoristasrepository = new MotoristasRepository(em);
+
+            System.out.println("Selecione uma opção\n" +
+                    "\n1: Cadastrar usuario" +
+
+
+            static void cadastrarVeiculo(VeiculosService veiculosService, Scanner sc) {
+        System.out.println("=== Cadastro de Veículo ===");
+        System.out.println("Nome do veículo: ");
+        String nome = sc.nextLine();
+        System.out.println("Placa (ex: ABC1D23): ");
+        String placa = sc.nextLine();
+
+        try {
+            veiculosService.criarVeiculo(nome, placa);
+            System.out.println("Veículo cadastrado com sucesso!");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
