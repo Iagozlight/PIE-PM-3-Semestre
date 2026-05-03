@@ -44,16 +44,29 @@ public class UsuariosService {
     }
 
     public void criarUsuario(String username, String senha) {
-        List<Usuarios> existentes = usuarioRepository.findAll();
-        for (Usuarios u : existentes) {
-            if (u.getUsuario().equals(username)) {
-                throw new IllegalArgumentException("Usuário já existente, escolha outro nome!");
+        try {
+            Usuarios novo = new Usuarios();
+            novo.setUsuario(username);
+            novo.setSenha(senha);
+
+            usuarioRepository.create(novo);
+
+        } catch (Exception e) {
+
+            Throwable cause = e;
+            while (cause != null) {
+
+                if (cause.getMessage() != null &&
+                        cause.getMessage().contains("Usuario ja existente")) {
+
+                    throw new IllegalArgumentException(
+                            "Usuário já existente, escolha outro nome!"
+                    );
+                }
+                cause = cause.getCause();
             }
+            throw e; // erro desconhecido
         }
-        Usuarios novo = new Usuarios();
-        novo.setUsuario(username);
-        novo.setSenha(senha);
-        usuarioRepository.create(novo);
     }
 
     public void alterarSenha(String username, String senhaAntiga, String novaSenha) {

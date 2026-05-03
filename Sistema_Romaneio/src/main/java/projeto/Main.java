@@ -254,8 +254,14 @@ public class Main {
         try {
             veiculosService.criarVeiculo(nome, placa);
             System.out.println("Veículo cadastrado com sucesso!");
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erro ao cadastrar veículo:");
+
+            if (e.getMessage().contains("A placa deve seguir o formato Mercosul")) {
+                System.out.println("A placa deve seguir o formato Mercosul (ex: ABC1D23)");
+            } else {
+                System.out.println("Erro inesperado: " + e.getMessage());
+            }
         }
     }
 
@@ -318,7 +324,7 @@ public class Main {
 
     // ==================== USUARIOS ====================
 
-    static class SessaoUsuario {
+    public static class SessaoUsuario {
         private final Usuarios usuario;
         private final boolean isAdmin;
         private final Motoristas motorista;
@@ -433,8 +439,23 @@ public class Main {
         try {
             usuariosService.criarMotorista(nome, data, username);
             System.out.println("Motorista cadastrado com sucesso!");
+
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
+
+        } catch (Exception e) {
+            Throwable cause = e;
+
+            while (cause != null) {
+                if (cause.getMessage() != null &&
+                        cause.getMessage().contains("Usuario ja existente")) {
+
+                    System.out.println("Não pode usar o mesmo usuário para mais de um motorista!");
+                    return;
+                }
+                cause = cause.getCause();
+            }
+            System.out.println("Erro inesperado: " + e.getMessage());
         }
     }
 
