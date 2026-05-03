@@ -4,10 +4,12 @@ import jakarta.persistence.EntityManager;
 import projeto.config.FlyWayconfig;
 import projeto.models.*;
 import projeto.repositories.*;
+import projeto.services.ClientesService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,7 +29,7 @@ public class Main {
 
             switch (escolha) {
                 case "1":
-                    cadastrarCliente(clientesRomaneioRepository, pedidosRepository);
+                    cadastrarCliente(ClientesService clientesService);
                     break;
                 case "2":
                     cadastrarRomaneio(romaneiosRepository, clientesRomaneioRepository);
@@ -154,8 +156,7 @@ public class Main {
         }
     }
 
-    static void cadastrarCliente(ClientesRomaneioRepository clientesRomaneioRepository,
-                                 PedidosRepository pedidosRepository) {
+    static void cadastrarCliente(ClientesService clientesService) {
         Scanner scanner = new Scanner(System.in);
         String confirmar;
         String cpfCliente;
@@ -163,25 +164,15 @@ public class Main {
         System.out.println("=====Cadastrar Cliente======");
         System.out.println("Nome do Cliente: ");
         String nomeCliente = scanner.nextLine();
-        while (true) {
-            System.out.println("CPF: ");
-            cpfCliente = scanner.nextLine();
 
-            String cpfNumeros = cpfCliente.replaceAll("\\D", "");
-
-            if (cpfNumeros.length() == 11) {
-                break;
-            } else {
-                System.out.println("CPF deve conter 11 digitos");
-            }
-        }
-
+        System.out.println("CPF: ");
+        cpfCliente = scanner.nextLine();
 
         System.out.println("Dados do Cliente Confirmado!");
-        ClientesRomaneio cliente = new ClientesRomaneio(null, nomeCliente, cpfCliente);
 
         Endereco endereco = Endereco.lerEndereco(scanner); // Le o endereço e cadastra
-        cliente.setEndereco(endereco);
+
+        List<Pedidos> listaPedidos = new ArrayList<>();
 
         String opcao;
         do { // Loop para escolher se quer cadastrar mais de um pedido
@@ -201,8 +192,8 @@ public class Main {
 
             if (confirmar.equals("s") || confirmar.equals("S")) {
                 System.out.println("Pedido adicionado com Sucesso!");
-                pedido.setClientes(cliente);
-                cliente.getPedidos().add(pedido);
+                listaPedidos.add(pedido);
+
             } else if (confirmar.equals("n") || confirmar.equals("N")) {
                 System.out.println("Pedido cancelado!");
             } else {
@@ -214,8 +205,12 @@ public class Main {
 
         } while (!opcao.equals("n") && !opcao.equals("N"));
 
-        clientesRomaneioRepository.create(cliente);
-        System.out.println("Cliente salvo com sucesso!");
+        try {
+            clientesService.criarCliente(nomeCliente, cpfCliente, endereco, listaPedidos);
+            System.out.println("Cliente salvo com sucesso!");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     static void cadastrarVeiculo(VeiculosRepository veiculosRepository, Scanner sc) {
