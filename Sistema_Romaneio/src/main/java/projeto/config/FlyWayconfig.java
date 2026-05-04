@@ -6,9 +6,9 @@ public class FlyWayconfig {
     public static void migrate() {
         Flyway flyway = Flyway.configure()
                 .dataSource(
-                        "jdbc:postgresql://localhost:5432/logidutra",
+                        "jdbc:postgresql://localhost:5433/postgres",
                         "postgres",
-                        "03122007"
+                        "postgres"
                 )
                 .baselineOnMigrate(true)
                 .load();

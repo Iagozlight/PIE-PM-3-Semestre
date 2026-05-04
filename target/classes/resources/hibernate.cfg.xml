@@ -18,9 +18,7 @@
         <mapping class="projeto.models.Romaneios"/>
         <mapping class="projeto.models.Endereco"/>
         <mapping class="projeto.models.Motoristas"/>
-        <mapping class="projeto.models.Usuarios"/>
         <mapping class="projeto.models.Veiculos"/>
-        <mapping class="projeto.models.Permissoes"/>
 
     </session-factory>
 </hibernate-configuration>
