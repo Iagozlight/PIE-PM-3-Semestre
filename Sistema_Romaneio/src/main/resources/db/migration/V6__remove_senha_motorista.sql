@@ -1,0 +1,1 @@
+-- alter table motoristas drop column senha;
