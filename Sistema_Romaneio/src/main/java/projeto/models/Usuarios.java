@@ -15,7 +15,6 @@ public class Usuarios {
     private String usuario;
     private String senha;
 
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "usuarios_permissoes",
