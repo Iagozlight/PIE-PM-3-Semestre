@@ -39,6 +39,44 @@ public class TelaRomaneiosAdmin extends JFrame {
         painelTopo.add(painelBotoes, BorderLayout.EAST);
 
         add(painelTopo, BorderLayout.NORTH);
+
+        // ===== TABELA DE ROMANEIOS =====
+        String[] colunas = {"ID", "Data", "Veículo", "Motorista"};
+        Object[][] dados = {}; // vazia por enquanto
+
+        JTable tabela = new JTable(dados, colunas);
+        tabela.setRowHeight(30);
+        tabela.setFont(new Font("Arial", Font.PLAIN, 14));
+        tabela.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        tabela.getTableHeader().setBackground(new Color(44, 62, 80));
+        tabela.getTableHeader().setForeground(Color.WHITE);
+        tabela.setSelectionBackground(new Color(52, 152, 219));
+        tabela.setSelectionForeground(Color.WHITE);
+        tabela.setGridColor(new Color(200, 200, 200));
+
+        JScrollPane scrollPane = new JScrollPane(tabela);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+
+        add(scrollPane, BorderLayout.CENTER);
+
+        // ===== PAINEL RODAPÉ =====
+        JPanel painelRodape = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        painelRodape.setBackground(new Color(236, 240, 241));
+        painelRodape.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+
+        JButton btnAtribuirVeiculo = new JButton("Atribuir Veículo");
+        JButton btnAtribuirMotorista = new JButton("Atribuir Motorista");
+        JButton btnDeletar = new JButton("Deletar");
+
+        btnDeletar.setBackground(new Color(231, 76, 60));
+        btnDeletar.setForeground(Color.WHITE);
+
+        painelRodape.add(btnAtribuirVeiculo);
+        painelRodape.add(btnAtribuirMotorista);
+        painelRodape.add(btnDeletar);
+
+        add(painelRodape, BorderLayout.SOUTH);
+
     }
 
     public static void main(String[] args) {
