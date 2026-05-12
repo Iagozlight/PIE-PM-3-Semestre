@@ -1,6 +1,7 @@
 package projeto.views.telas;
 
 import projeto.models.Romaneios;
+import projeto.repositories.RomaneiosRepository;
 import projeto.services.RomaneiosService;
 
 import javax.swing.*;
@@ -15,7 +16,16 @@ public class TelaRomaneiosAdmin extends JFrame {
     private JTable tabela;
     private javax.swing.table.DefaultTableModel modeloTabela;
 
+    private JButton btnNovoCliente;
+    private JButton btnNovoRomaneio;
+    private JButton btnAtribuirVeiculo;
+    private JButton btnAtribuirMotorista;
+    private JButton btnDeletar;
+
+    private RomaneiosService romaneiosService;
+
     public TelaRomaneiosAdmin() {
+        this.romaneiosService = romaneiosService;
         setTitle("DUTRA MÓVEIS - Romaneios");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,14 +33,24 @@ public class TelaRomaneiosAdmin extends JFrame {
         iniciarComponentes();
         setVisible(true);
     }
+    public TelaRomaneiosAdmin(RomaneiosService romaneiosService) {
+        this.romaneiosService = romaneiosService;
+        setTitle("DUTRA MÓVEIS - Romaneios");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        iniciarComponentes();
+        carregarRomaneios();
+        setVisible(true);
+    }
 
     private void iniciarComponentes() {
         setLayout(new BorderLayout());
 
-        Color corFundoCreme = new Color(245, 240, 225); // Fundo geral
-        Color corMarromTexto = new Color(60, 42, 33);  // Texto e títulos
-        Color corBegeBotoes = new Color(220, 198, 150); // Destaques e botões
-        Color corBrancoPapel = new Color(252, 249, 241); // Fundo de campos/tabela
+        Color corFundoCreme = new Color(245, 240, 225);
+        Color corMarromTexto = new Color(60, 42, 33);
+        Color corBegeBotoes = new Color(220, 198, 150);
+        Color corBrancoPapel = new Color(252, 249, 241);
 
         // ===== PAINEL TOPO =====
         JPanel painelTopo = new JPanel(new BorderLayout());
@@ -44,11 +64,11 @@ public class TelaRomaneiosAdmin extends JFrame {
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         painelBotoes.setBackground(corFundoCreme);
 
-        JButton btnNovoCliente = new JButton("+ Novo Cliente");
+        btnNovoCliente = new JButton("+ Novo Cliente");
         btnNovoCliente.setBackground(corBegeBotoes);
         btnNovoCliente.setForeground(corMarromTexto);
 
-        JButton btnNovoRomaneio = new JButton("+ Novo Romaneio");
+        btnNovoRomaneio = new JButton("+ Novo Romaneio");
         btnNovoRomaneio.setBackground(corBegeBotoes);
         btnNovoRomaneio.setForeground(corMarromTexto);
 
@@ -91,15 +111,15 @@ public class TelaRomaneiosAdmin extends JFrame {
         painelRodape.setBackground(corFundoCreme);
         painelRodape.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
 
-        JButton btnAtribuirVeiculo = new JButton("Atribuir Veículo");
+        btnAtribuirVeiculo = new JButton("Atribuir Veículo");
         btnAtribuirVeiculo.setBackground(corBrancoPapel);
         btnAtribuirVeiculo.setForeground(corMarromTexto);
 
-        JButton btnAtribuirMotorista = new JButton("Atribuir Motorista");
+        btnAtribuirMotorista = new JButton("Atribuir Motorista");
         btnAtribuirMotorista.setBackground(corBrancoPapel);
         btnAtribuirMotorista.setForeground(corMarromTexto);
 
-        JButton btnDeletar = new JButton("Deletar");
+        btnDeletar = new JButton("Deletar");
         btnDeletar.setBackground(new Color(211, 47, 47));
         btnDeletar.setForeground(Color.WHITE);
 
@@ -110,8 +130,8 @@ public class TelaRomaneiosAdmin extends JFrame {
         add(painelRodape, BorderLayout.SOUTH);
     }
 
-    private void carregarRomaneios(RomaneiosService romaneiosService) {
-        modeloTabela.setRowCount(0); // limpa a tabela
+    private void carregarRomaneios() {
+        modeloTabela.setRowCount(0);
         List<Romaneios> romaneios = romaneiosService.listarRomaneios();
         for (Romaneios r : romaneios) {
             modeloTabela.addRow(new Object[]{
