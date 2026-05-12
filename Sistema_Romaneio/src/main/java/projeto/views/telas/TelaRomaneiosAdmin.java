@@ -1,9 +1,19 @@
 package projeto.views.telas;
 
+import projeto.models.Romaneios;
+import projeto.services.RomaneiosService;
+
 import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.util.List;
 
 public class TelaRomaneiosAdmin extends JFrame {
+
+    private JTable tabela;
+    private javax.swing.table.DefaultTableModel modeloTabela;
 
     public TelaRomaneiosAdmin() {
         setTitle("DUTRA MÓVEIS - Romaneios");
@@ -52,17 +62,22 @@ public class TelaRomaneiosAdmin extends JFrame {
 
         // ===== TABELA DE ROMANEIOS =====
         String[] colunas = {"ID", "Data", "Veículo", "Motorista"};
-        Object[][] dados = {};
+        modeloTabela = new javax.swing.table.DefaultTableModel(colunas, 0) {
+            public boolean isCellEditable(int row, int column) {
+                return false; // impede edição direta na tabela
+            }
+        };
 
-        JTable tabela = new JTable(dados, colunas);
+        tabela = new JTable(modeloTabela);
         tabela.setRowHeight(30);
         tabela.setFont(new Font("Arial", Font.PLAIN, 14));
         tabela.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
-        tabela.getTableHeader().setBackground(Color.WHITE);
+        tabela.getTableHeader().setBackground(new Color(239, 218, 186, 255));
         tabela.getTableHeader().setForeground(corMarromTexto);
-        tabela.setSelectionBackground(corBegeBotoes);
-        tabela.setSelectionForeground(corMarromTexto);
-        tabela.setGridColor(corMarromTexto);
+        tabela.setSelectionBackground(new Color(52, 152, 219));
+        tabela.setSelectionForeground(Color.WHITE);
+        tabela.setGridColor(new Color(200, 200, 200));
+        tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane scrollPane = new JScrollPane(tabela);
         scrollPane.setBackground(corFundoCreme);
@@ -93,6 +108,19 @@ public class TelaRomaneiosAdmin extends JFrame {
         painelRodape.add(btnDeletar);
 
         add(painelRodape, BorderLayout.SOUTH);
+    }
+
+    private void carregarRomaneios(RomaneiosService romaneiosService) {
+        modeloTabela.setRowCount(0); // limpa a tabela
+        List<Romaneios> romaneios = romaneiosService.listarRomaneios();
+        for (Romaneios r : romaneios) {
+            modeloTabela.addRow(new Object[]{
+                    r.getId(),
+                    r.getData(),
+                    r.getVeiculo() != null ? r.getVeiculo().getNomeVeiculo() : "Sem veículo",
+                    r.getMotorista() != null ? r.getMotorista().getNome() : "Sem motorista"
+            });
+        }
     }
 
     public static void main(String[] args) {
