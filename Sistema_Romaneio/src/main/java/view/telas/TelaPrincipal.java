@@ -9,10 +9,15 @@ import view.util.CursorUtil;
 
 public class TelaPrincipal {
 
+    private static final Color NORMAL = new Color(0xF5F0E0);
+    private static final Color LOGO = new Color(0xF9F6ED);
+    private static final Color ESCURO  = new Color(0x9A6F35);
+
     private JFrame frame;
     private JPanel painelNavegar;
     private JPanel painelContendo;
     private CardLayout cardLayout;
+    private JPanel painelLogo;
 
     public TelaPrincipal() {
         //-----DEFINIÇÕES------
@@ -22,11 +27,14 @@ public class TelaPrincipal {
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
         setarIcone();
-        frame.getContentPane().setBackground(new Color(0xF5F0E0));
+        frame.getContentPane().setBackground(NORMAL);
         frame.setCursor(CursorUtil.carregar("/view/icons/cursor.png"));
 
+        painelLogo = new JPanel(new BorderLayout());
+        painelLogo.setBackground(LOGO);
+
         painelNavegar = new JPanel(new BorderLayout());
-        painelNavegar.setBackground(new Color(0xE9DDBF));
+        painelNavegar.setBackground(NORMAL);
         painelNavegar.setPreferredSize(new Dimension(frame.getWidth(), 60));
 
         JButton btnLogin = new BotaoNav("Login");
