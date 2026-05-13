@@ -25,7 +25,7 @@ public class TelaPrincipal {
         frame.getContentPane().setBackground(new Color(0xF5F0E0));
         frame.setCursor(CursorUtil.carregar("/view/icons/cursor.png"));
 
-        painelNavegar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        painelNavegar = new JPanel(new BorderLayout());
         painelNavegar.setBackground(new Color(0xE9DDBF));
         painelNavegar.setPreferredSize(new Dimension(frame.getWidth(), 60));
 
@@ -33,9 +33,24 @@ public class TelaPrincipal {
         JButton btnRomaneios = new BotaoNav("Romaneios");
         JButton btnCriarRomaneio = new BotaoNav("Criar Romaneio");
 
-        painelNavegar.add(btnLogin);
-        painelNavegar.add(btnRomaneios);
-        painelNavegar.add(btnCriarRomaneio);
+        //---- Painel Esquerrdo --------
+
+        JPanel painelEsquerdo = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        painelEsquerdo.setOpaque(false);
+        painelEsquerdo.add(btnLogin);
+
+        //---- Painel Central --------
+
+        JPanel painelCentro = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        painelCentro.setOpaque(false);
+        painelCentro.add(btnRomaneios);
+
+        //------ Painel Direito ---------
+
+        JPanel painelDireito = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+        painelDireito.setOpaque(false);
+        painelDireito.add(btnCriarRomaneio);
+
 
         // -------- CONTEÚDO ------
         cardLayout = new CardLayout();
@@ -54,6 +69,9 @@ public class TelaPrincipal {
         frame.add(painelNavegar,  BorderLayout.NORTH);
         frame.add(painelContendo, BorderLayout.CENTER);
 
+        painelNavegar.add(painelEsquerdo, BorderLayout.WEST);
+        painelNavegar.add(painelCentro, BorderLayout.CENTER);
+        painelNavegar.add(painelDireito, BorderLayout.EAST);
 
         cardLayout.show(painelContendo, "LOGIN");
 
