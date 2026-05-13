@@ -8,23 +8,32 @@ public class PainelTopo extends JPanel {
     private JButton btnNovoCliente;
     private JButton btnNovoRomaneio;
 
+    private final Color corFundo = new Color(245, 240, 225);
+    private final Color corMarrom = new Color(60, 42, 33);
+    private final Color corBege = new Color(220, 198, 150);
+
     public PainelTopo() {
         setLayout(new BorderLayout());
-        setBackground(new Color(245, 240, 225));
+        setBackground(corFundo);
         setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         iniciar();
     }
 
     private void iniciar() {
         JLabel titulo = new JLabel("DUTRA MÓVEIS - Romaneios");
-        titulo.setForeground(new Color(60, 42, 33));
+        titulo.setForeground(corMarrom);
         titulo.setFont(new Font("Arial", Font.BOLD, 18));
 
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        painelBotoes.setBackground(new Color(245, 240, 225));
+        painelBotoes.setBackground(corFundo);
 
         btnNovoCliente = new JButton("+ Novo Cliente");
+        btnNovoCliente.setBackground(corBege);
+        btnNovoCliente.setForeground(corMarrom);
+
         btnNovoRomaneio = new JButton("+ Novo Romaneio");
+        btnNovoRomaneio.setBackground(corBege);
+        btnNovoRomaneio.setForeground(corMarrom);
 
         painelBotoes.add(btnNovoCliente);
         painelBotoes.add(btnNovoRomaneio);
