@@ -16,82 +16,24 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         FlyWayconfig.migrate();
+        FlyWayconfig.migrate();
 
-        while (true) {
-            EntityManager em = CustomizerFactory.getEntityManager();// aqui cria o entitymanager que vai conversar com o banco
-            UsuarioRepository usuarioRepository = new UsuarioRepository(em);// o "em" é o EntityManager que será usado pelo repository para manipular o banco de dados
-            Motoristasrepository motoristasrepository = new Motoristasrepository(em);
-            String condicao;
+        EntityManager em = CustomizerFactory.getEntityManager();
+        UsuarioRepository usuarioRepository = new UsuarioRepository(em);
+        Motoristasrepository motoristasrepository = new Motoristasrepository(em);
 
-            Scanner sc = new Scanner(System.in);
-
-            System.out.println("Selecione uma opção\n" +
-                    "\n1: Cadastrar usuario" +
-                    "\n2: Novo motorista" +
-                    "\n3: Exibir usuarios" +
-                    "\n4: Alterar senha" +
-                    "\n5: Remover usuario");
-            String opcao = sc.nextLine();
-
-            switch (opcao) {
-                case "1" :
-                    novoUsuario(usuarioRepository); break;
-                case "2":
-                    novoMotorista(motoristasrepository,usuarioRepository);break;
-                case "3":
-                    exibirUsuarios(usuarioRepository);break;
-                case "4":
-                    alterarSenha(usuarioRepository);break;
-                case"5":
-                    removerUsuario(usuarioRepository);break;
-                default:
-                    System.out.println("opção invalida");
-                    return;
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new org.example.View.MenuUsuarios(usuarioRepository).setVisible(true);
             }
-        }
+        });
     }
+}
 
-    static void novoUsuario(UsuarioRepository usuarioRepository) {//sem passa os parametros o metodo nao conseguiria acessar as variaveis de instancia
 
-        while (true) { //depois ajusta isso
-            Scanner sc = new Scanner(System.in);
 
-            System.out.println("digite S para sair do loop ou C para cadastrar");
-            String condição = sc.nextLine();
 
-            if (condição.equals("S") || condição.equals("s")) {
-                break;
-            }
-            if (condição.equals("C") || condição.equals("c")) {
-                Usuarios novo = new Usuarios();
-                Motoristas motoristas = new Motoristas();
-
-                System.out.println("\nCADASTRO DE USUARIO");
-
-                System.out.println("Nome: ");
-                motoristas.setNome(sc.nextLine());
-
-                System.out.println("Usuario: ");
-                novo.setUsuario(sc.nextLine());
-
-                System.out.println("Senha: ");
-                novo.setSenha(sc.nextLine());
-
-                try {
-                    usuarioRepository.create(novo);
-                    System.out.println("Usuario cadastrado!!");
-                    return;
-                } catch (Exception e) {
-                    if (e.getMessage().contains("Usuario ja existente, escolha outro nome de usuario!")) {
-                        System.out.println("Nome de usuario ja em uso, escolha outro");
-                        novoUsuario(usuarioRepository);
-                    }
-                }
-            }
-        }
-    }
-
-    static  void novoMotorista ( Motoristasrepository motoristasrepository, UsuarioRepository usuarioRepository) {
+  /*  static  void novoMotorista ( Motoristasrepository motoristasrepository, UsuarioRepository usuarioRepository) {
         Scanner sc = new Scanner(System.in);
         Motoristas motoristas = new Motoristas();
 
@@ -246,4 +188,4 @@ public class Main {
             }
         }
     }
-}
+}*/
