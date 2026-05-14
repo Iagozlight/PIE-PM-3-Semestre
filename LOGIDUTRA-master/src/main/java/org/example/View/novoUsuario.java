@@ -1,19 +1,16 @@
 package org.example.View;
 
-
-import org.example.Repository.UsuarioRepository;
+import org.example.service.UsuarioService;
 
 public class novoUsuario extends javax.swing.JFrame {
 
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
-    public novoUsuario(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    public novoUsuario(UsuarioService usuarioservice) {
+        this.usuarioService =  usuarioservice;
         initComponents();
     }
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
@@ -122,16 +119,12 @@ public class novoUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {  // adiciona aqui
-        org.example.models.Usuarios novo = new org.example.models.Usuarios();
-        novo.setUsuario(jTextField2.getText());
-        novo.setSenha(jTextField3.getText());
-
-        try {
-            usuarioRepository.create(novo);
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        String resultado = usuarioService.cadastrar(jTextField2.getText(), jTextField3.getText());
+        if (resultado.equals("Sucesso")){
             javax.swing.JOptionPane.showMessageDialog(this, "Usuario cadastrado com sucesso!!");
-        } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Nome de usuario ja em uso!");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Nome de usuario ja esta sendo usado!");
         }
     }
 
