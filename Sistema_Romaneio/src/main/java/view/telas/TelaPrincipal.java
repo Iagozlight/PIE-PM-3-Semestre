@@ -30,8 +30,13 @@ public class TelaPrincipal {
         frame.getContentPane().setBackground(NORMAL);
         frame.setCursor(CursorUtil.carregar("/view/icons/cursor.png"));
 
+
         painelLogo = new JPanel(new BorderLayout());
         painelLogo.setBackground(LOGO);
+
+        JLabel logoTexto = new JLabel("DUTRA MÓVEIS", SwingConstants.CENTER);
+        logoTexto.setForeground(new Color(0x361C12));
+        logoTexto.setFont(new Font("HeadlandOne", Font.PLAIN, 32));
 
         painelNavegar = new JPanel(new BorderLayout());
         painelNavegar.setBackground(NORMAL);
@@ -74,7 +79,15 @@ public class TelaPrincipal {
         btnCriarRomaneio.addActionListener(e -> cardLayout.show(painelContendo, "CRIAR_ROMANEIO"));
 
         // ------- ADICIONADOS -------
-        frame.add(painelNavegar,  BorderLayout.NORTH);
+
+        painelLogo.add(logoTexto, BorderLayout.CENTER);
+
+        JPanel painelSuperior = new JPanel();
+        painelSuperior.setLayout(new BoxLayout(painelSuperior, BoxLayout.Y_AXIS));
+        painelSuperior.add(painelLogo);
+        painelSuperior.add(painelNavegar);
+
+        frame.add(painelSuperior, BorderLayout.NORTH);
         frame.add(painelContendo, BorderLayout.CENTER);
 
         painelNavegar.add(painelEsquerdo, BorderLayout.WEST);
@@ -82,6 +95,7 @@ public class TelaPrincipal {
         painelNavegar.add(painelDireito, BorderLayout.EAST);
 
         cardLayout.show(painelContendo, "LOGIN");
+
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
