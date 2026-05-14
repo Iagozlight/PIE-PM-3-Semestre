@@ -1,9 +1,14 @@
 package org.example.View;
 
 
+import org.example.Repository.UsuarioRepository;
+
 public class novoUsuario extends javax.swing.JFrame {
 
-    public novoUsuario() {
+    private UsuarioRepository usuarioRepository;
+
+    public novoUsuario(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
         initComponents();
     }
 
@@ -40,6 +45,12 @@ public class novoUsuario extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(0, 204, 0));
         jButton1.setText("CADASTRAR");
+
+        jButton1.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed (java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(255, 0, 0));
         jButton2.setText("SAIR");
@@ -104,41 +115,26 @@ public class novoUsuario extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+
     }
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {  // adiciona aqui
+        org.example.models.Usuarios novo = new org.example.models.Usuarios();
+        novo.setUsuario(jTextField2.getText());
+        novo.setSenha(jTextField3.getText());
 
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(novoUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(novoUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(novoUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(novoUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            usuarioRepository.create(novo);
+            javax.swing.JOptionPane.showMessageDialog(this, "Usuario cadastrado com sucesso!!");
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Nome de usuario ja em uso!");
         }
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new novoUsuario().setVisible(true);
-            }
-        });
     }
+
 
     // Variables declaration - do not modify
     private javax.swing.JButton jButton1;
