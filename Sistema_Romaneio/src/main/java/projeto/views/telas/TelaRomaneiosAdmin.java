@@ -16,14 +16,12 @@ public class TelaRomaneiosAdmin extends JFrame {
     private PainelRodape painelRodape;
     private RomaneiosService romaneiosService;
 
-    // Construtor para testes
     public TelaRomaneiosAdmin() {
         configurarJanela();
         iniciarComponentes();
         setVisible(true);
     }
 
-    // Construtor real
     public TelaRomaneiosAdmin(RomaneiosService romaneiosService) {
         this.romaneiosService = romaneiosService;
         configurarJanela();
@@ -53,7 +51,6 @@ public class TelaRomaneiosAdmin extends JFrame {
 
     private void configurarBotoes() {
 
-        // Deletar
         painelRodape.getBtnDeletar().addActionListener(e -> {
             int linha = tabelaRomaneios.getLinhaSelecionada();
             if (linha == -1) {
