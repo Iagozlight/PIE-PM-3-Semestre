@@ -48,4 +48,24 @@ public class UsuarioService {
             return "Erro";
         }
     }
+
+    public String remover (String usuario) {
+        try {
+            List<Usuarios> lista = usuarioRepository.findAll();
+            Usuarios encontrado = null;
+
+            for (Usuarios u : lista) {
+                if (u.getUsuario().equals(usuario)) {
+                    encontrado = u;
+                }
+            }
+
+            if (encontrado == null) return "Usuario nao encontrado";
+
+            usuarioRepository.delete(encontrado);
+            return "Sucesso";
+        } catch (Exception e) {
+            return "Erro";
+        }
+    }
 }

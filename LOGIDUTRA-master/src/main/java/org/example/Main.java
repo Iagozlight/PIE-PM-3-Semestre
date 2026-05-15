@@ -33,36 +33,3 @@ public class Main {
         });
     }
 }
-/*
-    static void removerUsuario (UsuarioRepository usuarioRepository) {
-        Scanner sc = new Scanner(System.in);
-
-        exibirUsuarios(usuarioRepository);
-        System.out.println("Digite o usuario que sera removido: ");
-        String user = sc.nextLine();
-
-        Usuarios usuarioencontrado = null;
-        boolean encontrado = false;
-
-        while (encontrado == false) {
-            usuarioencontrado = null;
-            List<Usuarios> lista = usuarioRepository.findAll();
-
-            for (Usuarios u : lista) {
-                if (u.getUsuario().equals(user)) {
-                    usuarioencontrado = u;
-                }
-            }
-            if (usuarioencontrado!= null){
-                usuarioRepository.delete(usuarioencontrado);
-                encontrado = true;
-                System.out.println("Usuario deletado com sucesso!!");
-            }else {
-                System.out.println("Usuario não encontrado!!\n" +
-                        "Digite um usuario valido: ");
-                exibirUsuarios(usuarioRepository);
-                user = sc.nextLine();
-            }
-        }
-    }
-}*/

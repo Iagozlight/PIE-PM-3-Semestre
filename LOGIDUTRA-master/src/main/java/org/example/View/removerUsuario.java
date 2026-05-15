@@ -1,13 +1,22 @@
 package org.example.View;
 
-public class removerUsuario extends javax.swing.JFrame {
+import org.example.componentes.RemoverUsuariosComponentes;
+import org.example.service.UsuarioService;
 
-    public removerUsuario() {
+public class removerUsuario extends javax.swing.JFrame {
+    private RemoverUsuariosComponentes componentes;
+
+    public removerUsuario(UsuarioService usuarioService) {
+        this.componentes = new RemoverUsuariosComponentes(usuarioService);
         initComponents();
     }
-
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        componentes.remover(
+                jTextField1.getText(),
+                jTextField2.getText(),
+                this
+        );
+    }
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
@@ -33,6 +42,11 @@ public class removerUsuario extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(102, 255, 51));
         jButton1.setText("REMOVER");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(255, 51, 51));
         jButton2.setText("CANCELAR");
@@ -86,35 +100,6 @@ public class removerUsuario extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(removerUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(removerUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(removerUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(removerUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new removerUsuario().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify
     private javax.swing.JButton jButton1;

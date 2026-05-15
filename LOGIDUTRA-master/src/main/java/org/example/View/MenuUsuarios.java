@@ -132,7 +132,7 @@ public class MenuUsuarios extends javax.swing.JFrame {
     }
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        new removerUsuario(usuarioService).setVisible(true);
     }
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {
