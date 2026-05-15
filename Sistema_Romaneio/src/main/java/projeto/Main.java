@@ -41,7 +41,7 @@ public class Main {
                 case "0":
                     return;
                 default:
-                    System.out.println("Opção Inválida!");
+                    System.out.println("OpÃ§Ã£o InvÃ¡lida!");
             }
         } while (!escolha.equals("0"));
     }
@@ -70,15 +70,15 @@ public class Main {
                 int index = Integer.parseInt(opcao);
 
                 if (index < 0 || index >= romaneios.size()) {
-                    System.out.println("Número inválido! Escolha entre 0 e " + (romaneios.size() - 1));
+                    System.out.println("NÃºmero invÃ¡lido! Escolha entre 0 e " + (romaneios.size() - 1));
                 } else {
                     Romaneios romaneioSelecionado = romaneios.get(index);
                     System.out.println("\n" + romaneioSelecionado);
 
                     String escolha;
                     do {
-                        System.out.println("\n==Opções==");
-                        System.out.println("(1) - Atribuir Veículo");
+                        System.out.println("\n==OpÃ§Ãµes==");
+                        System.out.println("(1) - Atribuir VeÃ­culo");
                         System.out.println("(2) - Atribuir Motorista");
                         System.out.println("(3) - Deletar Romaneio");
                         System.out.println("(0) - Voltar");
@@ -88,13 +88,13 @@ public class Main {
                             case "1":
                                 List<Veiculos> veiculos = veiculosRepository.findAll();
                                 if (veiculos.isEmpty()) {
-                                    System.out.println("Nenhum veículo cadastrado!");
+                                    System.out.println("Nenhum veÃ­culo cadastrado!");
                                     break;
                                 }
                                 for (int i = 0; i < veiculos.size(); i++) {
                                     System.out.println("(" + i + ") - " + veiculos.get(i).getNomeVeiculo());
                                 }
-                                System.out.println("Selecione um veículo: ");
+                                System.out.println("Selecione um veÃ­culo: ");
                                 int indexVeiculo = Integer.parseInt(scanner.nextLine());
                                 Veiculos veiculoSelecionado = veiculos.get(indexVeiculo);
                                 String msgVeiculo = romaneiosService.atribuirVeiculo(romaneioSelecionado, veiculoSelecionado);
@@ -124,13 +124,13 @@ public class Main {
                             case "0":
                                 break;
                             default:
-                                System.out.println("Opção Inválida!");
+                                System.out.println("OpÃ§Ã£o InvÃ¡lida!");
                         }
                     } while (!escolha.equals("0"));
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("Digite um número válido ou Q para voltar!");
+                System.out.println("Digite um nÃºmero vÃ¡lido ou Q para voltar!");
             }
 
             System.out.println("Selecione um romaneio (ou Q para voltar): ");
@@ -174,7 +174,7 @@ public class Main {
             } else if (confirmar.equals("n") || confirmar.equals("N")) {
                 System.out.println("Pedido cancelado!");
             } else {
-                System.out.println("Opção inválida!");
+                System.out.println("OpÃ§Ã£o invÃ¡lida!");
             }
 
             System.out.println("Adicionar mais um pedido?(s/n): ");
@@ -203,14 +203,14 @@ public class Main {
                 String dataString = scanner.nextLine();
                 dataRomaneio = LocalDate.parse(dataString, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             } catch (DateTimeParseException e) {
-                System.out.println("Data inválida! Use o formato correto: dd/MM/yyyy");
+                System.out.println("Data invÃ¡lida! Use o formato correto: dd/MM/yyyy");
             }
         }
 
         List<ClientesRomaneio> clientesSemRomaneio = romaneiosService.listarClientesSemRomaneio();
 
         if (clientesSemRomaneio.isEmpty()) {
-            System.out.println("Nenhum cliente disponível para adicionar!");
+            System.out.println("Nenhum cliente disponÃ­vel para adicionar!");
             return;
         }
 
@@ -218,7 +218,7 @@ public class Main {
             System.out.println("(" + i + ") - " + clientesSemRomaneio.get(i).getNome_cliente());
         }
 
-        System.out.println("Digite o número do cliente para adicionar (ou Q para finalizar): ");
+        System.out.println("Digite o nÃºmero do cliente para adicionar (ou Q para finalizar): ");
         String opcao = scanner.nextLine();
 
         List<ClientesRomaneio> clientesSelecionados = new ArrayList<>();
@@ -227,14 +227,14 @@ public class Main {
             try {
                 int index = Integer.parseInt(opcao);
                 if (index < 0 || index >= clientesSemRomaneio.size()) {
-                    System.out.println("Número inválido! Escolha entre 0 e " + (clientesSemRomaneio.size() - 1));
+                    System.out.println("NÃºmero invÃ¡lido! Escolha entre 0 e " + (clientesSemRomaneio.size() - 1));
                 } else {
                     ClientesRomaneio cliente = clientesSemRomaneio.get(index);
                     clientesSelecionados.add(cliente);
                     System.out.println("Cliente " + cliente.getNome_cliente() + " adicionado!");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Digite um número válido ou Q para finalizar!");
+                System.out.println("Digite um nÃºmero vÃ¡lido ou Q para finalizar!");
             }
             System.out.println("Adicionar mais um cliente? (ou Q para finalizar): ");
             opcao = scanner.nextLine();
@@ -245,17 +245,17 @@ public class Main {
     }
 
     static void cadastrarVeiculo(VeiculosService veiculosService, Scanner sc) {
-        System.out.println("=== Cadastro de Veículo ===");
-        System.out.println("Nome do veículo: ");
+        System.out.println("=== Cadastro de VeÃ­culo ===");
+        System.out.println("Nome do veÃ­culo: ");
         String nome = sc.nextLine();
         System.out.println("Placa (ex: ABC1D23): ");
         String placa = sc.nextLine();
 
         try {
             veiculosService.criarVeiculo(nome, placa);
-            System.out.println("Veículo cadastrado com sucesso!");
+            System.out.println("VeÃ­culo cadastrado com sucesso!");
         } catch (Exception e) {
-            System.out.println("Erro ao cadastrar veículo:");
+            System.out.println("Erro ao cadastrar veÃ­culo:");
 
             if (e.getMessage().contains("A placa deve seguir o formato Mercosul")) {
                 System.out.println("A placa deve seguir o formato Mercosul (ex: ABC1D23)");
@@ -285,11 +285,11 @@ public class Main {
             System.out.println("======================================\n");
             System.out.println("\t\tDUTRA MOVEIS(romaneios)");
             System.out.println("\n======================================");
-            System.out.println("Selecione uma das opções:");
+            System.out.println("Selecione uma das opÃ§Ãµes:");
             System.out.println("(1) - Ver Romaneios");
             if (sessao.isAdmin()) {
                 System.out.println("(2) - Novo Romaneio");
-                System.out.println("(3) - Criar Veículos");
+                System.out.println("(3) - Criar VeÃ­culos");
             }
             System.out.println("(0) - Fechar");
             String escolha = sc.nextLine();
@@ -317,7 +317,7 @@ public class Main {
                     rodando = false;
                     break;
                 default:
-                    System.out.println("Opção Inválida!");
+                    System.out.println("OpÃ§Ã£o InvÃ¡lida!");
             }
         } while (rodando.equals(true));
     }
@@ -342,7 +342,7 @@ public class Main {
 
     public static SessaoUsuario autenticar(UsuariosService usuariosService, Scanner sc) {
         System.out.println("\n-=-=- TELA DE LOGIN -=-=-");
-        System.out.println("Usuário: ");
+        System.out.println("UsuÃ¡rio: ");
         String username = sc.nextLine();
         System.out.println("Senha: ");
         String senha = sc.nextLine();
@@ -352,14 +352,14 @@ public class Main {
             System.out.println("Login realizado com sucesso! Bem-vindo, " + username);
             System.out.println("Perfil: " + (sessao.isAdmin() ? "ADMIN" : "MOTORISTA"));
         } else {
-            System.out.println("Usuário ou senha incorretos!");
+            System.out.println("UsuÃ¡rio ou senha incorretos!");
         }
         return sessao;
     }
 
     public static void login(UsuariosService usuariosService, Scanner sc) {
         while (true) {
-            System.out.println("Selecione uma opção\n" +
+            System.out.println("Selecione uma opÃ§Ã£o\n" +
                     "\n1: Cadastrar usuario" +
                     "\n2: Novo motorista" +
                     "\n3: Exibir usuarios" +
@@ -387,7 +387,7 @@ public class Main {
                 case "0":
                     return;
                 default:
-                    System.out.println("Opção inválida");
+                    System.out.println("OpÃ§Ã£o invÃ¡lida");
             }
         }
     }
@@ -450,7 +450,7 @@ public class Main {
                 if (cause.getMessage() != null &&
                         cause.getMessage().contains("Usuario ja existente")) {
 
-                    System.out.println("Não pode usar o mesmo usuário para mais de um motorista!");
+                    System.out.println("NÃ£o pode usar o mesmo usuÃ¡rio para mais de um motorista!");
                     return;
                 }
                 cause = cause.getCause();
@@ -505,69 +505,6 @@ public class Main {
     // ==================== MAIN ====================
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        EntityManager em = CustomizerFactory.getEntityManager();
-        FlyWayconfig.migrate();
-
-        UsuarioRepository usuarioRepository = new UsuarioRepository(em);
-        MotoristasRepository motoristasRepository = new MotoristasRepository(em);
-        UsuariosService usuariosService = new UsuariosService(usuarioRepository, motoristasRepository);
-
-        SessaoUsuario sessao = null;
-        String escolha = "";
-
-        System.out.println("=-=-= LOGI-DUTRA =-=-=");
-        while (sessao == null) {
-            sessao = autenticar(usuariosService, sc);
-            if (sessao == null) {
-                System.out.println("Deseja tentar novamente? (1-Sim / 0-Sair)");
-                if (sc.nextLine().equals("0")) {
-                    System.out.println("Encerrando...");
-                    return;
-                }
-            }
-        }
-
-        do {
-            System.out.println("1 =-=-= RELOGAR         =-=-=");
-            System.out.println("2 =-=-= ROMANEIOS       =-=-=");
-            if (sessao.isAdmin()) {
-                System.out.println("3 =-=-= CADASTRAR       =-=-=");
-            }
-            System.out.println("0 =-=-= ENCERRAR        =-=-=");
-
-            try {
-                escolha = sc.nextLine();
-            } catch (Exception e) {
-                System.out.println("Erro: " + e.getMessage());
-            }
-            espaco(escolha);
-
-            switch (escolha) {
-                case "1":
-                    SessaoUsuario novaSessao = autenticar(usuariosService, sc);
-                    if (novaSessao != null) {
-                        sessao = novaSessao;
-                    }
-                    break;
-                case "2":
-                    romaneios(sc, sessao);
-                    break;
-                case "3":
-                    if (!sessao.isAdmin()) {
-                        System.out.println("Acesso negado!");
-                        break;
-                    }
-                    login(usuariosService, sc);
-                    break;
-                case "0":
-                    System.out.println("Encerrando...");
-                    break;
-                default:
-                    System.out.println("Indisponível");
-            }
-        } while (!escolha.equals("0"));
-
-        sc.close();
+        javax.swing.SwingUtilities.invokeLater(projeto.views.telas.TelaPrincipal::new);
     }
 }
