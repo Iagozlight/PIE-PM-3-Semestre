@@ -1,4 +1,4 @@
-package projeto.views.componentes;
+package projeto.views.componentes.dialogs;
 
 import projeto.models.ClientesRomaneio;
 import projeto.models.Romaneios;
@@ -11,7 +11,6 @@ import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.LocalDate;
-import java.util.List;
 
 public class DialogEditarRomaneio extends JDialog {
 

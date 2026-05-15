@@ -1,4 +1,4 @@
-package projeto.views.componentes;
+package projeto.views.componentes.dialogs;
 
 import projeto.models.Motoristas;
 import projeto.models.Romaneios;

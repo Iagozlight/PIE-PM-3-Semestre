@@ -1,7 +1,6 @@
-package projeto.views.componentes;
+package projeto.views.componentes.dialogs;
 
 import projeto.models.ClientesRomaneio;
-import projeto.models.Romaneios;
 import projeto.services.RomaneiosService;
 
 import javax.swing.*;
