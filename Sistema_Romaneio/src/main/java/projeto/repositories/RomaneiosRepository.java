@@ -82,4 +82,12 @@ public class RomaneiosRepository {
                 .getResultList();
         return !result.isEmpty();
     }
+
+    public List<Romaneios> findByMotorista(Motoristas motorista) {
+        return em.createQuery(
+                        "select r from Romaneios r where r.motorista = :motorista",
+                        Romaneios.class)
+                .setParameter("motorista", motorista)
+                .getResultList();
+    }
 }

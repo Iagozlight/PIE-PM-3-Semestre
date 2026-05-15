@@ -75,4 +75,8 @@ public class RomaneiosService {
         romaneio.setStatus(status);
         romaneiosRepository.update(romaneio);
     }
+
+    public List<Romaneios> listarRomaneiosPorMotorista(Motoristas motorista) {
+        return romaneiosRepository.findByMotorista(motorista);
+    }
 }
