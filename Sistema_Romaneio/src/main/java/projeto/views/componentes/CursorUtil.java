@@ -1,4 +1,4 @@
-package view.util;
+package projeto.views.componentes;
 
 import javax.swing.*;
 import java.awt.*;

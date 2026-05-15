@@ -1,11 +1,11 @@
-package view.telas;
+package projeto.views.telas;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-import view.componentes.BotaoNav;
-import view.util.CursorUtil;
+import projeto.views.componentes.BotaoNav;
+import projeto.views.componentes.CursorUtil;
 
 public class TelaPrincipal {
 
