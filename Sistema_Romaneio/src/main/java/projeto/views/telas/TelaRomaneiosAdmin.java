@@ -1,6 +1,10 @@
 package projeto.views.telas;
 
+import jakarta.persistence.EntityManager;
 import projeto.models.Romaneios;
+import projeto.repositories.ClientesRomaneioRepository;
+import projeto.repositories.CustomizerFactory;
+import projeto.repositories.RomaneiosRepository;
 import projeto.services.ClientesService;
 import projeto.services.RomaneiosService;
 import projeto.views.componentes.DialogNovoCliente;
@@ -95,6 +99,15 @@ public class TelaRomaneiosAdmin extends JFrame {
 
     public static void main(String[] args) {
         try { UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName()); } catch (Exception e) {}
-        new TelaRomaneiosAdmin();
+
+        EntityManager em = CustomizerFactory.getEntityManager();
+        ClientesRomaneioRepository clientesRepo = new ClientesRomaneioRepository(em);
+        ClientesService clientesService = new ClientesService(clientesRepo);
+
+        RomaneiosRepository romaneiosRepo = new RomaneiosRepository(em);
+        ClientesRomaneioRepository clientesRomaneioRepo = new ClientesRomaneioRepository(em);
+        RomaneiosService romaneiosService = new RomaneiosService(romaneiosRepo, clientesRomaneioRepo);
+
+        new TelaRomaneiosAdmin(romaneiosService, clientesService);
     }
 }
