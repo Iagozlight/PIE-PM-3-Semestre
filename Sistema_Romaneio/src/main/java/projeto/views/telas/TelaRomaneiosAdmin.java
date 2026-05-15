@@ -1,7 +1,9 @@
 package projeto.views.telas;
 
 import projeto.models.Romaneios;
+import projeto.services.ClientesService;
 import projeto.services.RomaneiosService;
+import projeto.views.componentes.DialogNovoCliente;
 import projeto.views.componentes.PainelRodape;
 import projeto.views.componentes.PainelTopo;
 import projeto.views.componentes.TabelaRomaneios;
@@ -15,6 +17,7 @@ public class TelaRomaneiosAdmin extends JFrame {
     private PainelTopo painelTopo;
     private PainelRodape painelRodape;
     private RomaneiosService romaneiosService;
+    private ClientesService clientesService;
 
     public TelaRomaneiosAdmin() {
         configurarJanela();
@@ -22,8 +25,9 @@ public class TelaRomaneiosAdmin extends JFrame {
         setVisible(true);
     }
 
-    public TelaRomaneiosAdmin(RomaneiosService romaneiosService) {
+    public TelaRomaneiosAdmin(RomaneiosService romaneiosService, ClientesService clientesService) {
         this.romaneiosService = romaneiosService;
+        this.clientesService = clientesService;
         configurarJanela();
         iniciarComponentes();
         configurarBotoes();
@@ -49,7 +53,7 @@ public class TelaRomaneiosAdmin extends JFrame {
         add(painelRodape, BorderLayout.SOUTH);
     }
 
-    private void configurarBotoes() {
+    private void configurarBotoes(ClientesService clientesService) {
 
         painelRodape.getBtnDeletar().addActionListener(e -> {
             int linha = tabelaRomaneios.getLinhaSelecionada();
@@ -72,6 +76,7 @@ public class TelaRomaneiosAdmin extends JFrame {
         });
 
         painelTopo.getBtnNovoCliente().addActionListener(e -> {
+            new DialogNovoCliente(this, clientesService);
         });
 
         painelTopo.getBtnNovoRomaneio().addActionListener(e -> {
