@@ -1,13 +1,16 @@
 package org.example.View;
 
+import org.example.componentes.NovoUsuarioComponentes;
 import org.example.service.UsuarioService;
 
 public class novoUsuario extends javax.swing.JFrame {
 
+    private NovoUsuarioComponentes componentes;
     private UsuarioService usuarioService;
 
     public novoUsuario(UsuarioService usuarioservice) {
         this.usuarioService =  usuarioservice;
+        this.componentes = new NovoUsuarioComponentes(usuarioService);
         initComponents();
     }
 
@@ -120,12 +123,7 @@ public class novoUsuario extends javax.swing.JFrame {
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        String resultado = usuarioService.cadastrar(jTextField2.getText(), jTextField3.getText());
-        if (resultado.equals("Sucesso")){
-            javax.swing.JOptionPane.showMessageDialog(this, "Usuario cadastrado com sucesso!!");
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Nome de usuario ja esta sendo usado!");
-        }
+        componentes.cadastrar(jTextField2.getText(), jTextField3.getText(), this);
     }
 
 

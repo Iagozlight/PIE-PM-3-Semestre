@@ -1,14 +1,19 @@
 package org.example.View;
 
+import org.example.componentes.AlterarSenhaComponentes;
+import org.example.service.UsuarioService;
+
 public class AlterarSenha extends javax.swing.JFrame {
 
-    public AlterarSenha() {
+    private AlterarSenhaComponentes componentes;
+
+    public AlterarSenha(UsuarioService usuarioService) {
+        this.componentes = new AlterarSenhaComponentes(usuarioService);
         initComponents();
     }
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
+
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -34,13 +39,16 @@ public class AlterarSenha extends javax.swing.JFrame {
         jTextField1.setBackground(new java.awt.Color(249, 246, 237));
 
         jPasswordField1.setBackground(new java.awt.Color(249, 246, 237));
-        jPasswordField1.setText("jPasswordField1");
 
         jPasswordField2.setBackground(new java.awt.Color(249, 246, 237));
-        jPasswordField2.setText("jPasswordField1");
 
         jButton1.setBackground(new java.awt.Color(153, 255, 153));
         jButton1.setText("ALTERAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(255, 0, 0));
         jButton2.setText("CANCELAR");
@@ -102,32 +110,14 @@ public class AlterarSenha extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>
-
-    public static void main(String args[]) {
-
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AlterarSenha.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AlterarSenha.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AlterarSenha.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AlterarSenha.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AlterarSenha().setVisible(true);
-            }
-        });
+    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        componentes.alterar(
+                jTextField1.getText(),
+                new String(jPasswordField1.getPassword()),
+                new String(jPasswordField2.getPassword()),
+                this
+        );
     }
 
     // Variables declaration - do not modify

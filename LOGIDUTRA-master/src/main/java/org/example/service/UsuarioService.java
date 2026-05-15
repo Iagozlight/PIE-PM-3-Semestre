@@ -26,4 +26,26 @@ public class UsuarioService {
     public List<Usuarios> listar() {
         return usuarioRepository.findAll();
     }
+
+    public String alterarSenha(String usuario, String senhaAntiga, String novaSenha) {
+        try {
+            List<Usuarios> lista = usuarioRepository.findAll();
+            Usuarios encontrado = null;
+
+            for (Usuarios u : lista) {
+                if (u.getUsuario().equals(usuario)){
+                    encontrado = u;
+                }
+            }
+            if (encontrado == null) return "Usuario nao encontrado";
+
+            if (!encontrado.getSenha().equals(senhaAntiga)) return "Senha incorreta";
+
+            encontrado.setSenha(novaSenha);
+            usuarioRepository.update(encontrado);
+            return "Sucesso";
+        } catch (Exception e) {
+            return "Erro";
+        }
+    }
 }
