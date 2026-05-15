@@ -8,6 +8,7 @@ public class PainelRodape extends JPanel {
     private JButton btnAtribuirVeiculo;
     private JButton btnAtribuirMotorista;
     private JButton btnDeletar;
+    private JButton btnEditar;
 
     private final Color corFundo = new Color(245, 240, 225);
     private final Color corMarrom = new Color(60, 42, 33);

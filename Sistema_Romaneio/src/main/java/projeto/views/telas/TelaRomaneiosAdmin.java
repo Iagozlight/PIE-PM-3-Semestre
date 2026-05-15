@@ -20,6 +20,7 @@ public class TelaRomaneiosAdmin extends JFrame {
     private ClientesService clientesService;
     private VeiculosRepository veiculosRepository;
     private MotoristasRepository motoristasRepository;
+    private ClientesRomaneioRepository clientesRomaneioRepository;
 
     public TelaRomaneiosAdmin() {
         configurarJanela();
@@ -30,11 +31,13 @@ public class TelaRomaneiosAdmin extends JFrame {
     public TelaRomaneiosAdmin(RomaneiosService romaneiosService,
                               ClientesService clientesService,
                               VeiculosRepository veiculosRepository,
-                              MotoristasRepository motoristasRepository) {
+                              MotoristasRepository motoristasRepository,
+                              ClientesRomaneioRepository clientesRomaneioRepository) {
         this.romaneiosService = romaneiosService;
         this.clientesService = clientesService;
         this.veiculosRepository = veiculosRepository;
         this.motoristasRepository = motoristasRepository;
+        this.clientesRomaneioRepository = clientesRomaneioRepository;
         configurarJanela();
         iniciarComponentes();
         configurarBotoes(clientesService);
@@ -111,6 +114,20 @@ public class TelaRomaneiosAdmin extends JFrame {
             Romaneios romaneio = romaneiosService.buscarPorId(id);
             new DialogAtribuirMotorista(this, romaneio, romaneiosService, motoristasRepository, this::carregarRomaneios);
         });
+
+        painelRodape.getBtnEditar().addActionListener(e -> {
+            int linha = tabelaRomaneios.getLinhaSelecionada();
+            if (linha == -1) {
+                JOptionPane.showMessageDialog(this,
+                        "Selecione um romaneio!", "Aviso",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            Long id = (Long) tabelaRomaneios.getValorColuna(linha, 0);
+            Romaneios romaneio = romaneiosService.buscarPorId(id);
+            new DialogEditarRomaneio(this, romaneio, romaneiosService,
+                    clientesRomaneioRepository, this::carregarRomaneios);
+        });
     }
 
     private void carregarRomaneios() {
@@ -125,10 +142,12 @@ public class TelaRomaneiosAdmin extends JFrame {
         ClientesRomaneioRepository clientesRepo = new ClientesRomaneioRepository(em);
         VeiculosRepository veiculosRepo = new VeiculosRepository(em);
         MotoristasRepository motoristasRepo = new MotoristasRepository(em);
+        ClientesRomaneioRepository clientesRomaneioRepo = new ClientesRomaneioRepository(em);
+
 
         RomaneiosService romaneiosService = new RomaneiosService(romaneiosRepo, clientesRepo);
         ClientesService clientesService = new ClientesService(clientesRepo);
 
-        new TelaRomaneiosAdmin(romaneiosService, clientesService, veiculosRepo, motoristasRepo);
+        new TelaRomaneiosAdmin(romaneiosService, clientesService, veiculosRepo, motoristasRepo, clientesRomaneioRepo);
     }
 }
