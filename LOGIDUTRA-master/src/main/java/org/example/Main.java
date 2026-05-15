@@ -7,6 +7,7 @@ import org.example.models.Usuarios;
 import org.example.repositories.CustomizerFactory;
 import org.example.Repository.UsuarioRepository;
 import jakarta.persistence.EntityManager;
+import org.example.service.MotoristaService;
 import org.example.service.UsuarioService;
 import org.flywaydb.core.Flyway;
 
@@ -21,17 +22,17 @@ public class Main {
 
         EntityManager em = CustomizerFactory.getEntityManager();
         UsuarioRepository usuarioRepository = new UsuarioRepository(em);
+        Motoristasrepository motoristasrepository = new Motoristasrepository(em);
         UsuarioService usuarioService = new UsuarioService(usuarioRepository);
+        MotoristaService motoristaService = new MotoristaService(motoristasrepository, usuarioRepository);
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new org.example.View.MenuUsuarios(usuarioService).setVisible(true);
+                new org.example.View.MenuUsuarios(usuarioService, motoristaService).setVisible(true);
             }
         });
     }
 }
-
-
 
 
   /*  static  void novoMotorista ( Motoristasrepository motoristasrepository, UsuarioRepository usuarioRepository) {
