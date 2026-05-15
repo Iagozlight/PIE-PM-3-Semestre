@@ -66,4 +66,17 @@ public class RomaneiosService {
     public List<ClientesRomaneio> listarClientesSemRomaneio() {
         return clientesRomaneioRepository.findSemRomaneio();
     }
+
+    public Romaneios buscarPorId(Long id) { return romaneiosRepository.findById(id); }
+
+    public void atualizarRomaneio(Romaneios romaneio) { romaneiosRepository.update(romaneio); }
+
+    public void atualizarStatus(Romaneios romaneio, String status) {
+        romaneio.setStatus(status);
+        romaneiosRepository.update(romaneio);
+    }
+
+    public List<Romaneios> listarRomaneiosPorMotorista(Motoristas motorista) {
+        return romaneiosRepository.findByMotorista(motorista);
+    }
 }
