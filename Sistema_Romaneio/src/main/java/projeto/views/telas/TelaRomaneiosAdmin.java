@@ -2,11 +2,10 @@ package projeto.views.telas;
 
 import jakarta.persistence.EntityManager;
 import projeto.models.Romaneios;
-import projeto.repositories.ClientesRomaneioRepository;
-import projeto.repositories.CustomizerFactory;
-import projeto.repositories.RomaneiosRepository;
+import projeto.repositories.*;
 import projeto.services.ClientesService;
 import projeto.services.RomaneiosService;
+import projeto.services.VeiculosService;
 import projeto.views.componentes.*;
 
 import javax.swing.*;
@@ -19,6 +18,8 @@ public class TelaRomaneiosAdmin extends JFrame {
     private PainelRodape painelRodape;
     private RomaneiosService romaneiosService;
     private ClientesService clientesService;
+    private VeiculosRepository veiculosRepository;
+    private MotoristasRepository motoristasRepository;
 
     public TelaRomaneiosAdmin() {
         configurarJanela();
@@ -26,9 +27,14 @@ public class TelaRomaneiosAdmin extends JFrame {
         setVisible(true);
     }
 
-    public TelaRomaneiosAdmin(RomaneiosService romaneiosService, ClientesService clientesService) {
+    public TelaRomaneiosAdmin(RomaneiosService romaneiosService,
+                              ClientesService clientesService,
+                              VeiculosRepository veiculosRepository,
+                              MotoristasRepository motoristasRepository) {
         this.romaneiosService = romaneiosService;
         this.clientesService = clientesService;
+        this.veiculosRepository = veiculosRepository;
+        this.motoristasRepository = motoristasRepository;
         configurarJanela();
         iniciarComponentes();
         configurarBotoes(clientesService);
@@ -106,6 +112,9 @@ public class TelaRomaneiosAdmin extends JFrame {
         ClientesRomaneioRepository clientesRomaneioRepo = new ClientesRomaneioRepository(em);
         RomaneiosService romaneiosService = new RomaneiosService(romaneiosRepo, clientesRomaneioRepo);
 
-        new TelaRomaneiosAdmin(romaneiosService, clientesService);
+        VeiculosRepository veiculosRepository = new VeiculosRepository(em);
+        MotoristasRepository motoristasRepository = new MotoristasRepository(em);
+
+        new TelaRomaneiosAdmin(romaneiosService, clientesService,  veiculosRepository, motoristasRepository);
     }
 }
