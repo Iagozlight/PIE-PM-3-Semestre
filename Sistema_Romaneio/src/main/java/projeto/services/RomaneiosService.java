@@ -66,4 +66,6 @@ public class RomaneiosService {
     public List<ClientesRomaneio> listarClientesSemRomaneio() {
         return clientesRomaneioRepository.findSemRomaneio();
     }
+
+    public Romaneios buscarPorId(Long id) { return romaneiosRepository.findById(id); }
 }
