@@ -30,7 +30,7 @@ public class TelaRomaneiosAdmin extends JFrame {
         this.clientesService = clientesService;
         configurarJanela();
         iniciarComponentes();
-        configurarBotoes();
+        configurarBotoes(clientesService);
         carregarRomaneios();
         setVisible(true);
     }
