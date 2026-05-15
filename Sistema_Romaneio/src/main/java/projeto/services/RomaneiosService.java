@@ -68,4 +68,6 @@ public class RomaneiosService {
     }
 
     public Romaneios buscarPorId(Long id) { return romaneiosRepository.findById(id); }
+
+    public void atualizarRomaneio(Romaneios romaneio) { romaneiosRepository.update(romaneio); }
 }
