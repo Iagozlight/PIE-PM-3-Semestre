@@ -70,4 +70,9 @@ public class RomaneiosService {
     public Romaneios buscarPorId(Long id) { return romaneiosRepository.findById(id); }
 
     public void atualizarRomaneio(Romaneios romaneio) { romaneiosRepository.update(romaneio); }
+
+    public void atualizarStatus(Romaneios romaneio, String status) {
+        romaneio.setStatus(status);
+        romaneiosRepository.update(romaneio);
+    }
 }

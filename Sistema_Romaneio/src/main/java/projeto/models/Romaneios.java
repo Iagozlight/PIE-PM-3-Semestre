@@ -17,6 +17,9 @@ public class Romaneios {
     @Column(name = "data", nullable = false)
     private LocalDate data;
 
+    @Column(name = "status")
+    private String status = "SEM ROTA";
+
     @OneToMany(mappedBy = "romaneio", cascade = CascadeType.ALL)
     private List<ClientesRomaneio> clientes = new ArrayList<>();
 
@@ -59,6 +62,14 @@ public class Romaneios {
 
     public List<ClientesRomaneio> getClientes() { return clientes; }
     public void setClientes(List<ClientesRomaneio> clientes) { this.clientes = clientes; }
+
+    public LocalDate getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     @Override
     public String toString() {
