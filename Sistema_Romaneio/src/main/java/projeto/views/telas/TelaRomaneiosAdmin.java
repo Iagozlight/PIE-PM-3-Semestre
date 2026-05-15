@@ -7,10 +7,7 @@ import projeto.repositories.CustomizerFactory;
 import projeto.repositories.RomaneiosRepository;
 import projeto.services.ClientesService;
 import projeto.services.RomaneiosService;
-import projeto.views.componentes.DialogNovoCliente;
-import projeto.views.componentes.PainelRodape;
-import projeto.views.componentes.PainelTopo;
-import projeto.views.componentes.TabelaRomaneios;
+import projeto.views.componentes.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,6 +81,7 @@ public class TelaRomaneiosAdmin extends JFrame {
         });
 
         painelTopo.getBtnNovoRomaneio().addActionListener(e -> {
+            new DialogNovoRomaneio(this, romaneiosService, this::carregarRomaneios);
         });
 
         painelRodape.getBtnAtribuirVeiculo().addActionListener(e -> {
