@@ -1,13 +1,21 @@
 package org.example.View;
 
+import org.example.Repository.Motoristasrepository;
+import org.example.Repository.UsuarioRepository;
+import org.example.componentes.NovoMotoristaComponents;
+import org.example.service.MotoristaService;
+
 public class novoMotorista extends javax.swing.JFrame {
 
-    public novoMotorista() {
+    private MotoristaService motoristaService;
+    private NovoMotoristaComponents component;
+
+    public novoMotorista(MotoristaService motoristaService) {
+        this.motoristaService = motoristaService;
+        this.component = new NovoMotoristaComponents(motoristaService);
         initComponents();
     }
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
@@ -131,7 +139,7 @@ public class novoMotorista extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        component.cadastrar(jTextField2.getText(), jTextField3.getText(), jTextField4.getText(), this);
     }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,40 +162,7 @@ public class novoMotorista extends javax.swing.JFrame {
         // TODO add your handling code here:
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(novoMotorista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(novoMotorista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(novoMotorista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(novoMotorista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new novoMotorista().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify
     private javax.swing.JButton jButton1;
