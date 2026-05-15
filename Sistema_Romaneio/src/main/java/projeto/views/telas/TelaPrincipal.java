@@ -26,6 +26,7 @@ import projeto.views.dialogs.DialogDetalhesRomaneio;
 import projeto.views.dialogs.DialogEditarRomaneio;
 import projeto.views.dialogs.DialogNovoCliente;
 import projeto.views.dialogs.DialogNovoRomaneio;
+import projeto.views.telas.TelaGPS;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -297,6 +298,13 @@ public class TelaPrincipal extends JFrame {
             Romaneios r = romaneioSelecionadoDaTabelaAdmin();
             if (r != null)
                 new DialogEditarRomaneio(this, r, romaneiosService, clientesRomaneioRepository, this::carregarRomaneiosAdmin);
+        });
+
+        rodape.getBtnGps().addActionListener(e -> {
+            Romaneios r = romaneioSelecionadoDaTabelaAdmin();
+            if (r != null) {
+                new TelaGPS(r);
+            }
         });
 
         return painelRomaneiosAdmin;
@@ -719,10 +727,6 @@ public class TelaPrincipal extends JFrame {
         URL iconUrl = getClass().getResource("/view/icons/supplies.png");
         if (iconUrl != null) setIconImage(new ImageIcon(iconUrl).getImage());
     }
-
-    // =========================================================
-    // MAIN
-    // =========================================================
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

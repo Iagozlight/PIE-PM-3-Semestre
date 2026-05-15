@@ -26,37 +26,59 @@ public class Endereco {
     @Column(name = "referencia", length = 50)
     private String referencia;
 
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
     public Endereco() {}
 
     public Endereco(String cep, String rua, String numero, String bairro, String complemento, String referencia) {
+        this(cep, rua, numero, bairro, complemento, referencia, null, null);
+    }
+
+    public Endereco(String cep, String rua, String numero, String bairro, String complemento, String referencia,
+                    Double latitude, Double longitude) {
         this.cep = cep;
         this.rua = rua;
         this.numero = numero;
         this.bairro = bairro;
         this.complemento = complemento;
         this.referencia = referencia;
+        this.latitude = latitude;
+        this.longitude = longitude;
         validar();
     }
 
     private void validar() {
         if (cep == null || cep.isEmpty()) {
-            throw new IllegalArgumentException("CEP é obrigatório.");
+            throw new IllegalArgumentException("CEP e obrigatorio.");
         }
         if (rua == null || rua.isEmpty()) {
-            throw new IllegalArgumentException("Rua é obrigatória.");
+            throw new IllegalArgumentException("Rua e obrigatoria.");
         }
         if (numero == null || numero.isEmpty()) {
-            throw new IllegalArgumentException("Número é obrigatório.");
+            throw new IllegalArgumentException("Numero e obrigatorio.");
         }
         if (bairro == null || bairro.isEmpty()) {
-            throw new IllegalArgumentException("Bairro é obrigatório.");
+            throw new IllegalArgumentException("Bairro e obrigatorio.");
+        }
+        if ((latitude == null) != (longitude == null)) {
+            throw new IllegalArgumentException("Latitude e longitude devem ser informadas juntas.");
+        }
+        if (latitude != null && (latitude < -90 || latitude > 90)) {
+            throw new IllegalArgumentException("Latitude fora do intervalo permitido.");
+        }
+        if (longitude != null && (longitude < -180 || longitude > 180)) {
+            throw new IllegalArgumentException("Longitude fora do intervalo permitido.");
         }
     }
 
     public static Endereco lerEndereco(Scanner scanner) {
         while (true) {
             try {
-                System.out.println("==Endereço==");
+                System.out.println("==Endereco==");
                 System.out.println("CEP: ");
                 String cepCasa = scanner.nextLine();
                 System.out.println("Rua: ");
@@ -69,12 +91,25 @@ public class Endereco {
                 String complementoCasa = scanner.nextLine();
                 System.out.println("Referencia(Opcional): ");
                 String referenciaCasa = scanner.nextLine();
-                System.out.println("Endereço do Cliente Confirmado!");
+                System.out.println("Latitude(Opcional): ");
+                String latitudeStr = scanner.nextLine();
+                System.out.println("Longitude(Opcional): ");
+                String longitudeStr = scanner.nextLine();
+                System.out.println("Endereco do Cliente Confirmado!");
 
-                return new Endereco(cepCasa, ruaCliente, numeroCasa, bairroCliente, complementoCasa, referenciaCasa);
+                Double latitude = latitudeStr == null || latitudeStr.trim().isEmpty()
+                        ? null
+                        : Double.parseDouble(latitudeStr.replace(",", "."));
+                Double longitude = longitudeStr == null || longitudeStr.trim().isEmpty()
+                        ? null
+                        : Double.parseDouble(longitudeStr.replace(",", "."));
+
+                return new Endereco(cepCasa, ruaCliente, numeroCasa, bairroCliente, complementoCasa, referenciaCasa,
+                        latitude, longitude);
+            } catch (NumberFormatException e) {
+                System.out.println("Latitude/longitude invalidas. Use numeros validos.");
             } catch (IllegalArgumentException e) {
-                System.out.println("Erro ao criar endereço: " + e.getMessage());
-                continue; // Volta para o início do loop para tentar novamente
+                System.out.println("Erro ao criar endereco: " + e.getMessage());
             }
         }
     }
@@ -97,11 +132,17 @@ public class Endereco {
     public String getReferencia() { return referencia; }
     public void setReferencia(String referencia) { this.referencia = referencia; }
 
+    public Double getLatitude() { return latitude; }
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
+
+    public Double getLongitude() { return longitude; }
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
+
     @Override
     public String toString() {
         return "Endereco{cep='" + cep + "', rua='" + rua + "', numero='" + numero +
                 "', bairro='" + bairro + "', complemento='" + complemento +
-                "', referencia='" + referencia + "'}";
+                "', referencia='" + referencia + "', latitude=" + latitude +
+                ", longitude=" + longitude + "}";
     }
-
 }

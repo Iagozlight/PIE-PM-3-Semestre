@@ -4,6 +4,7 @@ import projeto.models.ClientesRomaneio;
 import projeto.models.Pedidos;
 import projeto.models.Romaneios;
 import projeto.services.RomaneiosService;
+import projeto.views.telas.TelaGPS;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -121,6 +122,12 @@ public class DialogDetalhesRomaneio extends JDialog {
         btnIniciarRota.setFont(new Font("Arial", Font.BOLD, 13));
         btnIniciarRota.addActionListener(e -> iniciarRota());
 
+        JButton btnGps = new JButton("Abrir GPS");
+        btnGps.setBackground(new Color(33, 150, 243));
+        btnGps.setForeground(Color.WHITE);
+        btnGps.setFont(new Font("Arial", Font.BOLD, 13));
+        btnGps.addActionListener(e -> new TelaGPS(romaneio));
+
         // Desabilita o botão se já estiver em rota
         if ("EM ROTA".equals(romaneio.getStatus())) {
             btnIniciarRota.setEnabled(false);
@@ -128,6 +135,7 @@ public class DialogDetalhesRomaneio extends JDialog {
         }
 
         painelBotoes.add(btnFechar);
+        painelBotoes.add(btnGps);
         painelBotoes.add(btnIniciarRota);
 
         add(painelBotoes, BorderLayout.SOUTH);

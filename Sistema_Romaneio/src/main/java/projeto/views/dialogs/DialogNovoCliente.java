@@ -218,7 +218,8 @@ public class DialogNovoCliente extends JDialog {
         }
 
         try {
-            Endereco endereco = new Endereco(cep, rua, numero, bairro, complemento, referencia);
+            // Latitude e Longitude passam como null para serem definidos via API/Nominatim posteriormente
+            Endereco endereco = new Endereco(cep, rua, numero, bairro, complemento, referencia, null, null);
             clientesService.criarCliente(nome, cpf, endereco, listaPedidos);
             JOptionPane.showMessageDialog(this, "Cliente salvo com sucesso!");
             dispose();
