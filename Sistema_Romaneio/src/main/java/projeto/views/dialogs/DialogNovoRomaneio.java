@@ -1,26 +1,26 @@
-package projeto.views.componentes.dialogs;
+package projeto.views.dialogs;
 
 import projeto.models.ClientesRomaneio;
-import projeto.models.Romaneios;
-import projeto.repositories.ClientesRomaneioRepository;
 import projeto.services.RomaneiosService;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DialogEditarRomaneio extends JDialog {
+public class DialogNovoRomaneio extends JDialog {
 
     private JTextField campoData;
     private JTable tabelaClientes;
     private DefaultTableModel modeloClientes;
+    private List<ClientesRomaneio> clientesSemRomaneio;
+    private List<ClientesRomaneio> clientesSelecionados = new ArrayList<>();
 
-    private final Romaneios romaneio;
     private final RomaneiosService romaneiosService;
-    private final ClientesRomaneioRepository clientesRomaneioRepository;
     private Runnable aoSalvar;
 
     private final Color corFundo = new Color(245, 240, 225);
@@ -28,20 +28,15 @@ public class DialogEditarRomaneio extends JDialog {
     private final Color corBege = new Color(220, 198, 150);
     private final Color corBranco = new Color(252, 249, 241);
 
-    public DialogEditarRomaneio(JFrame parent, Romaneios romaneio,
-                                RomaneiosService romaneiosService,
-                                ClientesRomaneioRepository clientesRomaneioRepository,
-                                Runnable aoSalvar) {
-        super(parent, "Editar Romaneio", true);
-        this.romaneio = romaneio;
+    public DialogNovoRomaneio(JFrame parent, RomaneiosService romaneiosService, Runnable aoSalvar) {
+        super(parent, "Novo Romaneio", true);
         this.romaneiosService = romaneiosService;
-        this.clientesRomaneioRepository = clientesRomaneioRepository;
         this.aoSalvar = aoSalvar;
         setSize(500, 500);
         setLocationRelativeTo(parent);
         setResizable(false);
         iniciarComponentes();
-        carregarDados();
+        carregarClientes();
         setVisible(true);
     }
 
@@ -59,14 +54,15 @@ public class DialogEditarRomaneio extends JDialog {
         painelPrincipal.add(Box.createVerticalStrut(5));
 
         campoData = new JTextField();
+        campoData.setToolTipText("dd/MM/yyyy");
         painelPrincipal.add(criarCampo("Data (dd/MM/yyyy):", campoData));
         painelPrincipal.add(Box.createVerticalStrut(15));
 
         // ===== CLIENTES =====
-        painelPrincipal.add(criarTitulo("Clientes do Romaneio"));
+        painelPrincipal.add(criarTitulo("Selecione os Clientes"));
         painelPrincipal.add(Box.createVerticalStrut(5));
 
-        JLabel lblDica = new JLabel("Selecione um cliente e clique em Remover para tirá-lo");
+        JLabel lblDica = new JLabel("Segure Ctrl para selecionar mais de um");
         lblDica.setFont(new Font("Arial", Font.ITALIC, 11));
         lblDica.setForeground(corMarrom);
         lblDica.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -85,21 +81,13 @@ public class DialogEditarRomaneio extends JDialog {
         tabelaClientes.getTableHeader().setForeground(corMarrom);
         tabelaClientes.setSelectionBackground(new Color(52, 152, 219));
         tabelaClientes.setSelectionForeground(Color.WHITE);
-        tabelaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tabelaClientes.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         JScrollPane scrollClientes = new JScrollPane(tabelaClientes);
-        scrollClientes.setPreferredSize(new Dimension(440, 180));
-        scrollClientes.setMaximumSize(new Dimension(Integer.MAX_VALUE, 180));
+        scrollClientes.setPreferredSize(new Dimension(440, 200));
+        scrollClientes.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
         scrollClientes.setAlignmentX(Component.LEFT_ALIGNMENT);
         painelPrincipal.add(scrollClientes);
-        painelPrincipal.add(Box.createVerticalStrut(5));
-
-        JButton btnRemoverCliente = new JButton("Remover Cliente Selecionado");
-        btnRemoverCliente.setBackground(new Color(211, 47, 47));
-        btnRemoverCliente.setForeground(Color.WHITE);
-        btnRemoverCliente.setAlignmentX(Component.LEFT_ALIGNMENT);
-        btnRemoverCliente.addActionListener(e -> removerCliente());
-        painelPrincipal.add(btnRemoverCliente);
 
         add(painelPrincipal, BorderLayout.CENTER);
 
@@ -124,69 +112,58 @@ public class DialogEditarRomaneio extends JDialog {
         add(painelBotoes, BorderLayout.SOUTH);
     }
 
-    private void carregarDados() {
-        // Carrega a data atual do romaneio
-        campoData.setText(romaneio.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-
-        // Carrega os clientes do romaneio
+    private void carregarClientes() {
         modeloClientes.setRowCount(0);
-        for (ClientesRomaneio c : romaneio.getClientes()) {
+        clientesSemRomaneio = romaneiosService.listarClientesSemRomaneio();
+        if (clientesSemRomaneio.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Nenhum cliente disponível! Cadastre um cliente primeiro.",
+                    "Aviso", JOptionPane.WARNING_MESSAGE);
+            dispose();
+            return;
+        }
+        for (ClientesRomaneio c : clientesSemRomaneio) {
             modeloClientes.addRow(new Object[]{c.getNome_cliente(), c.getCpf()});
-        }
-    }
-
-    private void removerCliente() {
-        int linha = tabelaClientes.getSelectedRow();
-        if (linha == -1) {
-            JOptionPane.showMessageDialog(this,
-                    "Selecione um cliente para remover!", "Aviso",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (romaneio.getClientes().size() == 1) {
-            JOptionPane.showMessageDialog(this,
-                    "O romaneio precisa ter pelo menos um cliente!", "Aviso",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        int confirmacao = JOptionPane.showConfirmDialog(this,
-                "Tem certeza que deseja remover este cliente do romaneio?\nO histórico do cliente será mantido.",
-                "Confirmar", JOptionPane.YES_NO_OPTION);
-
-        if (confirmacao == JOptionPane.YES_OPTION) {
-            ClientesRomaneio cliente = romaneio.getClientes().get(linha);
-            cliente.setRomaneio(null); // desvincula do romaneio sem deletar o cliente
-            clientesRomaneioRepository.update(cliente);
-            romaneio.getClientes().remove(linha);
-            modeloClientes.removeRow(linha);
-            JOptionPane.showMessageDialog(this, "Cliente removido do romaneio!");
         }
     }
 
     private void salvar() {
         String dataStr = campoData.getText().trim();
+        int[] linhasSelecionadas = tabelaClientes.getSelectedRows();
 
         if (dataStr.isEmpty()) {
             JOptionPane.showMessageDialog(this,
-                    "Informe a data!", "Aviso",
+                    "Informe a data do romaneio!", "Aviso",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
 
+        if (linhasSelecionadas.length == 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Selecione pelo menos um cliente!", "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        LocalDate data;
         try {
-            LocalDate novaData = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            romaneio.setData(novaData);
-            romaneiosService.atualizarRomaneio(romaneio);
-            JOptionPane.showMessageDialog(this, "Romaneio atualizado com sucesso!");
-            aoSalvar.run();
-            dispose();
+            data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         } catch (DateTimeParseException e) {
             JOptionPane.showMessageDialog(this,
                     "Data inválida! Use o formato dd/MM/yyyy", "Erro",
                     JOptionPane.ERROR_MESSAGE);
+            return;
         }
+
+        clientesSelecionados.clear();
+        for (int linha : linhasSelecionadas) {
+            clientesSelecionados.add(clientesSemRomaneio.get(linha));
+        }
+
+        romaneiosService.criarRomaneio(data, clientesSelecionados);
+        JOptionPane.showMessageDialog(this, "Romaneio criado com sucesso!");
+        aoSalvar.run(); // atualiza a tabela na tela principal
+        dispose();
     }
 
     private JPanel criarCampo(String label, JTextField campo) {

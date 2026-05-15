@@ -1,11 +1,9 @@
 package projeto.views.telas;
 
-import jakarta.persistence.EntityManager;
 import projeto.models.Motoristas;
 import projeto.models.Romaneios;
-import projeto.repositories.*;
 import projeto.services.RomaneiosService;
-import projeto.views.componentes.dialogs.DialogDetalhesRomaneio;
+import projeto.views.dialogs.DialogDetalhesRomaneio;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

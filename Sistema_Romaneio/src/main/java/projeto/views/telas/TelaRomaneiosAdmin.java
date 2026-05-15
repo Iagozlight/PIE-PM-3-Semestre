@@ -6,7 +6,7 @@ import projeto.repositories.*;
 import projeto.services.ClientesService;
 import projeto.services.RomaneiosService;
 import projeto.views.componentes.*;
-import projeto.views.componentes.dialogs.*;
+import projeto.views.dialogs.*;
 
 import javax.swing.*;
 import java.awt.*;
