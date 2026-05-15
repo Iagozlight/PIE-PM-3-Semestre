@@ -124,7 +124,7 @@ public class MenuUsuarios extends javax.swing.JFrame {
     }
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        new exibirUsuarios(usuarioService).setVisible(true);
     }
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {

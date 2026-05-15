@@ -1,14 +1,28 @@
 package org.example.View;
 
+import org.example.service.UsuarioService;
+
+import javax.swing.*;
+
 public class exibirUsuarios extends javax.swing.JFrame {
 
+    private UsuarioService usuarioService;
 
-    public exibirUsuarios() {
+
+    public exibirUsuarios(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
         initComponents();
+        carregarUsuarios();
     }
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
+    private  void carregarUsuarios() {
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+
+        for (org.example.models.Usuarios u : usuarioService.listar()) {
+            model.addRow(new Object[]{u.getUsuario(), "Usuário"});
+        }
+    }
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -21,6 +35,7 @@ public class exibirUsuarios extends javax.swing.JFrame {
         jTable1.setBackground(new java.awt.Color(245, 240, 224));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 new Object [][] {
+                        {"IAGO", "VAGABBUNDO"},
                         {null, null},
                         {null, null},
                         {null, null},
@@ -64,7 +79,6 @@ public class exibirUsuarios extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("LISTA DE USUARIOS");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -74,7 +88,7 @@ public class exibirUsuarios extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(147, 147, 147)
                                 .addComponent(jLabel1)
-                                .addContainerGap(139, Short.MAX_VALUE))
+                                .addContainerGap(146, Short.MAX_VALUE))
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -90,32 +104,6 @@ public class exibirUsuarios extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>
-
-    public static void main(String args[]) {
-
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(exibirUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(exibirUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(exibirUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(exibirUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new exibirUsuarios().setVisible(true);
-            }
-        });
     }
 
     private javax.swing.JLabel jLabel1;
