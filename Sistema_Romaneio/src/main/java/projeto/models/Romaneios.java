@@ -63,7 +63,7 @@ public class Romaneios {
     public List<ClientesRomaneio> getClientes() { return clientes; }
     public void setClientes(List<ClientesRomaneio> clientes) { this.clientes = clientes; }
 
-    public LocalDate getStatus() {
+    public String getStatus() {
         return status;
     }
 

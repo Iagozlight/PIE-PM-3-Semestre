@@ -5,7 +5,7 @@ import projeto.models.Motoristas;
 import projeto.models.Romaneios;
 import projeto.repositories.*;
 import projeto.services.RomaneiosService;
-import projeto.views.componentes.DialogDetalhesRomaneio;
+import projeto.views.componentes.dialogs.DialogDetalhesRomaneio;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
