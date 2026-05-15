@@ -33,12 +33,18 @@ public class PainelRodape extends JPanel {
         btnDeletar.setBackground(new Color(211, 47, 47));
         btnDeletar.setForeground(Color.WHITE);
 
+        btnEditar = new JButton("Editar");
+        btnEditar.setBackground(new Color(255, 193, 7));
+        btnEditar.setForeground(corMarrom);
+
         add(btnAtribuirVeiculo);
         add(btnAtribuirMotorista);
         add(btnDeletar);
+        add(btnEditar);
     }
 
     public JButton getBtnAtribuirVeiculo() { return btnAtribuirVeiculo; }
     public JButton getBtnAtribuirMotorista() { return btnAtribuirMotorista; }
     public JButton getBtnDeletar() { return btnDeletar; }
+    public JButton getBtnEditar() { return btnEditar; }
 }

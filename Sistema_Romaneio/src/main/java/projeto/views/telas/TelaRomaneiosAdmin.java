@@ -91,9 +91,25 @@ public class TelaRomaneiosAdmin extends JFrame {
         });
 
         painelRodape.getBtnAtribuirVeiculo().addActionListener(e -> {
+            int linha = tabelaRomaneios.getLinhaSelecionada();
+            if (linha == -1) {
+                JOptionPane.showMessageDialog(this, "Selecione um romaneio!", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            Long id = (Long) tabelaRomaneios.getValorColuna(linha, 0);
+            Romaneios romaneio = romaneiosService.buscarPorId(id);
+            new DialogAtribuirVeiculo(this, romaneio, romaneiosService, veiculosRepository, this::carregarRomaneios);
         });
 
         painelRodape.getBtnAtribuirMotorista().addActionListener(e -> {
+            int linha = tabelaRomaneios.getLinhaSelecionada();
+            if (linha == -1) {
+                JOptionPane.showMessageDialog(this, "Selecione um romaneio!", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            Long id = (Long) tabelaRomaneios.getValorColuna(linha, 0);
+            Romaneios romaneio = romaneiosService.buscarPorId(id);
+            new DialogAtribuirMotorista(this, romaneio, romaneiosService, motoristasRepository, this::carregarRomaneios);
         });
     }
 
@@ -105,16 +121,14 @@ public class TelaRomaneiosAdmin extends JFrame {
         try { UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName()); } catch (Exception e) {}
 
         EntityManager em = CustomizerFactory.getEntityManager();
+        RomaneiosRepository romaneiosRepo = new RomaneiosRepository(em);
         ClientesRomaneioRepository clientesRepo = new ClientesRomaneioRepository(em);
+        VeiculosRepository veiculosRepo = new VeiculosRepository(em);
+        MotoristasRepository motoristasRepo = new MotoristasRepository(em);
+
+        RomaneiosService romaneiosService = new RomaneiosService(romaneiosRepo, clientesRepo);
         ClientesService clientesService = new ClientesService(clientesRepo);
 
-        RomaneiosRepository romaneiosRepo = new RomaneiosRepository(em);
-        ClientesRomaneioRepository clientesRomaneioRepo = new ClientesRomaneioRepository(em);
-        RomaneiosService romaneiosService = new RomaneiosService(romaneiosRepo, clientesRomaneioRepo);
-
-        VeiculosRepository veiculosRepository = new VeiculosRepository(em);
-        MotoristasRepository motoristasRepository = new MotoristasRepository(em);
-
-        new TelaRomaneiosAdmin(romaneiosService, clientesService,  veiculosRepository, motoristasRepository);
+        new TelaRomaneiosAdmin(romaneiosService, clientesService, veiculosRepo, motoristasRepo);
     }
 }
