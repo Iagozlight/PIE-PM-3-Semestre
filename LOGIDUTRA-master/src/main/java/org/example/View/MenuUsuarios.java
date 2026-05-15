@@ -1,14 +1,16 @@
 package org.example.View;
 
 import org.example.Repository.UsuarioRepository;
+import org.example.service.MotoristaService;
+import org.example.service.UsuarioService;
 
 public class MenuUsuarios extends javax.swing.JFrame {
+    private MotoristaService motoristaService;
+    private UsuarioService usuarioService;
 
-    private UsuarioRepository usuarioRepository;
-
-    public MenuUsuarios(UsuarioRepository usuarioRepository) {
-
-        this.usuarioRepository = usuarioRepository;
+    public MenuUsuarios(UsuarioService usuarioService, MotoristaService motoristaService) {
+        this.usuarioService = usuarioService;
+        this.motoristaService = motoristaService;
         initComponents();
     }
 
@@ -114,11 +116,11 @@ public class MenuUsuarios extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        new novoUsuario(usuarioRepository).setVisible(true);
+        new novoUsuario(usuarioService).setVisible(true);
     }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        new novoMotorista(motoristaService, usuarioService).setVisible(true);
     }
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {

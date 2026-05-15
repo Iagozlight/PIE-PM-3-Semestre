@@ -2,6 +2,7 @@ package org.example.componentes;
 
 import jakarta.persistence.JoinColumn;
 import org.example.service.MotoristaService;
+import org.example.service.UsuarioService;
 
 import javax.swing.*;
 import java.time.LocalDate;
@@ -11,9 +12,11 @@ import java.util.Date;
 public class NovoMotoristaComponents {
 
     private MotoristaService motoristaService;
+    private UsuarioService usuarioService;
 
-    public NovoMotoristaComponents(MotoristaService motoristaService) {
+    public NovoMotoristaComponents(MotoristaService motoristaService, UsuarioService usuarioService) {
         this.motoristaService = motoristaService;
+        this.usuarioService = usuarioService;
     }
 
     public void  cadastrar(String nome, String dataStr, String usuario, JFrame frame) {
@@ -27,7 +30,12 @@ public class NovoMotoristaComponents {
                 case "idade_invalida":
                     JOptionPane.showMessageDialog(frame, "Motorista deve ter mais de 24 anos!");break;
                 case "Usuario nao encontrado":
-                    JOptionPane.showMessageDialog(frame, "Usuario nao encontrado!");break;
+                    int opcao = JOptionPane.showConfirmDialog(frame, "Usuario nao encontrado! Deseja cadastrar um novo usuario?",
+                            "Usuario nao encontrado",
+                            JOptionPane.YES_NO_OPTION);
+                    if (opcao == JOptionPane.YES_OPTION) {
+                        new org.example.View.novoUsuario(usuarioService).setVisible(true);
+                    } break;
                 default:
                     JOptionPane.showMessageDialog(frame, "Erro ao cadastrar motorista");
             }

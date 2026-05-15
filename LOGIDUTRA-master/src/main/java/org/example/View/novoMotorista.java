@@ -4,15 +4,18 @@ import org.example.Repository.Motoristasrepository;
 import org.example.Repository.UsuarioRepository;
 import org.example.componentes.NovoMotoristaComponents;
 import org.example.service.MotoristaService;
+import org.example.service.UsuarioService;
 
 public class novoMotorista extends javax.swing.JFrame {
 
     private MotoristaService motoristaService;
     private NovoMotoristaComponents component;
+    private UsuarioService usuarioService;
 
-    public novoMotorista(MotoristaService motoristaService) {
+    public novoMotorista(MotoristaService motoristaService, UsuarioService usuarioService) {
         this.motoristaService = motoristaService;
-        this.component = new NovoMotoristaComponents(motoristaService);
+        this.usuarioService = usuarioService;
+        this.component = new NovoMotoristaComponents(motoristaService, usuarioService);
         initComponents();
     }
 
