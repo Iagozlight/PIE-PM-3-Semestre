@@ -33,7 +33,7 @@ public class ClientesService {
                     endereco.getCep() + ", Foz do Iguacu, PR, Brasil";
 
             try {
-                double[] coordenadas = nominatimService.buscarCoordenadas(enderecoBusca);
+                double[] coordenadas = nominatimService.buscarCoordenadas(endereco, "Foz do Iguacu");
 
                 if (coordenadas != null) {
                     endereco.setLatitude(coordenadas[0]);

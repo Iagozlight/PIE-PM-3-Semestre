@@ -1,6 +1,7 @@
 package projeto.views.telas;
 
 import jakarta.persistence.EntityManager;
+import projeto.Main;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
@@ -35,20 +36,28 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 public class TelaGPS extends JFrame {
 
     private static final GeoPosition BASE_MOTORISTA = new GeoPosition(-25.551361, -54.572111);
     private static final GeoPosition CENTRO_OESTE_PR = new GeoPosition(-25.120000, -54.300000);
+    private static final GeoPosition FOZ_DO_IGUACU_CENTRO = new GeoPosition(-25.516335, -54.585376);
+    private static final GeoPosition SANTA_TEREZINHA_CENTRO = new GeoPosition(-25.448000, -54.399000);
     private static final int BACKUP_TIMEOUT_MS = 30000;
+    private static final int ATUALIZACAO_MS = 15000;
+    private static final long REINTENTO_GEOCODE_MS = 10L * 60L * 1000L;
 
     private final Romaneios romaneio;
     private final RomaneiosService romaneiosService;
+    private final Main.SessaoUsuario sessaoUsuario;
     private final ClientesRomaneioRepository clientesRomaneioRepository;
     private final NominatimService nominatimService = new NominatimService();
     private final HaversineService haversineService = new HaversineService();
@@ -56,17 +65,30 @@ public class TelaGPS extends JFrame {
     private final List<EntregaMarcada> entregasAtivas = new ArrayList<>();
     private final List<EntregaMarcada> entregasTodas = new ArrayList<>();
     private final Deque<EntregaBackup> historicoDesfazer = new ArrayDeque<>();
+    private final Map<Long, Long> ultimaTentativaGeocode = new HashMap<>();
+    private final Map<Long, EntregaMarcada> entregasPorCliente = new HashMap<>();
 
     private JXMapViewer mapa;
     private PanMouseInputListener panListener;
     private JTable tabelaEntregas;
     private DefaultTableModel modeloTabela;
+    private JTable tabelaProdutos;
+    private DefaultTableModel modeloProdutos;
     private JLabel lblResumo;
     private JLabel lblDistancia;
+    private JLabel lblClienteDetalhe;
+    private JLabel lblEnderecoDetalhe;
+    private JLabel lblStatusDetalhe;
+    private JLabel lblDistanciaDetalhe;
+    private JLabel lblTotalProdutos;
     private JPanel painelDesfazer;
     private JLabel lblDesfazer;
     private JButton btnDesfazer;
+    private JButton btnEncerrarEntrega;
     private Timer timerDesfazer;
+    private Timer timerAtualizacao;
+    private boolean bloqueandoSelecaoTabela;
+    private Long clienteSelecionadoId;
 
     private BufferedImage imagemDelivery;
 
@@ -77,14 +99,20 @@ public class TelaGPS extends JFrame {
     private final Color corLaranja = new Color(245, 124, 0);
 
     public TelaGPS(Romaneios romaneio, RomaneiosService romaneiosService) {
+        this(romaneio, romaneiosService, null);
+    }
+
+    public TelaGPS(Romaneios romaneio, RomaneiosService romaneiosService, Main.SessaoUsuario sessaoUsuario) {
         this.romaneio = romaneio;
         this.romaneiosService = romaneiosService;
+        this.sessaoUsuario = sessaoUsuario;
         EntityManager em = CustomizerFactory.getEntityManager();
         this.clientesRomaneioRepository = new ClientesRomaneioRepository(em);
         carregarImagemDelivery();
         configurarJanela();
         iniciarComponentes();
         carregarDados();
+        iniciarAtualizacaoPeriodica();
         setVisible(true);
     }
 
@@ -144,7 +172,7 @@ public class TelaGPS extends JFrame {
 
     private JComponent criarConteudo() {
         modeloTabela = new DefaultTableModel(new Object[]{
-                "Cliente", "Endereco", "Distancia", "Status"
+                "Cliente", "Endereco", "Distancia (km)", "Status"
         }, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -161,6 +189,17 @@ public class TelaGPS extends JFrame {
         tabelaEntregas.setSelectionBackground(new Color(52, 152, 219));
         tabelaEntregas.setSelectionForeground(Color.WHITE);
         tabelaEntregas.setGridColor(new Color(216, 206, 184));
+        tabelaEntregas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tabelaEntregas.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting() || bloqueandoSelecaoTabela) {
+                return;
+            }
+            int linha = tabelaEntregas.getSelectedRow();
+            if (linha >= 0 && linha < entregasTodas.size()) {
+                EntregaMarcada entrega = entregasTodas.get(linha);
+                selecionarEntrega(entrega, true);
+            }
+        });
 
         JScrollPane scrollTabela = new JScrollPane(tabelaEntregas);
         scrollTabela.setPreferredSize(new Dimension(420, 0));
@@ -172,9 +211,9 @@ public class TelaGPS extends JFrame {
                 "OpenStreetMap",
                 "https://tile.openstreetmap.org"
         )));
-        mapa.setZoom(10);
-        mapa.setCenterPosition(CENTRO_OESTE_PR);
-        mapa.setAddressLocation(CENTRO_OESTE_PR);
+        mapa.setZoom(11);
+        mapa.setCenterPosition(FOZ_DO_IGUACU_CENTRO);
+        mapa.setAddressLocation(FOZ_DO_IGUACU_CENTRO);
         mapa.setRestrictOutsidePanning(false);
         mapa.setHorizontalWrapped(false);
         mapa.setPanEnabled(true);
@@ -189,6 +228,13 @@ public class TelaGPS extends JFrame {
             }
         });
 
+        JPanel painelDetalhe = criarPainelDetalheEntrega();
+
+        JSplitPane splitMapaDetalhe = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mapa, painelDetalhe);
+        splitMapaDetalhe.setResizeWeight(0.74);
+        splitMapaDetalhe.setDividerSize(8);
+        splitMapaDetalhe.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
         JLabel lblMapa = new JLabel("Regiao oeste do Parana");
         lblMapa.setFont(new Font("Segoe UI", Font.BOLD, 12));
         lblMapa.setForeground(corMarrom);
@@ -196,7 +242,7 @@ public class TelaGPS extends JFrame {
 
         JPanel mapaContainer = new JPanel(new BorderLayout());
         mapaContainer.setBackground(corBranco);
-        mapaContainer.add(mapa, BorderLayout.CENTER);
+        mapaContainer.add(splitMapaDetalhe, BorderLayout.CENTER);
         mapaContainer.add(lblMapa, BorderLayout.SOUTH);
 
         JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollTabela, mapaContainer);
@@ -245,20 +291,101 @@ public class TelaGPS extends JFrame {
         return rodape;
     }
 
+    private JPanel criarPainelDetalheEntrega() {
+        JPanel painel = new JPanel(new BorderLayout(10, 8));
+        painel.setBackground(corBranco);
+        painel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(213, 198, 171)),
+                BorderFactory.createEmptyBorder(10, 12, 10, 12)
+        ));
+
+        JPanel resumo = new JPanel();
+        resumo.setOpaque(false);
+        resumo.setLayout(new BoxLayout(resumo, BoxLayout.Y_AXIS));
+
+        JLabel titulo = new JLabel("Entrega selecionada");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        titulo.setForeground(corMarrom);
+
+        lblClienteDetalhe = criarLabelDetalhe("Cliente: -");
+        lblEnderecoDetalhe = criarLabelDetalhe("Endereco: -");
+        lblStatusDetalhe = criarLabelDetalhe("Status: -");
+        lblDistanciaDetalhe = criarLabelDetalhe("Distancia: -");
+        lblTotalProdutos = criarLabelDetalhe("Total de produtos: 0");
+
+        resumo.add(titulo);
+        resumo.add(Box.createVerticalStrut(6));
+        resumo.add(lblClienteDetalhe);
+        resumo.add(lblEnderecoDetalhe);
+        resumo.add(lblStatusDetalhe);
+        resumo.add(lblDistanciaDetalhe);
+        resumo.add(lblTotalProdutos);
+
+        modeloProdutos = new DefaultTableModel(new Object[]{"Produto", "Quantidade"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tabelaProdutos = new JTable(modeloProdutos);
+        tabelaProdutos.setRowHeight(26);
+        tabelaProdutos.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        tabelaProdutos.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+        tabelaProdutos.getTableHeader().setBackground(corBege);
+        tabelaProdutos.getTableHeader().setForeground(corMarrom);
+        tabelaProdutos.setGridColor(new Color(216, 206, 184));
+
+        JScrollPane scrollProdutos = new JScrollPane(tabelaProdutos);
+        scrollProdutos.setBorder(BorderFactory.createTitledBorder("Produtos"));
+
+        btnEncerrarEntrega = new JButton("Encerrar entrega");
+        btnEncerrarEntrega.setBackground(new Color(46, 125, 50));
+        btnEncerrarEntrega.setForeground(Color.WHITE);
+        btnEncerrarEntrega.addActionListener(e -> encerrarEntregaSelecionada());
+
+        JPanel rodapeDetalhe = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        rodapeDetalhe.setOpaque(false);
+        rodapeDetalhe.add(btnEncerrarEntrega);
+
+        painel.add(resumo, BorderLayout.NORTH);
+        painel.add(scrollProdutos, BorderLayout.CENTER);
+        painel.add(rodapeDetalhe, BorderLayout.SOUTH);
+
+        atualizarPainelDetalhe(null);
+        return painel;
+    }
+
+    private JLabel criarLabelDetalhe(String texto) {
+        JLabel label = new JLabel(texto);
+        label.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        label.setForeground(corMarrom);
+        return label;
+    }
+
     private void configurarMapa() {
+        mapa.setCenterPosition(FOZ_DO_IGUACU_CENTRO);
+        mapa.setZoom(11);
         atualizarOverlay();
     }
 
     private void carregarDados() {
+        carregarDados(true);
+    }
+
+    private void carregarDados(boolean enquadrarMapa) {
         modeloTabela.setRowCount(0);
         entregasAtivas.clear();
         entregasTodas.clear();
+        entregasPorCliente.clear();
 
         List<ClientesRomaneio> clientes = romaneio.getClientes();
         int entregasPendentes = 0;
         for (ClientesRomaneio cliente : clientes) {
             EntregaMarcada entrega = montarEntrega(cliente);
             entregasTodas.add(entrega);
+            if (cliente.getId() != null) {
+                entregasPorCliente.put(cliente.getId(), entrega);
+            }
 
             String status = entrega.entregue ? "ENTREGUE" : "PENDENTE";
             modeloTabela.addRow(new Object[]{
@@ -275,7 +402,7 @@ public class TelaGPS extends JFrame {
         }
 
         double distancia = calcularDistanciaDaRota();
-        lblDistancia.setText("Distancia total: " + formatarNumero(distancia) + " km");
+        lblDistancia.setText("Distancia total aproximada: " + formatarNumero(distancia) + " km");
 
         String data = romaneio.getData() != null ? romaneio.getData().toString() : "-";
         String veiculo = romaneio.getVeiculo() != null ? romaneio.getVeiculo().getNomeVeiculo() : "Sem veiculo";
@@ -284,14 +411,22 @@ public class TelaGPS extends JFrame {
                 + " | entregas pendentes: " + entregasPendentes);
 
         atualizarOverlay();
-        enquadrarMapaSePossivel();
+        if (enquadrarMapa) {
+            enquadrarMapaSePossivel();
+        }
+
+        if (clienteSelecionadoId != null) {
+            selecionarEntregaPorClienteId(clienteSelecionadoId, false);
+        } else if (!entregasTodas.isEmpty()) {
+            selecionarEntrega(entregasTodas.get(0), false);
+        } else {
+            atualizarPainelDetalhe(null);
+        }
     }
 
     private EntregaMarcada montarEntrega(ClientesRomaneio cliente) {
         Endereco endereco = cliente.getEndereco();
-        String enderecoTexto = endereco != null
-                ? endereco.getCep() + " - " + endereco.getRua() + ", " + endereco.getNumero() + " - " + endereco.getBairro()
-                : "Sem endereco";
+        String enderecoTexto = montarEnderecoTexto(endereco);
         String produtosTexto = listarProdutos(cliente);
         boolean entregue = Boolean.TRUE.equals(cliente.getEntregue());
 
@@ -300,15 +435,28 @@ public class TelaGPS extends JFrame {
             if (endereco.getLatitude() != null && endereco.getLongitude() != null) {
                 posicao = new GeoPosition(endereco.getLatitude(), endereco.getLongitude());
             } else {
-                double[] coordenadas = nominatimService.buscarCoordenadas(enderecoTexto + ", Foz do Iguacu, PR, Brasil");
-                if (coordenadas != null) {
-                    endereco.setLatitude(coordenadas[0]);
-                    endereco.setLongitude(coordenadas[1]);
-                    posicao = new GeoPosition(coordenadas[0], coordenadas[1]);
-                    cliente.setEndereco(endereco);
-                    clientesRomaneioRepository.update(cliente);
+                if (podeTentarGeocode(cliente)) {
+                    double[] coordenadas = nominatimService.buscarCoordenadas(
+                            endereco,
+                            "Foz do Iguacu"
+                    );
+                    if (coordenadas != null) {
+                        endereco.setLatitude(coordenadas[0]);
+                        endereco.setLongitude(coordenadas[1]);
+                        posicao = new GeoPosition(coordenadas[0], coordenadas[1]);
+                        cliente.setEndereco(endereco);
+                        clientesRomaneioRepository.update(cliente);
+                        ultimaTentativaGeocode.remove(cliente.getId());
+                    } else {
+                        registrarTentativaGeocode(cliente);
+                        posicao = fallbackRegional(enderecoTexto);
+                    }
+                } else {
+                    posicao = fallbackRegional(enderecoTexto);
                 }
             }
+        } else {
+            posicao = FOZ_DO_IGUACU_CENTRO;
         }
 
         double distancia = posicao != null
@@ -331,6 +479,81 @@ public class TelaGPS extends JFrame {
             sb.append(pedido.getNome_produto()).append(" x").append(pedido.getQuantidade());
         }
         return sb.toString();
+    }
+
+    private Map<String, Integer> agruparProdutos(ClientesRomaneio cliente) {
+        Map<String, Integer> agrupados = new java.util.LinkedHashMap<>();
+        if (cliente == null || cliente.getPedidos() == null) {
+            return agrupados;
+        }
+        for (Pedidos pedido : cliente.getPedidos()) {
+            String nome = pedido.getNome_produto() != null ? pedido.getNome_produto().trim() : "Produto";
+            int quantidade = parseQuantidade(pedido.getQuantidade());
+            agrupados.merge(nome, quantidade, Integer::sum);
+        }
+        return agrupados;
+    }
+
+    private int parseQuantidade(String quantidade) {
+        if (quantidade == null || quantidade.isBlank()) {
+            return 0;
+        }
+        try {
+            return Math.max(0, Integer.parseInt(quantidade.trim()));
+        } catch (NumberFormatException e) {
+            return 1;
+        }
+    }
+
+    private String montarEnderecoTexto(Endereco endereco) {
+        if (endereco == null) {
+            return "Sem endereco";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        appendParte(sb, endereco.getCep());
+        appendParte(sb, endereco.getRua());
+        appendParte(sb, endereco.getNumero());
+        appendParte(sb, endereco.getBairro());
+        appendParte(sb, "Foz do Iguacu");
+        appendParte(sb, "Parana");
+        appendParte(sb, "Brasil");
+        return sb.length() > 0 ? sb.toString() : "Sem endereco";
+    }
+
+    private void appendParte(StringBuilder sb, String valor) {
+        if (valor == null || valor.isBlank()) {
+            return;
+        }
+        if (sb.length() > 0) {
+            sb.append(", ");
+        }
+        sb.append(valor.trim());
+    }
+
+    private GeoPosition fallbackRegional(String enderecoTexto) {
+        String normalizado = enderecoTexto == null ? "" : enderecoTexto.toLowerCase(Locale.ROOT);
+        if (normalizado.contains("santa terezinha")) {
+            return SANTA_TEREZINHA_CENTRO;
+        }
+        return FOZ_DO_IGUACU_CENTRO;
+    }
+
+    private boolean podeTentarGeocode(ClientesRomaneio cliente) {
+        if (cliente.getId() == null) {
+            return false;
+        }
+        Long ultimaTentativa = ultimaTentativaGeocode.get(cliente.getId());
+        if (ultimaTentativa == null) {
+            return true;
+        }
+        return System.currentTimeMillis() - ultimaTentativa >= REINTENTO_GEOCODE_MS;
+    }
+
+    private void registrarTentativaGeocode(ClientesRomaneio cliente) {
+        if (cliente.getId() != null) {
+            ultimaTentativaGeocode.put(cliente.getId(), System.currentTimeMillis());
+        }
     }
 
     private double calcularDistanciaDaRota() {
@@ -409,8 +632,8 @@ public class TelaGPS extends JFrame {
             Set<GeoPosition> conjunto = new LinkedHashSet<>(posicoes);
             mapa.zoomToBestFit(conjunto, 0.72);
         } else {
-            mapa.setCenterPosition(CENTRO_OESTE_PR);
-            mapa.setZoom(10);
+            mapa.setCenterPosition(FOZ_DO_IGUACU_CENTRO);
+            mapa.setZoom(11);
         }
     }
 
@@ -419,7 +642,7 @@ public class TelaGPS extends JFrame {
             java.awt.geom.Point2D ponto = mapa.convertGeoPositionToPoint(marcador.getPosition());
             if (ponto.distance(e.getPoint()) <= 12) {
                 if (marcador.entrega != null) {
-                    abrirDetalhesEntrega(marcador.entrega);
+                    selecionarEntrega(marcador.entrega, true);
                 }
                 return;
             }
@@ -435,6 +658,135 @@ public class TelaGPS extends JFrame {
             }
         }
         return marcadores;
+    }
+
+    private void selecionarEntregaPorClienteId(Long clienteId, boolean centralizarMapa) {
+        if (clienteId == null) {
+            return;
+        }
+        EntregaMarcada entrega = entregasPorCliente.get(clienteId);
+        if (entrega != null) {
+            selecionarEntrega(entrega, centralizarMapa);
+        }
+    }
+
+    private void selecionarEntrega(EntregaMarcada entrega, boolean centralizarMapa) {
+        if (entrega == null) {
+            atualizarPainelDetalhe(null);
+            return;
+        }
+
+        clienteSelecionadoId = entrega.cliente.getId();
+        atualizarPainelDetalhe(entrega);
+
+        if (centralizarMapa && entrega.posicao != null) {
+            mapa.setCenterPosition(entrega.posicao);
+            mapa.setZoom(Math.max(mapa.getZoom(), 14));
+        }
+
+        int indice = entregasTodas.indexOf(entrega);
+        if (indice >= 0 && indice < tabelaEntregas.getRowCount()) {
+            bloqueandoSelecaoTabela = true;
+            try {
+                tabelaEntregas.getSelectionModel().setSelectionInterval(indice, indice);
+                tabelaEntregas.scrollRectToVisible(tabelaEntregas.getCellRect(indice, 0, true));
+            } finally {
+                bloqueandoSelecaoTabela = false;
+            }
+        }
+    }
+
+    private void atualizarPainelDetalhe(EntregaMarcada entrega) {
+        if (lblClienteDetalhe == null) {
+            return;
+        }
+        if (entrega == null) {
+            lblClienteDetalhe.setText("Cliente: -");
+            lblEnderecoDetalhe.setText("Endereco: -");
+            lblStatusDetalhe.setText("Status: -");
+            lblDistanciaDetalhe.setText("Distancia: -");
+            lblTotalProdutos.setText("Total de produtos: 0");
+            if (modeloProdutos != null) {
+                modeloProdutos.setRowCount(0);
+            }
+            if (btnEncerrarEntrega != null) {
+                btnEncerrarEntrega.setEnabled(false);
+            }
+            return;
+        }
+
+        lblClienteDetalhe.setText("Cliente: " + entrega.cliente.getNome_cliente());
+        lblEnderecoDetalhe.setText("Endereco: " + entrega.enderecoTexto);
+        lblStatusDetalhe.setText("Status: " + (entrega.entregue ? "ENTREGUE" : "PENDENTE"));
+        lblDistanciaDetalhe.setText("Distancia: " + formatarNumero(entrega.distanciaDoCaminhaoKm) + " km");
+
+        if (modeloProdutos != null) {
+            modeloProdutos.setRowCount(0);
+            Map<String, Integer> agrupados = agruparProdutos(entrega.cliente);
+            int total = 0;
+            for (Map.Entry<String, Integer> entry : agrupados.entrySet()) {
+                modeloProdutos.addRow(new Object[]{entry.getKey(), entry.getValue()});
+                total += entry.getValue();
+            }
+            lblTotalProdutos.setText("Total de produtos: " + total);
+        }
+
+        if (btnEncerrarEntrega != null) {
+            btnEncerrarEntrega.setEnabled(podeEncerrarEntrega(entrega) && !entrega.entregue);
+            btnEncerrarEntrega.setText(podeEncerrarEntrega(entrega) ? "Encerrar entrega" : "Sem permissão");
+        }
+    }
+
+    private boolean podeEncerrarEntrega(EntregaMarcada entrega) {
+        if (entrega == null || entrega.cliente == null) {
+            return false;
+        }
+        if (sessaoUsuario == null) {
+            return true;
+        }
+        if (sessaoUsuario.isAdmin()) {
+            return true;
+        }
+        if (sessaoUsuario.getMotorista() == null || romaneio.getMotorista() == null) {
+            return false;
+        }
+        Long motoristaSessaoId = sessaoUsuario.getMotorista().getId();
+        Long motoristaRomaneioId = romaneio.getMotorista().getId();
+        return motoristaSessaoId != null && motoristaSessaoId.equals(motoristaRomaneioId);
+    }
+
+    private void encerrarEntregaSelecionada() {
+        if (clienteSelecionadoId == null) {
+            JOptionPane.showMessageDialog(this, "Selecione uma entrega primeiro.");
+            return;
+        }
+        EntregaMarcada entrega = entregasPorCliente.get(clienteSelecionadoId);
+        if (entrega == null) {
+            JOptionPane.showMessageDialog(this, "Entrega nao encontrada.");
+            return;
+        }
+        if (!podeEncerrarEntrega(entrega)) {
+            JOptionPane.showMessageDialog(this, "Voce nao tem permissao para concluir esta entrega.");
+            return;
+        }
+        int opcao = JOptionPane.showConfirmDialog(
+                this,
+                "Finalizar a entrega de " + entrega.cliente.getNome_cliente() + "?",
+                "Encerrar entrega",
+                JOptionPane.YES_NO_OPTION
+        );
+        if (opcao == JOptionPane.YES_OPTION) {
+            encerrarEntrega(entrega);
+        }
+    }
+
+    private void iniciarAtualizacaoPeriodica() {
+        if (timerAtualizacao != null) {
+            timerAtualizacao.stop();
+        }
+        timerAtualizacao = new Timer(ATUALIZACAO_MS, e -> carregarDados(false));
+        timerAtualizacao.setRepeats(true);
+        timerAtualizacao.start();
     }
 
     private void abrirDetalhesEntrega(EntregaMarcada entrega) {
@@ -562,6 +914,19 @@ public class TelaGPS extends JFrame {
         painelDesfazer.repaint();
     }
 
+    @Override
+    public void dispose() {
+        if (timerAtualizacao != null) {
+            timerAtualizacao.stop();
+            timerAtualizacao = null;
+        }
+        if (timerDesfazer != null) {
+            timerDesfazer.stop();
+            timerDesfazer = null;
+        }
+        super.dispose();
+    }
+
     private JPanel criarLinha(String rotulo, String valor) {
         JPanel linha = new JPanel(new BorderLayout(10, 0));
         linha.setOpaque(false);
@@ -613,13 +978,9 @@ public class TelaGPS extends JFrame {
     private class MarcadorRenderer implements WaypointRenderer<MarcadorEntrega> {
         @Override
         public void paintWaypoint(Graphics2D g, JXMapViewer map, MarcadorEntrega waypoint) {
-            Point screen = new Point();
-            java.awt.geom.Point2D point = map.convertGeoPositionToPoint(waypoint.getPosition());
-            screen.setLocation(point);
-
             int tamanho = waypoint.origem ? 42 : 18;
-            int x = (int) Math.round(screen.x - tamanho / 2.0);
-            int y = (int) Math.round(screen.y - tamanho / 2.0);
+            int x = -tamanho / 2;
+            int y = -tamanho / 2;
 
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             if (waypoint.origem && imagemDelivery != null) {

@@ -303,7 +303,7 @@ public class TelaPrincipal extends JFrame {
         rodape.getBtnGps().addActionListener(e -> {
             Romaneios r = romaneioSelecionadoDaTabelaAdmin();
             if (r != null) {
-                new TelaGPS(r, romaneiosService);
+                new TelaGPS(r, romaneiosService, sessaoAtual);
             }
         });
 
@@ -341,7 +341,7 @@ public class TelaPrincipal extends JFrame {
         btnDetalhes.addActionListener(e -> {
             Romaneios r = romaneioSelecionadoDaTabelaMotorista();
             if (r != null)
-                new DialogDetalhesRomaneio(this, r, romaneiosService, this::carregarRomaneiosMotorista);
+                new DialogDetalhesRomaneio(this, r, romaneiosService, this::carregarRomaneiosMotorista, sessaoAtual);
         });
         JButton btnGps = new JButton("GPS");
         btnGps.setBackground(new Color(33, 150, 243));
@@ -349,7 +349,7 @@ public class TelaPrincipal extends JFrame {
         btnGps.addActionListener(e -> {
             Romaneios r = romaneioSelecionadoDaTabelaMotorista();
             if (r != null) {
-                new TelaGPS(r, romaneiosService);
+                new TelaGPS(r, romaneiosService, sessaoAtual);
             }
         });
         rodape.add(btnDetalhes);
