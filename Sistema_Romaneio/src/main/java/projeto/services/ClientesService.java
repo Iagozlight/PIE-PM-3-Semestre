@@ -30,7 +30,7 @@ public class ClientesService {
             String enderecoBusca = endereco.getRua() + ", " +
                     endereco.getNumero() + " - " +
                     endereco.getBairro() + ", " +
-                    endereco.getCep();
+                    endereco.getCep() + ", Foz do Iguacu, PR, Brasil";
 
             try {
                 double[] coordenadas = nominatimService.buscarCoordenadas(enderecoBusca);
