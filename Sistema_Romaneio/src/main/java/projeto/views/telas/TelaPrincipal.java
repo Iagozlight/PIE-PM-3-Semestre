@@ -26,6 +26,7 @@ import projeto.views.dialogs.DialogDetalhesRomaneio;
 import projeto.views.dialogs.DialogEditarRomaneio;
 import projeto.views.dialogs.DialogNovoCliente;
 import projeto.views.dialogs.DialogNovoRomaneio;
+import projeto.views.telas.TelaGPS;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -299,6 +300,13 @@ public class TelaPrincipal extends JFrame {
                 new DialogEditarRomaneio(this, r, romaneiosService, clientesRomaneioRepository, this::carregarRomaneiosAdmin);
         });
 
+        rodape.getBtnGps().addActionListener(e -> {
+            Romaneios r = romaneioSelecionadoDaTabelaAdmin();
+            if (r != null) {
+                new TelaGPS(r, romaneiosService, sessaoAtual);
+            }
+        });
+
         return painelRomaneiosAdmin;
     }
 
@@ -333,9 +341,19 @@ public class TelaPrincipal extends JFrame {
         btnDetalhes.addActionListener(e -> {
             Romaneios r = romaneioSelecionadoDaTabelaMotorista();
             if (r != null)
-                new DialogDetalhesRomaneio(this, r, romaneiosService, this::carregarRomaneiosMotorista);
+                new DialogDetalhesRomaneio(this, r, romaneiosService, this::carregarRomaneiosMotorista, sessaoAtual);
+        });
+        JButton btnGps = new JButton("GPS");
+        btnGps.setBackground(new Color(33, 150, 243));
+        btnGps.setForeground(Color.WHITE);
+        btnGps.addActionListener(e -> {
+            Romaneios r = romaneioSelecionadoDaTabelaMotorista();
+            if (r != null) {
+                new TelaGPS(r, romaneiosService, sessaoAtual);
+            }
         });
         rodape.add(btnDetalhes);
+        rodape.add(btnGps);
         painelRomaneiosMotorista.add(rodape, BorderLayout.SOUTH);
         return painelRomaneiosMotorista;
     }
@@ -719,10 +737,6 @@ public class TelaPrincipal extends JFrame {
         URL iconUrl = getClass().getResource("/view/icons/supplies.png");
         if (iconUrl != null) setIconImage(new ImageIcon(iconUrl).getImage());
     }
-
-    // =========================================================
-    // MAIN
-    // =========================================================
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

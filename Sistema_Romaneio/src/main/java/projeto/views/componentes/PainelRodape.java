@@ -9,6 +9,7 @@ public class PainelRodape extends JPanel {
     private JButton btnAtribuirMotorista;
     private JButton btnDeletar;
     private JButton btnEditar;
+    private JButton btnGps;
 
     private final Color corFundo = new Color(245, 240, 225);
     private final Color corMarrom = new Color(60, 42, 33);
@@ -38,14 +39,20 @@ public class PainelRodape extends JPanel {
         btnEditar.setBackground(new Color(255, 193, 7));
         btnEditar.setForeground(corMarrom);
 
+        btnGps = new JButton("GPS");
+        btnGps.setBackground(new Color(33, 150, 243));
+        btnGps.setForeground(Color.WHITE);
+
         add(btnAtribuirVeiculo);
         add(btnAtribuirMotorista);
         add(btnDeletar);
         add(btnEditar);
+        add(btnGps);
     }
 
     public JButton getBtnAtribuirVeiculo() { return btnAtribuirVeiculo; }
     public JButton getBtnAtribuirMotorista() { return btnAtribuirMotorista; }
     public JButton getBtnDeletar() { return btnDeletar; }
     public JButton getBtnEditar() { return btnEditar; }
+    public JButton getBtnGps() { return btnGps; }
 }
