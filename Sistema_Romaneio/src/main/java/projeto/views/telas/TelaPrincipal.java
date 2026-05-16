@@ -303,7 +303,7 @@ public class TelaPrincipal extends JFrame {
         rodape.getBtnGps().addActionListener(e -> {
             Romaneios r = romaneioSelecionadoDaTabelaAdmin();
             if (r != null) {
-                new TelaGPS(r);
+                new TelaGPS(r, romaneiosService);
             }
         });
 
@@ -343,7 +343,17 @@ public class TelaPrincipal extends JFrame {
             if (r != null)
                 new DialogDetalhesRomaneio(this, r, romaneiosService, this::carregarRomaneiosMotorista);
         });
+        JButton btnGps = new JButton("GPS");
+        btnGps.setBackground(new Color(33, 150, 243));
+        btnGps.setForeground(Color.WHITE);
+        btnGps.addActionListener(e -> {
+            Romaneios r = romaneioSelecionadoDaTabelaMotorista();
+            if (r != null) {
+                new TelaGPS(r, romaneiosService);
+            }
+        });
         rodape.add(btnDetalhes);
+        rodape.add(btnGps);
         painelRomaneiosMotorista.add(rodape, BorderLayout.SOUTH);
         return painelRomaneiosMotorista;
     }

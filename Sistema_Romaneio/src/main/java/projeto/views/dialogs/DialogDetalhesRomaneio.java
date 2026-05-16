@@ -126,7 +126,7 @@ public class DialogDetalhesRomaneio extends JDialog {
         btnGps.setBackground(new Color(33, 150, 243));
         btnGps.setForeground(Color.WHITE);
         btnGps.setFont(new Font("Arial", Font.BOLD, 13));
-        btnGps.addActionListener(e -> new TelaGPS(romaneio));
+        btnGps.addActionListener(e -> new TelaGPS(romaneio, romaneiosService));
 
         // Desabilita o botão se já estiver em rota
         if ("EM ROTA".equals(romaneio.getStatus())) {
