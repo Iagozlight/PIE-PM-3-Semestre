@@ -29,6 +29,9 @@ public class ClientesRomaneio {
     @JoinColumn(name = "romaneios_id")
     private Romaneios romaneio;
 
+    @Column(name = "entregue")
+    private Boolean entregue = false;
+
     public ClientesRomaneio() {}
 
     public ClientesRomaneio(Long id, String nome_cliente, String cpf)
@@ -63,6 +66,9 @@ public class ClientesRomaneio {
 
     public Endereco getEndereco() { return endereco; }
     public void setEndereco(Endereco endereco) { this.endereco = endereco; }
+
+    public Boolean getEntregue() { return entregue; }
+    public void setEntregue(Boolean entregue) { this.entregue = entregue; }
 
     @Override
     public String toString() {
