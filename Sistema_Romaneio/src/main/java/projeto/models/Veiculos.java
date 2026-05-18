@@ -11,7 +11,7 @@ public class Veiculos {
     private Long id;
 
     @Column(name = "nome", nullable = false, length = 50)
-    private String nomeVeiculo;
+    private String modelo;
 
     @Column(name = "placa", nullable = false, length = 50)
     private String placa;
@@ -21,9 +21,9 @@ public class Veiculos {
 
     public Veiculos() {}
 
-    public Veiculos(Long id, String nomeVeiculo, String placa, Boolean disponibilidade) {
+    public Veiculos(Long id, String modelo, String placa, Boolean disponibilidade) {
         this.id = id;
-        this.nomeVeiculo = nomeVeiculo;
+        this.modelo = modelo;
         this.placa = placa;
         this.disponibilidade = disponibilidade;
     }
@@ -31,8 +31,11 @@ public class Veiculos {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getNomeVeiculo() { return nomeVeiculo; }
-    public void setNomeVeiculo(String nomeVeiculo) { this.nomeVeiculo = nomeVeiculo; }
+    public String getModelo() { return modelo; }
+    public void setModelo(String modelo) { this.modelo = modelo; }
+
+    public String getNomeVeiculo() { return modelo; }
+    public void setNomeVeiculo(String nomeVeiculo) { this.modelo = nomeVeiculo; }
 
     public String getPlaca() { return placa; }
     public void setPlaca(String placa) { this.placa = placa; }
@@ -42,9 +45,8 @@ public class Veiculos {
 
     @Override
     public String toString() {
-        return "Veiculo{id=" + id + ", nome='" + nomeVeiculo +
+        return "Veiculo{id=" + id + ", modelo='" + modelo +
                 "', placa='" + placa +
-                "', disponibilidade=" + (disponibilidade ? "Disponível" : "Indisponível") + "}";
+                "', disponibilidade=" + (disponibilidade ? "Disponivel" : "Indisponivel") + "}";
     }
-
 }

@@ -7,6 +7,7 @@ public class PainelTopo extends JPanel {
 
     private JButton btnNovoCliente;
     private JButton btnNovoRomaneio;
+    private JButton btnVeiculos;
 
     private final Color corFundo = new Color(245, 240, 225);
     private final Color corMarrom = new Color(60, 42, 33);
@@ -35,8 +36,13 @@ public class PainelTopo extends JPanel {
         btnNovoRomaneio.setBackground(corBege);
         btnNovoRomaneio.setForeground(corMarrom);
 
+        btnVeiculos = new JButton("Veiculos");
+        btnVeiculos.setBackground(corBege);
+        btnVeiculos.setForeground(corMarrom);
+
         painelBotoes.add(btnNovoCliente);
         painelBotoes.add(btnNovoRomaneio);
+        painelBotoes.add(btnVeiculos);
 
         add(titulo, BorderLayout.WEST);
         add(painelBotoes, BorderLayout.EAST);
@@ -44,4 +50,5 @@ public class PainelTopo extends JPanel {
 
     public JButton getBtnNovoCliente() { return btnNovoCliente; }
     public JButton getBtnNovoRomaneio() { return btnNovoRomaneio; }
+    public JButton getBtnVeiculos() { return btnVeiculos; }
 }

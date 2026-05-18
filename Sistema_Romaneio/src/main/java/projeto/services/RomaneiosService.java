@@ -4,6 +4,8 @@ import projeto.models.*;
 import projeto.repositories.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class RomaneiosService {
@@ -20,7 +22,12 @@ public class RomaneiosService {
     public void criarRomaneio(LocalDate data, List<ClientesRomaneio> clientes) {
         Romaneios romaneio = new Romaneios(null, data);
 
-        for (ClientesRomaneio cliente : clientes) {
+        List<ClientesRomaneio> clientesOrdenados = new ArrayList<>(clientes);
+        clientesOrdenados.sort(Comparator
+                .comparing(ClientesRomaneio::getCidadePrincipal, String.CASE_INSENSITIVE_ORDER)
+                .thenComparing(ClientesRomaneio::getNome_cliente, String.CASE_INSENSITIVE_ORDER));
+
+        for (ClientesRomaneio cliente : clientesOrdenados) {
             cliente.setRomaneio(romaneio);
             romaneio.getClientes().add(cliente);
         }

@@ -58,7 +58,7 @@ public class DialogAtribuirVeiculo extends JDialog {
         veiculos = veiculosRepository.findAll();
         DefaultListModel<String> modelo = new DefaultListModel<>();
         for (Veiculos v : veiculos) {
-            modelo.addElement(v.getNomeVeiculo() + " - " + v.getPlaca());
+            modelo.addElement(v.getModelo() + " - " + v.getPlaca());
         }
 
         listaVeiculos = new JList<>(modelo);

@@ -16,6 +16,7 @@ import projeto.repositories.VeiculosRepository;
 import projeto.services.ClientesService;
 import projeto.services.RomaneiosService;
 import projeto.services.UsuariosService;
+import projeto.services.VeiculosService;
 import projeto.views.componentes.PainelRodape;
 import projeto.views.componentes.PainelTopo;
 import projeto.views.componentes.TabelaRomaneios;
@@ -24,6 +25,7 @@ import projeto.views.dialogs.DialogAtribuirMotorista;
 import projeto.views.dialogs.DialogAtribuirVeiculo;
 import projeto.views.dialogs.DialogDetalhesRomaneio;
 import projeto.views.dialogs.DialogEditarRomaneio;
+import projeto.views.dialogs.DialogGerenciarVeiculos;
 import projeto.views.dialogs.DialogNovoCliente;
 import projeto.views.dialogs.DialogNovoRomaneio;
 import projeto.views.telas.TelaGPS;
@@ -103,6 +105,7 @@ public class TelaPrincipal extends JFrame {
     private RomaneiosRepository        romaneiosRepository;
     private ClientesRomaneioRepository clientesRomaneioRepository;
     private VeiculosRepository         veiculosRepository;
+    private VeiculosService            veiculosService;
     private UsuariosService            usuariosService;
     private ClientesService            clientesService;
     private RomaneiosService           romaneiosService;
@@ -129,6 +132,7 @@ public class TelaPrincipal extends JFrame {
         romaneiosRepository        = new RomaneiosRepository(entityManager);
         clientesRomaneioRepository = new ClientesRomaneioRepository(entityManager);
         veiculosRepository         = new VeiculosRepository(entityManager);
+        veiculosService            = new VeiculosService(veiculosRepository);
         usuariosService            = new UsuariosService(usuarioRepository, motoristasRepository);
         clientesService            = new ClientesService(clientesRomaneioRepository);
         romaneiosService           = new RomaneiosService(romaneiosRepository, clientesRomaneioRepository);
@@ -269,6 +273,8 @@ public class TelaPrincipal extends JFrame {
                 new DialogNovoCliente(this, clientesService));
         topo.getBtnNovoRomaneio().addActionListener(e ->
                 new DialogNovoRomaneio(this, romaneiosService, this::carregarRomaneiosAdmin));
+        topo.getBtnVeiculos().addActionListener(e ->
+                new DialogGerenciarVeiculos(this, veiculosService, this::carregarRomaneiosAdmin));
 
         rodape.getBtnDeletar().addActionListener(e -> {
             Romaneios r = romaneioSelecionadoDaTabelaAdmin();

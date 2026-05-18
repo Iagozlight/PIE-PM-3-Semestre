@@ -3,6 +3,8 @@ package projeto.models;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -22,6 +24,9 @@ public class ClientesRomaneio {
     @Embedded
     private Endereco endereco;
 
+    @Column(name = "cidades_atendidas", length = 255)
+    private String cidadesAtendidas;
+
     @OneToMany(mappedBy = "clientes", cascade = CascadeType.ALL)
     private List<Pedidos> pedidos = new ArrayList<>();
 
@@ -34,8 +39,7 @@ public class ClientesRomaneio {
 
     public ClientesRomaneio() {}
 
-    public ClientesRomaneio(Long id, String nome_cliente, String cpf)
-    {
+    public ClientesRomaneio(Long id, String nome_cliente, String cpf) {
         this.id = id;
         this.nome_cliente = nome_cliente;
         this.cpf = cpf;
@@ -44,6 +48,7 @@ public class ClientesRomaneio {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -51,6 +56,7 @@ public class ClientesRomaneio {
     public String getNome_cliente() {
         return nome_cliente;
     }
+
     public void setNome_cliente(String nome_cliente) {
         this.nome_cliente = nome_cliente;
     }
@@ -70,10 +76,45 @@ public class ClientesRomaneio {
     public Boolean getEntregue() { return entregue; }
     public void setEntregue(Boolean entregue) { this.entregue = entregue; }
 
+    public String getCidadesAtendidas() {
+        return cidadesAtendidas;
+    }
+
+    public void setCidadesAtendidas(String cidadesAtendidas) {
+        this.cidadesAtendidas = cidadesAtendidas;
+    }
+
+    public List<String> getListaCidadesAtendidas() {
+        if (cidadesAtendidas == null || cidadesAtendidas.isBlank()) {
+            return Collections.emptyList();
+        }
+        return Arrays.stream(cidadesAtendidas.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .toList();
+    }
+
+    public void setListaCidadesAtendidas(List<String> cidades) {
+        if (cidades == null || cidades.isEmpty()) {
+            this.cidadesAtendidas = null;
+            return;
+        }
+        this.cidadesAtendidas = String.join(", ", cidades);
+    }
+
+    public String getCidadePrincipal() {
+        List<String> cidades = getListaCidadesAtendidas();
+        if (!cidades.isEmpty()) {
+            return cidades.get(0);
+        }
+        return endereco != null ? endereco.getCidade() : null;
+    }
+
     @Override
     public String toString() {
         return "ClientesRomaneio{id=" + id + ", nome='" + nome_cliente +
-                "', cpf='" + cpf + "', endereco='" + endereco + "', pedidos='" + pedidos + "}";
+                "', cpf='" + cpf + "', endereco='" + endereco + "', cidades='" + cidadesAtendidas +
+                "', pedidos='" + pedidos + "}";
     }
 
 }

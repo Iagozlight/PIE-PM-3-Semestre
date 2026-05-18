@@ -82,6 +82,7 @@ public class DialogDetalhesRomaneio extends JDialog {
         for (ClientesRomaneio c : romaneio.getClientes()) {
             String endereco = c.getEndereco() != null ?
                     c.getEndereco().getRua() + ", " + c.getEndereco().getNumero() + " - " + c.getEndereco().getBairro()
+                            + " - " + c.getEndereco().getCidade()
                     : "Sem endereço";
 
             if (c.getPedidos().isEmpty()) {

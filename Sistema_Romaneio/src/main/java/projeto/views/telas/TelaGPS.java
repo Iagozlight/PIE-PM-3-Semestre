@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -379,17 +380,25 @@ public class TelaGPS extends JFrame {
         entregasPorCliente.clear();
 
         List<ClientesRomaneio> clientes = romaneio.getClientes();
-        int entregasPendentes = 0;
+        List<EntregaMarcada> entregasOrdenadas = new ArrayList<>();
         for (ClientesRomaneio cliente : clientes) {
-            EntregaMarcada entrega = montarEntrega(cliente);
+            entregasOrdenadas.add(montarEntrega(cliente));
+        }
+
+        entregasOrdenadas.sort(Comparator
+                .comparing((EntregaMarcada e) -> prioridadeCidade(e.cliente)).thenComparing(e -> e.cliente.getNome_cliente(), String.CASE_INSENSITIVE_ORDER)
+                .thenComparingDouble(e -> e.distanciaDoCaminhaoKm));
+
+        int entregasPendentes = 0;
+        for (EntregaMarcada entrega : entregasOrdenadas) {
             entregasTodas.add(entrega);
-            if (cliente.getId() != null) {
-                entregasPorCliente.put(cliente.getId(), entrega);
+            if (entrega.cliente.getId() != null) {
+                entregasPorCliente.put(entrega.cliente.getId(), entrega);
             }
 
             String status = entrega.entregue ? "ENTREGUE" : "PENDENTE";
             modeloTabela.addRow(new Object[]{
-                    cliente.getNome_cliente(),
+                    entrega.cliente.getNome_cliente(),
                     entrega.enderecoTexto,
                     entrega.posicao != null ? formatarNumero(entrega.distanciaDoCaminhaoKm) + " km" : "-",
                     status
@@ -438,7 +447,7 @@ public class TelaGPS extends JFrame {
                 if (podeTentarGeocode(cliente)) {
                     double[] coordenadas = nominatimService.buscarCoordenadas(
                             endereco,
-                            "Foz do Iguacu"
+                            prioridadeCidade(cliente)
                     );
                     if (coordenadas != null) {
                         endereco.setLatitude(coordenadas[0]);
@@ -449,10 +458,10 @@ public class TelaGPS extends JFrame {
                         ultimaTentativaGeocode.remove(cliente.getId());
                     } else {
                         registrarTentativaGeocode(cliente);
-                        posicao = fallbackRegional(enderecoTexto);
+                        posicao = fallbackRegional(cliente, enderecoTexto);
                     }
                 } else {
-                    posicao = fallbackRegional(enderecoTexto);
+                    posicao = fallbackRegional(cliente, enderecoTexto);
                 }
             }
         } else {
@@ -515,7 +524,7 @@ public class TelaGPS extends JFrame {
         appendParte(sb, endereco.getRua());
         appendParte(sb, endereco.getNumero());
         appendParte(sb, endereco.getBairro());
-        appendParte(sb, "Foz do Iguacu");
+        appendParte(sb, endereco.getCidade());
         appendParte(sb, "Parana");
         appendParte(sb, "Brasil");
         return sb.length() > 0 ? sb.toString() : "Sem endereco";
@@ -531,12 +540,31 @@ public class TelaGPS extends JFrame {
         sb.append(valor.trim());
     }
 
-    private GeoPosition fallbackRegional(String enderecoTexto) {
-        String normalizado = enderecoTexto == null ? "" : enderecoTexto.toLowerCase(Locale.ROOT);
+    private GeoPosition fallbackRegional(ClientesRomaneio cliente, String enderecoTexto) {
+        String normalizado = (prioridadeCidade(cliente) + " " + (enderecoTexto == null ? "" : enderecoTexto))
+                .toLowerCase(Locale.ROOT);
         if (normalizado.contains("santa terezinha")) {
             return SANTA_TEREZINHA_CENTRO;
         }
+        if (normalizado.contains("medianeira")) {
+            return CENTRO_OESTE_PR;
+        }
         return FOZ_DO_IGUACU_CENTRO;
+    }
+
+    private String prioridadeCidade(ClientesRomaneio cliente) {
+        if (cliente == null) {
+            return "Foz do Iguacu";
+        }
+        List<String> cidades = cliente.getListaCidadesAtendidas();
+        if (!cidades.isEmpty()) {
+            return cidades.get(0);
+        }
+        Endereco endereco = cliente.getEndereco();
+        if (endereco != null && endereco.getCidade() != null && !endereco.getCidade().isBlank()) {
+            return endereco.getCidade();
+        }
+        return "Foz do Iguacu";
     }
 
     private boolean podeTentarGeocode(ClientesRomaneio cliente) {

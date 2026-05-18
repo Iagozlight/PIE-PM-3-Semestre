@@ -20,6 +20,9 @@ public class Endereco {
     @Column(name = "bairro", nullable = false, length = 50)
     private String bairro;
 
+    @Column(name = "cidade", nullable = false, length = 80)
+    private String cidade;
+
     @Column(name = "complemento", length = 50)
     private String complemento;
 
@@ -34,16 +37,18 @@ public class Endereco {
 
     public Endereco() {}
 
-    public Endereco(String cep, String rua, String numero, String bairro, String complemento, String referencia) {
-        this(cep, rua, numero, bairro, complemento, referencia, null, null);
+    public Endereco(String cep, String rua, String numero, String bairro, String cidade,
+                    String complemento, String referencia) {
+        this(cep, rua, numero, bairro, cidade, complemento, referencia, null, null);
     }
 
-    public Endereco(String cep, String rua, String numero, String bairro, String complemento, String referencia,
-                    Double latitude, Double longitude) {
+    public Endereco(String cep, String rua, String numero, String bairro, String cidade,
+                    String complemento, String referencia, Double latitude, Double longitude) {
         this.cep = cep;
         this.rua = rua;
         this.numero = numero;
         this.bairro = bairro;
+        this.cidade = cidade;
         this.complemento = complemento;
         this.referencia = referencia;
         this.latitude = latitude;
@@ -63,6 +68,9 @@ public class Endereco {
         }
         if (bairro == null || bairro.isEmpty()) {
             throw new IllegalArgumentException("Bairro e obrigatorio.");
+        }
+        if (cidade == null || cidade.isEmpty()) {
+            throw new IllegalArgumentException("Cidade e obrigatoria.");
         }
         if ((latitude == null) != (longitude == null)) {
             throw new IllegalArgumentException("Latitude e longitude devem ser informadas juntas.");
@@ -87,6 +95,8 @@ public class Endereco {
                 String numeroCasa = scanner.nextLine();
                 System.out.println("Bairro: ");
                 String bairroCliente = scanner.nextLine();
+                System.out.println("Cidade: ");
+                String cidadeCliente = scanner.nextLine();
                 System.out.println("Complemento(Opcional): ");
                 String complementoCasa = scanner.nextLine();
                 System.out.println("Referencia(Opcional): ");
@@ -104,8 +114,8 @@ public class Endereco {
                         ? null
                         : Double.parseDouble(longitudeStr.replace(",", "."));
 
-                return new Endereco(cepCasa, ruaCliente, numeroCasa, bairroCliente, complementoCasa, referenciaCasa,
-                        latitude, longitude);
+                return new Endereco(cepCasa, ruaCliente, numeroCasa, bairroCliente, cidadeCliente,
+                        complementoCasa, referenciaCasa, latitude, longitude);
             } catch (NumberFormatException e) {
                 System.out.println("Latitude/longitude invalidas. Use numeros validos.");
             } catch (IllegalArgumentException e) {
@@ -126,6 +136,9 @@ public class Endereco {
     public String getBairro() { return bairro; }
     public void setBairro(String bairro) { this.bairro = bairro; }
 
+    public String getCidade() { return cidade; }
+    public void setCidade(String cidade) { this.cidade = cidade; }
+
     public String getComplemento() { return complemento; }
     public void setComplemento(String complemento) { this.complemento = complemento; }
 
@@ -141,7 +154,7 @@ public class Endereco {
     @Override
     public String toString() {
         return "Endereco{cep='" + cep + "', rua='" + rua + "', numero='" + numero +
-                "', bairro='" + bairro + "', complemento='" + complemento +
+                "', bairro='" + bairro + "', cidade='" + cidade + "', complemento='" + complemento +
                 "', referencia='" + referencia + "', latitude=" + latitude +
                 ", longitude=" + longitude + "}";
     }

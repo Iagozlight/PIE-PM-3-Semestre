@@ -8,9 +8,20 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DialogNovoCliente extends JDialog {
+
+    private static final List<String> CIDADES_DISPONIVEIS = List.of(
+            "Foz do Iguacu",
+            "Santa Terezinha de Itaipu",
+            "Medianeira",
+            "Matelandia",
+            "Itaipulandia",
+            "Sao Miguel do Iguacu",
+            "Santa Helena"
+    );
 
     private JTextField campoNome;
     private JTextField campoCpf;
@@ -20,6 +31,8 @@ public class DialogNovoCliente extends JDialog {
     private JTextField campoBairro;
     private JTextField campoComplemento;
     private JTextField campoReferencia;
+    private JComboBox<String> comboCidade;
+    private JList<String> listaCidades;
     private JTextField campoProduto;
     private JTextField campoQuantidade;
     private JTable tabelaPedidos;
@@ -36,7 +49,7 @@ public class DialogNovoCliente extends JDialog {
     public DialogNovoCliente(JFrame parent, ClientesService clientesService) {
         super(parent, "Novo Cliente", true);
         this.clientesService = clientesService;
-        setSize(500, 650);
+        setSize(560, 760);
         setLocationRelativeTo(parent);
         setResizable(false);
         iniciarComponentes();
@@ -47,25 +60,21 @@ public class DialogNovoCliente extends JDialog {
         setLayout(new BorderLayout());
         getContentPane().setBackground(corFundo);
 
-        // ===== PAINEL PRINCIPAL =====
         JPanel painelPrincipal = new JPanel();
         painelPrincipal.setLayout(new BoxLayout(painelPrincipal, BoxLayout.Y_AXIS));
         painelPrincipal.setBackground(corFundo);
         painelPrincipal.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
 
-        // ===== DADOS DO CLIENTE =====
         painelPrincipal.add(criarTitulo("Dados do Cliente"));
         painelPrincipal.add(Box.createVerticalStrut(5));
 
         campoNome = new JTextField();
         campoCpf = new JTextField();
-
         painelPrincipal.add(criarCampo("Nome:", campoNome));
         painelPrincipal.add(criarCampo("CPF:", campoCpf));
         painelPrincipal.add(Box.createVerticalStrut(10));
 
-        // ===== ENDEREÇO =====
-        painelPrincipal.add(criarTitulo("Endereço"));
+        painelPrincipal.add(criarTitulo("Endereco"));
         painelPrincipal.add(Box.createVerticalStrut(5));
 
         campoCep = new JTextField();
@@ -77,19 +86,58 @@ public class DialogNovoCliente extends JDialog {
 
         painelPrincipal.add(criarCampo("CEP:", campoCep));
         painelPrincipal.add(criarCampo("Rua:", campoRua));
-        painelPrincipal.add(criarCampo("Número:", campoNumero));
+        painelPrincipal.add(criarCampo("Numero:", campoNumero));
         painelPrincipal.add(criarCampo("Bairro:", campoBairro));
+
+        JPanel painelCidade = new JPanel(new BorderLayout(10, 0));
+        painelCidade.setBackground(corFundo);
+        painelCidade.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+        painelCidade.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JLabel lblCidade = new JLabel("Cidade:");
+        lblCidade.setForeground(corMarrom);
+        lblCidade.setFont(new Font("Arial", Font.PLAIN, 13));
+        lblCidade.setPreferredSize(new Dimension(100, 25));
+        comboCidade = new JComboBox<>(CIDADES_DISPONIVEIS.toArray(new String[0]));
+        comboCidade.setBackground(corBranco);
+        painelCidade.add(lblCidade, BorderLayout.WEST);
+        painelCidade.add(comboCidade, BorderLayout.CENTER);
+        painelPrincipal.add(painelCidade);
+
         painelPrincipal.add(criarCampo("Complemento:", campoComplemento));
-        painelPrincipal.add(criarCampo("Referência:", campoReferencia));
+        painelPrincipal.add(criarCampo("Referencia:", campoReferencia));
         painelPrincipal.add(Box.createVerticalStrut(10));
 
-        // ===== PEDIDOS =====
+        painelPrincipal.add(criarTitulo("Cidades atendidas"));
+        painelPrincipal.add(Box.createVerticalStrut(5));
+
+        JLabel lblDicaCidade = new JLabel("Selecione uma ou mais cidades para priorizar a rota");
+        lblDicaCidade.setFont(new Font("Arial", Font.ITALIC, 11));
+        lblDicaCidade.setForeground(corMarrom);
+        lblDicaCidade.setAlignmentX(Component.LEFT_ALIGNMENT);
+        painelPrincipal.add(lblDicaCidade);
+
+        DefaultListModel<String> modeloCidades = new DefaultListModel<>();
+        for (String cidade : CIDADES_DISPONIVEIS) {
+            modeloCidades.addElement(cidade);
+        }
+        listaCidades = new JList<>(modeloCidades);
+        listaCidades.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        listaCidades.setVisibleRowCount(4);
+        listaCidades.setBackground(corBranco);
+        listaCidades.setSelectionBackground(new Color(52, 152, 219));
+        listaCidades.setSelectionForeground(Color.WHITE);
+        JScrollPane scrollCidades = new JScrollPane(listaCidades);
+        scrollCidades.setPreferredSize(new Dimension(440, 110));
+        scrollCidades.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
+        scrollCidades.setAlignmentX(Component.LEFT_ALIGNMENT);
+        painelPrincipal.add(scrollCidades);
+        painelPrincipal.add(Box.createVerticalStrut(10));
+
         painelPrincipal.add(criarTitulo("Pedidos"));
         painelPrincipal.add(Box.createVerticalStrut(5));
 
         campoProduto = new JTextField();
         campoQuantidade = new JTextField();
-
         painelPrincipal.add(criarCampo("Produto:", campoProduto));
         painelPrincipal.add(criarCampo("Quantidade:", campoQuantidade));
         painelPrincipal.add(Box.createVerticalStrut(5));
@@ -102,10 +150,11 @@ public class DialogNovoCliente extends JDialog {
         painelPrincipal.add(btnAdicionarPedido);
         painelPrincipal.add(Box.createVerticalStrut(5));
 
-        // Tabela de pedidos adicionados
-        String[] colunas = {"Produto", "Quantidade"};
-        modeloPedidos = new DefaultTableModel(colunas, 0) {
-            public boolean isCellEditable(int row, int column) { return false; }
+        modeloPedidos = new DefaultTableModel(new Object[]{"Produto", "Quantidade"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
         tabelaPedidos = new JTable(modeloPedidos);
         tabelaPedidos.setRowHeight(25);
@@ -124,7 +173,6 @@ public class DialogNovoCliente extends JDialog {
         scrollPrincipal.getViewport().setBackground(corFundo);
         add(scrollPrincipal, BorderLayout.CENTER);
 
-        // ===== BOTÕES =====
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         painelBotoes.setBackground(corFundo);
         painelBotoes.setBorder(BorderFactory.createEmptyBorder(5, 15, 10, 15));
@@ -199,13 +247,14 @@ public class DialogNovoCliente extends JDialog {
         String rua = campoRua.getText().trim();
         String numero = campoNumero.getText().trim();
         String bairro = campoBairro.getText().trim();
+        String cidade = (String) comboCidade.getSelectedItem();
         String complemento = campoComplemento.getText().trim();
         String referencia = campoReferencia.getText().trim();
 
         if (nome.isEmpty() || cpf.isEmpty() || cep.isEmpty() ||
-                rua.isEmpty() || numero.isEmpty() || bairro.isEmpty()) {
+                rua.isEmpty() || numero.isEmpty() || bairro.isEmpty() || cidade == null || cidade.isBlank()) {
             JOptionPane.showMessageDialog(this,
-                    "Preencha todos os campos obrigatórios!",
+                    "Preencha todos os campos obrigatorios!",
                     "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -217,10 +266,18 @@ public class DialogNovoCliente extends JDialog {
             return;
         }
 
+        List<String> cidadesSelecionadas = listaCidades.getSelectedValuesList();
+        if (cidadesSelecionadas.isEmpty()) {
+            cidadesSelecionadas = new ArrayList<>();
+            cidadesSelecionadas.add(cidade);
+        } else if (!cidadesSelecionadas.contains(cidade)) {
+            cidadesSelecionadas = new ArrayList<>(cidadesSelecionadas);
+            cidadesSelecionadas.add(0, cidade);
+        }
+
         try {
-            // Latitude e Longitude passam como null para serem definidos via API/Nominatim posteriormente
-            Endereco endereco = new Endereco(cep, rua, numero, bairro, complemento, referencia, null, null);
-            clientesService.criarCliente(nome, cpf, endereco, listaPedidos);
+            Endereco endereco = new Endereco(cep, rua, numero, bairro, cidade, complemento, referencia, null, null);
+            clientesService.criarCliente(nome, cpf, endereco, listaPedidos, cidadesSelecionadas);
             JOptionPane.showMessageDialog(this, "Cliente salvo com sucesso!");
             dispose();
         } catch (IllegalArgumentException e) {

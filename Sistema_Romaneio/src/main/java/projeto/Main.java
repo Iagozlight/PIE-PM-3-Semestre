@@ -183,7 +183,13 @@ public class Main {
         } while (!opcao.equals("n") && !opcao.equals("N"));
 
         try {
-            clientesService.criarCliente(nomeCliente, cpfCliente, endereco, listaPedidos);
+            clientesService.criarCliente(
+                    nomeCliente,
+                    cpfCliente,
+                    endereco,
+                    listaPedidos,
+                    java.util.List.of(endereco.getCidade())
+            );
             System.out.println("Cliente salvo com sucesso!");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -246,9 +252,9 @@ public class Main {
 
     static void cadastrarVeiculo(VeiculosService veiculosService, Scanner sc) {
         System.out.println("=== Cadastro de VeÃ­culo ===");
-        System.out.println("Nome do veÃ­culo: ");
+        System.out.println("Modelo do veiculo: ");
         String nome = sc.nextLine();
-        System.out.println("Placa (ex: ABC1D23): ");
+        System.out.println("Placa comercial (ex: ABC1D23): ");
         String placa = sc.nextLine();
 
         try {
@@ -257,7 +263,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Erro ao cadastrar veÃ­culo:");
 
-            if (e.getMessage().contains("A placa deve seguir o formato Mercosul")) {
+            if (e.getMessage().contains("Placa invalida")) {
                 System.out.println("A placa deve seguir o formato Mercosul (ex: ABC1D23)");
             } else {
                 System.out.println("Erro inesperado: " + e.getMessage());

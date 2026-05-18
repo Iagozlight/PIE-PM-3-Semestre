@@ -40,8 +40,26 @@ public class VeiculosRepository {
     }
 
     public List<Veiculos> findByName(String prefixo) {
-        return em.createQuery("select v from Veiculos v where v.nomeVeiculo like :prefixo", Veiculos.class)
+        return em.createQuery("select v from Veiculos v where v.modelo like :prefixo", Veiculos.class)
                 .setParameter("prefixo", prefixo + "%")
                 .getResultList();
+    }
+
+    public Veiculos findByPlaca(String placa) {
+        List<Veiculos> veiculos = em.createQuery(
+                        "select v from Veiculos v where upper(v.placa) = upper(:placa)",
+                        Veiculos.class)
+                .setParameter("placa", placa)
+                .getResultList();
+        return veiculos.isEmpty() ? null : veiculos.get(0);
+    }
+
+    public boolean estaEmUso(Veiculos veiculo) {
+        List<Long> result = em.createQuery(
+                        "select count(r) from Romaneios r where r.veiculo = :veiculo",
+                        Long.class)
+                .setParameter("veiculo", veiculo)
+                .getResultList();
+        return !result.isEmpty() && result.get(0) != null && result.get(0) > 0;
     }
 }
