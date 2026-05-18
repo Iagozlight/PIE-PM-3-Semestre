@@ -16,7 +16,7 @@ public class PainelRodape extends JPanel {
     private final Color corBranco = new Color(252, 249, 241);
 
     public PainelRodape() {
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+        setLayout(new GridLayout(0, 2, 8, 8));
         setBackground(corFundo);
         setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
         iniciar();

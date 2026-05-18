@@ -2,6 +2,7 @@ package projeto.views.dialogs;
 
 import projeto.models.ClientesRomaneio;
 import projeto.services.RomaneiosService;
+import projeto.views.componentes.JanelaUtil;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -32,11 +33,10 @@ public class DialogNovoRomaneio extends JDialog {
         super(parent, "Novo Romaneio", true);
         this.romaneiosService = romaneiosService;
         this.aoSalvar = aoSalvar;
-        setSize(500, 500);
-        setLocationRelativeTo(parent);
-        setResizable(false);
         iniciarComponentes();
         carregarClientes();
+        setResizable(true);
+        JanelaUtil.configurarDialog(this, parent, new Dimension(560, 560), new Dimension(480, 420));
         setVisible(true);
     }
 

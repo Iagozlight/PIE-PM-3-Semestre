@@ -37,6 +37,8 @@ public class TabelaRomaneios extends JScrollPane {
         tabela.setSelectionForeground(Color.WHITE);
         tabela.setGridColor(new Color(200, 200, 200));
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tabela.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        tabela.setFillsViewportHeight(true);
 
         setBackground(corFundo);
         getViewport().setBackground(Color.WHITE);

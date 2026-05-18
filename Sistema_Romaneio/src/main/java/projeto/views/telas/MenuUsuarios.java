@@ -3,6 +3,7 @@ package projeto.views.telas;
 import projeto.repositories.UsuarioRepository;
 import projeto.services.MotoristaService;
 import projeto.services.UsuariosService;
+import projeto.views.componentes.JanelaUtil;
 
 public class MenuUsuarios extends javax.swing.JFrame {
     private MotoristaService motoristaService;
@@ -12,6 +13,7 @@ public class MenuUsuarios extends javax.swing.JFrame {
         this.usuarioService = usuarioService;
         this.motoristaService = motoristaService;
         initComponents();
+        JanelaUtil.configurarJanela(this, null, new java.awt.Dimension(420, 360));
     }
 
     @SuppressWarnings("unchecked")

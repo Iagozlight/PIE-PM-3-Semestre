@@ -4,6 +4,7 @@ import projeto.models.Motoristas;
 import projeto.models.Romaneios;
 import projeto.repositories.MotoristasRepository;
 import projeto.services.RomaneiosService;
+import projeto.views.componentes.JanelaUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,10 +33,9 @@ public class DialogAtribuirMotorista extends JDialog {
         this.romaneiosService = romaneiosService;
         this.motoristasRepository = motoristasRepository;
         this.aoSalvar = aoSalvar;
-        setSize(400, 350);
-        setLocationRelativeTo(parent);
-        setResizable(false);
         iniciarComponentes();
+        setResizable(true);
+        JanelaUtil.configurarDialog(this, parent, new Dimension(460, 380), new Dimension(360, 300));
         setVisible(true);
     }
 

@@ -1,9 +1,12 @@
 package projeto.views.telas;
 
+import projeto.views.componentes.JanelaUtil;
+
 public class TelaLogin extends javax.swing.JFrame {
 
     public TelaLogin() {
         initComponents();
+        JanelaUtil.configurarJanela(this, null, new java.awt.Dimension(420, 260));
     }
 
     @SuppressWarnings("unchecked")
@@ -125,7 +128,7 @@ public class TelaLogin extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>
+    }
 
     public static void main(String args[]) {
 
@@ -164,6 +167,5 @@ public class TelaLogin extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    // End of variables declaration
 }
 

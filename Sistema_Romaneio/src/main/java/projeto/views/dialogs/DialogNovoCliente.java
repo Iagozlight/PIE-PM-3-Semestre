@@ -3,6 +3,7 @@ package projeto.views.dialogs;
 import projeto.models.Endereco;
 import projeto.models.Pedidos;
 import projeto.services.ClientesService;
+import projeto.views.componentes.JanelaUtil;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -49,10 +50,9 @@ public class DialogNovoCliente extends JDialog {
     public DialogNovoCliente(JFrame parent, ClientesService clientesService) {
         super(parent, "Novo Cliente", true);
         this.clientesService = clientesService;
-        setSize(560, 760);
-        setLocationRelativeTo(parent);
-        setResizable(false);
         iniciarComponentes();
+        setResizable(true);
+        JanelaUtil.configurarDialog(this, parent, new Dimension(620, 780), new Dimension(520, 640));
         setVisible(true);
     }
 

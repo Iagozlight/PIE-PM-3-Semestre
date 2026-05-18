@@ -1,6 +1,7 @@
 package projeto.views.telas;
 
 import projeto.services.UsuariosService;
+import projeto.views.componentes.JanelaUtil;
 
 import javax.swing.*;
 
@@ -13,6 +14,7 @@ public class exibirUsuarios extends javax.swing.JFrame {
         this.usuarioService = usuarioService;
         initComponents();
         carregarUsuarios();
+        JanelaUtil.configurarJanela(this, null, new java.awt.Dimension(520, 360));
     }
 
     private  void carregarUsuarios() {

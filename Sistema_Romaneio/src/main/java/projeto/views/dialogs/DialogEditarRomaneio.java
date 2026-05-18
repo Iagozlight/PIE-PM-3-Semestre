@@ -4,6 +4,7 @@ import projeto.models.ClientesRomaneio;
 import projeto.models.Romaneios;
 import projeto.repositories.ClientesRomaneioRepository;
 import projeto.services.RomaneiosService;
+import projeto.views.componentes.JanelaUtil;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -37,11 +38,10 @@ public class DialogEditarRomaneio extends JDialog {
         this.romaneiosService = romaneiosService;
         this.clientesRomaneioRepository = clientesRomaneioRepository;
         this.aoSalvar = aoSalvar;
-        setSize(500, 500);
-        setLocationRelativeTo(parent);
-        setResizable(false);
         iniciarComponentes();
         carregarDados();
+        setResizable(true);
+        JanelaUtil.configurarDialog(this, parent, new Dimension(560, 540), new Dimension(480, 420));
         setVisible(true);
     }
 

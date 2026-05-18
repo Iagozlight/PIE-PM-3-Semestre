@@ -3,6 +3,7 @@ package projeto.views.telas;
 import projeto.repositories.MotoristasRepository;
 import projeto.repositories.UsuarioRepository;
 import projeto.views.componentes.NovoMotoristaComponents;
+import projeto.views.componentes.JanelaUtil;
 import projeto.services.MotoristaService;
 import projeto.services.UsuariosService;
 import projeto.services.MotoristaService;
@@ -19,6 +20,7 @@ public class novoMotorista extends javax.swing.JFrame {
         this.usuarioService = usuarioService;
         this.component = new NovoMotoristaComponents(motoristaService, usuarioService);
         initComponents();
+        JanelaUtil.configurarJanela(this, null, new java.awt.Dimension(560, 400));
     }
 
     private void initComponents() {

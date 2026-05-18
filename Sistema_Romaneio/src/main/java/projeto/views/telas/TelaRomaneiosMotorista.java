@@ -3,6 +3,7 @@ package projeto.views.telas;
 import projeto.models.Motoristas;
 import projeto.models.Romaneios;
 import projeto.services.RomaneiosService;
+import projeto.views.componentes.JanelaUtil;
 import projeto.views.dialogs.DialogDetalhesRomaneio;
 
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class TelaRomaneiosMotorista extends JFrame {
     public TelaRomaneiosMotorista() {
         configurarJanela();
         iniciarComponentes();
+        JanelaUtil.configurarJanela(this, new Dimension(960, 640), new Dimension(820, 560));
         setVisible(true);
     }
 
@@ -34,14 +36,13 @@ public class TelaRomaneiosMotorista extends JFrame {
         configurarJanela();
         iniciarComponentes();
         carregarRomaneios();
+        JanelaUtil.configurarJanela(this, new Dimension(960, 640), new Dimension(820, 560));
         setVisible(true);
     }
 
     private void configurarJanela() {
         setTitle("DUTRA MÓVEIS - Motorista");
-        setSize(700, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
     }
 

@@ -1,6 +1,7 @@
 package projeto.views.telas;
 
 import projeto.views.componentes.RemoverUsuariosComponentes;
+import projeto.views.componentes.JanelaUtil;
 import projeto.services.UsuariosService;
 
 public class removerUsuario extends javax.swing.JFrame {
@@ -9,6 +10,7 @@ public class removerUsuario extends javax.swing.JFrame {
     public removerUsuario(UsuariosService usuarioService) {
         this.componentes = new RemoverUsuariosComponentes(usuarioService);
         initComponents();
+        JanelaUtil.configurarJanela(this, null, new java.awt.Dimension(460, 320));
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         componentes.remover(

@@ -19,6 +19,7 @@ import projeto.services.UsuariosService;
 import projeto.services.VeiculosService;
 import projeto.views.componentes.PainelRodape;
 import projeto.views.componentes.PainelTopo;
+import projeto.views.componentes.JanelaUtil;
 import projeto.views.componentes.TabelaRomaneios;
 import projeto.views.componentes.CursorUtil;
 import projeto.views.dialogs.DialogAtribuirMotorista;
@@ -51,15 +52,15 @@ public class TelaPrincipal extends JFrame {
     private final CardLayout cardLayout  = new CardLayout();
     private final JPanel     painelCards = new JPanel(cardLayout);
 
-    // ── Apenas 3 botões visíveis na barra ──
+    // Apenas 3 botões visíveis na barra
     private final JButton     btnRomaneios  = new JButton("Romaneios");
     private final JButton     btnUsuarios   = new JButton("Usuários ▾");
     private final JButton     btnLogout     = new JButton("Sair");
 
-    // Popup que aparece ao clicar em "Usuários ▾"
+    // Popup que aparece ao clicar em Usuários
     private final JPopupMenu  menuUsuarios  = new JPopupMenu();
 
-    // btnLogin usado internamente (mostrarLogin)
+    // btnLogin usado internamente
     private final JButton btnLogin = new JButton("Login");
 
     private final JLabel lblStatus = new JLabel("Nenhuma sessao ativa");
@@ -120,9 +121,7 @@ public class TelaPrincipal extends JFrame {
         setVisible(true);
     }
 
-    // =========================================================
-    // INFRAESTRUTURA
-    // =========================================================
+    // INFRAESTRUTURA DO SISTEMA
 
     private void inicializarInfraestrutura() {
         FlyWayconfig.migrate();
@@ -138,14 +137,10 @@ public class TelaPrincipal extends JFrame {
         romaneiosService           = new RomaneiosService(romaneiosRepository, clientesRomaneioRepository);
     }
 
-    // =========================================================
-    // CONSTRUÇÃO DA INTERFACE
-    // =========================================================
+    // CONSTRUÇÃO DA INTERFACE DO SISTEMA
 
     private void construirInterface() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(1180, 760);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         getContentPane().setBackground(NORMAL);
         setarIcone();
@@ -171,10 +166,11 @@ public class TelaPrincipal extends JFrame {
         add(painelCards, BorderLayout.CENTER);
 
         configurarAcoes();
+        JanelaUtil.configurarJanela(this, new Dimension(1180, 760), new Dimension(1024, 680));
         mostrarLogin();
     }
 
-    // ── Topo (logo + status) ──────────────────────────────────
+    // Topo
     private JPanel construirTopo() {
         JPanel painelLogo = new JPanel(new BorderLayout());
         painelLogo.setBackground(LOGO);
@@ -193,7 +189,7 @@ public class TelaPrincipal extends JFrame {
         return painelLogo;
     }
 
-    // ── Barra de navegação: apenas 3 botões ──────────────────
+    // Barra de navegação: apenas 3 botões
     private JPanel construirNavegacao() {
         JPanel faixa = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 6));
         faixa.setBackground(NORMAL);
@@ -217,16 +213,13 @@ public class TelaPrincipal extends JFrame {
         return faixa;
     }
 
-    /** Cria um JMenuItem que navega para o card indicado. */
     private JMenuItem itemMenu(String texto, String card) {
         JMenuItem item = new JMenuItem(texto);
         item.addActionListener(e -> abrirCard(card));
         return item;
     }
 
-    // =========================================================
-    // PAINÉIS (cards)
-    // =========================================================
+    // PAINÉIS
 
     private JPanel construirPainelLogin() {
         painelLogin = new JPanel(new GridBagLayout());
@@ -640,9 +633,7 @@ public class TelaPrincipal extends JFrame {
         } catch (Exception e) { JOptionPane.showMessageDialog(this, e.getMessage()); }
     }
 
-    // =========================================================
     // CARREGAMENTO DE DADOS
-    // =========================================================
 
     private void carregarUsuariosTabela() {
         if (modeloUsuarios == null) return;
@@ -684,9 +675,8 @@ public class TelaPrincipal extends JFrame {
         }
     }
 
-    // =========================================================
+
     // SELEÇÃO DE LINHA NAS TABELAS
-    // =========================================================
 
     private Romaneios romaneioSelecionadoDaTabelaAdmin() {
         if (tabelaRomaneiosAdmin == null) return null;
@@ -734,10 +724,6 @@ public class TelaPrincipal extends JFrame {
         campoRemoverUsuario.setText("");
         campoRemoverConfirmacao.setText("");
     }
-
-    // =========================================================
-    // ÍCONE
-    // =========================================================
 
     private void setarIcone() {
         URL iconUrl = getClass().getResource("/view/icons/supplies.png");

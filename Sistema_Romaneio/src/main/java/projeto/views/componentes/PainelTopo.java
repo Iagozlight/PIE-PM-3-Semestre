@@ -25,7 +25,7 @@ public class PainelTopo extends JPanel {
         titulo.setForeground(corMarrom);
         titulo.setFont(new Font("Arial", Font.BOLD, 18));
 
-        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel painelBotoes = new JPanel(new GridLayout(1, 3, 8, 0));
         painelBotoes.setBackground(corFundo);
 
         btnNovoCliente = new JButton("+ Novo Cliente");

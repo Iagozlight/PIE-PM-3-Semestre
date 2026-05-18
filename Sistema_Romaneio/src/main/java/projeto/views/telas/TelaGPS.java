@@ -23,6 +23,7 @@ import projeto.repositories.CustomizerFactory;
 import projeto.services.HaversineService;
 import projeto.services.NominatimService;
 import projeto.services.RomaneiosService;
+import projeto.views.componentes.JanelaUtil;
 import projeto.util.GeoUtils;
 
 import javax.imageio.ImageIO;
@@ -114,6 +115,7 @@ public class TelaGPS extends JFrame {
         iniciarComponentes();
         carregarDados();
         iniciarAtualizacaoPeriodica();
+        JanelaUtil.configurarJanela(this, new Dimension(1360, 800), new Dimension(1100, 720));
         setVisible(true);
     }
 
@@ -127,8 +129,6 @@ public class TelaGPS extends JFrame {
 
     private void configurarJanela() {
         setTitle("DUTRA MOVEIS - GPS");
-        setSize(1360, 800);
-        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         getContentPane().setBackground(corFundo);
@@ -203,7 +203,7 @@ public class TelaGPS extends JFrame {
         });
 
         JScrollPane scrollTabela = new JScrollPane(tabelaEntregas);
-        scrollTabela.setPreferredSize(new Dimension(420, 0));
+        scrollTabela.setPreferredSize(new Dimension(360, 0));
 
         mapa = new JXMapViewer();
         mapa.setBackground(corBranco);
@@ -243,6 +243,8 @@ public class TelaGPS extends JFrame {
 
         JPanel mapaContainer = new JPanel(new BorderLayout());
         mapaContainer.setBackground(corBranco);
+        mapa.setPreferredSize(new Dimension(820, 620));
+        painelDetalhe.setPreferredSize(new Dimension(800, 240));
         mapaContainer.add(splitMapaDetalhe, BorderLayout.CENTER);
         mapaContainer.add(lblMapa, BorderLayout.SOUTH);
 
@@ -250,6 +252,7 @@ public class TelaGPS extends JFrame {
         split.setResizeWeight(0.34);
         split.setDividerSize(8);
         split.setBorder(BorderFactory.createEmptyBorder(0, 12, 0, 12));
+        split.setPreferredSize(new Dimension(1280, 760));
         return split;
     }
 
@@ -819,8 +822,6 @@ public class TelaGPS extends JFrame {
 
     private void abrirDetalhesEntrega(EntregaMarcada entrega) {
         JDialog dialog = new JDialog(this, "Detalhes da entrega", true);
-        dialog.setSize(560, 450);
-        dialog.setLocationRelativeTo(this);
         dialog.setLayout(new BorderLayout());
         dialog.getContentPane().setBackground(corFundo);
 
@@ -873,6 +874,8 @@ public class TelaGPS extends JFrame {
         botoes.add(btnFechar);
         botoes.add(btnEncerrar);
         dialog.add(botoes, BorderLayout.SOUTH);
+        dialog.setResizable(true);
+        JanelaUtil.configurarDialog(dialog, this, new Dimension(620, 480), new Dimension(520, 380));
         dialog.setVisible(true);
     }
 

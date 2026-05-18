@@ -1,6 +1,7 @@
 package projeto.views.telas;
 
 import projeto.views.componentes.AlterarSenhaComponentes;
+import projeto.views.componentes.JanelaUtil;
 import projeto.services.UsuariosService;
 
 public class AlterarSenha extends javax.swing.JFrame {
@@ -10,6 +11,7 @@ public class AlterarSenha extends javax.swing.JFrame {
     public AlterarSenha(UsuariosService usuarioService) {
         this.componentes = new AlterarSenhaComponentes(usuarioService);
         initComponents();
+        JanelaUtil.configurarJanela(this, null, new java.awt.Dimension(460, 320));
     }
 
     private void initComponents() {

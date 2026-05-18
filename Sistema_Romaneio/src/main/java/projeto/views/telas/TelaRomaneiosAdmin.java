@@ -6,6 +6,7 @@ import projeto.repositories.*;
 import projeto.services.ClientesService;
 import projeto.services.RomaneiosService;
 import projeto.views.componentes.*;
+import projeto.views.componentes.JanelaUtil;
 import projeto.views.dialogs.*;
 
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class TelaRomaneiosAdmin extends JFrame {
     public TelaRomaneiosAdmin() {
         configurarJanela();
         iniciarComponentes();
+        JanelaUtil.configurarJanela(this, new Dimension(1040, 720), new Dimension(900, 600));
         setVisible(true);
     }
 
@@ -42,14 +44,13 @@ public class TelaRomaneiosAdmin extends JFrame {
         iniciarComponentes();
         configurarBotoes(clientesService);
         carregarRomaneios();
+        JanelaUtil.configurarJanela(this, new Dimension(1040, 720), new Dimension(900, 600));
         setVisible(true);
     }
 
     private void configurarJanela() {
         setTitle("DUTRA MÓVEIS - Romaneios");
-        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
     }
 

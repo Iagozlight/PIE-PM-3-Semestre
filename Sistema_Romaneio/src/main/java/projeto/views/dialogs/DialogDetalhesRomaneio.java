@@ -6,6 +6,7 @@ import projeto.models.Romaneios;
 import projeto.Main;
 import projeto.services.RomaneiosService;
 import projeto.views.telas.TelaGPS;
+import projeto.views.componentes.JanelaUtil;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -39,10 +40,9 @@ public class DialogDetalhesRomaneio extends JDialog {
         this.romaneiosService = romaneiosService;
         this.sessaoUsuario = sessaoUsuario;
         this.aoAtualizar = aoAtualizar;
-        setSize(600, 550);
-        setLocationRelativeTo(parent);
-        setResizable(false);
         iniciarComponentes();
+        setResizable(true);
+        JanelaUtil.configurarDialog(this, parent, new Dimension(700, 620), new Dimension(560, 460));
         setVisible(true);
     }
 
