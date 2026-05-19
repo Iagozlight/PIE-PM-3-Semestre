@@ -1,5 +1,8 @@
 package projeto.views.componentes;
 
+import projeto.util.Cores;
+import projeto.util.Fontes;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,36 +12,32 @@ public class PainelTopo extends JPanel {
     private JButton btnNovoRomaneio;
     private JButton btnVeiculos;
 
-    private final Color corFundo = new Color(245, 240, 225);
-    private final Color corMarrom = new Color(60, 42, 33);
-    private final Color corBege = new Color(220, 198, 150);
-
     public PainelTopo() {
         setLayout(new BorderLayout());
-        setBackground(corFundo);
+        setBackground(Cores.FUNDO);
         setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         iniciar();
     }
 
     private void iniciar() {
-        JLabel titulo = new JLabel("DUTRA MÓVEIS - Romaneios");
-        titulo.setForeground(corMarrom);
-        titulo.setFont(new Font("Arial", Font.BOLD, 18));
+        JLabel titulo = new JLabel("DUTRA MÃ“VEIS - Romaneios");
+        titulo.setForeground(Cores.MARROM);
+        titulo.setFont(Fontes.arial(Font.BOLD, 18));
 
         JPanel painelBotoes = new JPanel(new GridLayout(1, 3, 8, 0));
-        painelBotoes.setBackground(corFundo);
+        painelBotoes.setBackground(Cores.FUNDO);
 
         btnNovoCliente = new JButton("+ Novo Cliente");
-        btnNovoCliente.setBackground(corBege);
-        btnNovoCliente.setForeground(corMarrom);
+        btnNovoCliente.setBackground(Cores.BEGE);
+        btnNovoCliente.setForeground(Cores.MARROM);
 
         btnNovoRomaneio = new JButton("+ Novo Romaneio");
-        btnNovoRomaneio.setBackground(corBege);
-        btnNovoRomaneio.setForeground(corMarrom);
+        btnNovoRomaneio.setBackground(Cores.BEGE);
+        btnNovoRomaneio.setForeground(Cores.MARROM);
 
         btnVeiculos = new JButton("Veiculos");
-        btnVeiculos.setBackground(corBege);
-        btnVeiculos.setForeground(corMarrom);
+        btnVeiculos.setBackground(Cores.BEGE);
+        btnVeiculos.setForeground(Cores.MARROM);
 
         painelBotoes.add(btnNovoCliente);
         painelBotoes.add(btnNovoRomaneio);

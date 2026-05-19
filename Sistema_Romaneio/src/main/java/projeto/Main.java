@@ -147,6 +147,8 @@ public class Main {
         String nomeCliente = scanner.nextLine();
         System.out.println("CPF: ");
         String cpfCliente = scanner.nextLine();
+        System.out.println("Telefone (DDD + numero): ");
+        String telefoneCliente = scanner.nextLine();
         System.out.println("Dados do Cliente Confirmado!");
 
         Endereco endereco = Endereco.lerEndereco(scanner);
@@ -186,6 +188,7 @@ public class Main {
             clientesService.criarCliente(
                     nomeCliente,
                     cpfCliente,
+                    telefoneCliente,
                     endereco,
                     listaPedidos,
                     java.util.List.of(endereco.getCidade())

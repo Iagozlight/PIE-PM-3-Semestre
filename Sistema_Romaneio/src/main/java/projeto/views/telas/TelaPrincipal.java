@@ -296,7 +296,8 @@ public class TelaPrincipal extends JFrame {
         rodape.getBtnEditar().addActionListener(e -> {
             Romaneios r = romaneioSelecionadoDaTabelaAdmin();
             if (r != null)
-                new DialogEditarRomaneio(this, r, romaneiosService, clientesRomaneioRepository, this::carregarRomaneiosAdmin);
+                new DialogEditarRomaneio(this, r, romaneiosService, clientesRomaneioRepository,
+                        motoristasRepository, veiculosRepository, this::carregarRomaneiosAdmin);
         });
 
         rodape.getBtnGps().addActionListener(e -> {

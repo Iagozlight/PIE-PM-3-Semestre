@@ -127,7 +127,7 @@ public class TelaRomaneiosAdmin extends JFrame {
             Long id = (Long) tabelaRomaneios.getValorColuna(linha, 0);
             Romaneios romaneio = romaneiosService.buscarPorId(id);
             new DialogEditarRomaneio(this, romaneio, romaneiosService,
-                    clientesRomaneioRepository, this::carregarRomaneios);
+                    clientesRomaneioRepository, motoristasRepository, veiculosRepository, this::carregarRomaneios);
         });
     }
 

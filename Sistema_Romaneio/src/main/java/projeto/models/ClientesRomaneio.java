@@ -21,6 +21,9 @@ public class ClientesRomaneio {
     @Column(name = "cpf", nullable = false, length = 50)
     private String cpf;
 
+    @Column(name = "telefone", nullable = false, length = 20)
+    private String telefone;
+
     @Embedded
     private Endereco endereco;
 
@@ -63,6 +66,9 @@ public class ClientesRomaneio {
 
     public String getCpf() { return cpf; }
     public void setCpf(String cpf) { this.cpf = cpf; }
+
+    public String getTelefone() { return telefone; }
+    public void setTelefone(String telefone) { this.telefone = telefone; }
 
     public List<Pedidos> getPedidos() { return pedidos; }
     public void setPedidos(List<Pedidos> pedidos) { this.pedidos = pedidos; }
@@ -113,7 +119,7 @@ public class ClientesRomaneio {
     @Override
     public String toString() {
         return "ClientesRomaneio{id=" + id + ", nome='" + nome_cliente +
-                "', cpf='" + cpf + "', endereco='" + endereco + "', cidades='" + cidadesAtendidas +
+                "', cpf='" + cpf + "', telefone='" + telefone + "', endereco='" + endereco + "', cidades='" + cidadesAtendidas +
                 "', pedidos='" + pedidos + "}";
     }
 

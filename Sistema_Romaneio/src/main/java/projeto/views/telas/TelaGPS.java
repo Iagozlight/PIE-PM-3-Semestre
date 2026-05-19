@@ -79,6 +79,7 @@ public class TelaGPS extends JFrame {
     private JLabel lblResumo;
     private JLabel lblDistancia;
     private JLabel lblClienteDetalhe;
+    private JLabel lblTelefoneDetalhe;
     private JLabel lblEnderecoDetalhe;
     private JLabel lblStatusDetalhe;
     private JLabel lblDistanciaDetalhe;
@@ -312,6 +313,7 @@ public class TelaGPS extends JFrame {
         titulo.setForeground(corMarrom);
 
         lblClienteDetalhe = criarLabelDetalhe("Cliente: -");
+        lblTelefoneDetalhe = criarLabelDetalhe("Telefone: -");
         lblEnderecoDetalhe = criarLabelDetalhe("Endereco: -");
         lblStatusDetalhe = criarLabelDetalhe("Status: -");
         lblDistanciaDetalhe = criarLabelDetalhe("Distancia: -");
@@ -320,6 +322,7 @@ public class TelaGPS extends JFrame {
         resumo.add(titulo);
         resumo.add(Box.createVerticalStrut(6));
         resumo.add(lblClienteDetalhe);
+        resumo.add(lblTelefoneDetalhe);
         resumo.add(lblEnderecoDetalhe);
         resumo.add(lblStatusDetalhe);
         resumo.add(lblDistanciaDetalhe);
@@ -733,6 +736,7 @@ public class TelaGPS extends JFrame {
         }
         if (entrega == null) {
             lblClienteDetalhe.setText("Cliente: -");
+            lblTelefoneDetalhe.setText("Telefone: -");
             lblEnderecoDetalhe.setText("Endereco: -");
             lblStatusDetalhe.setText("Status: -");
             lblDistanciaDetalhe.setText("Distancia: -");
@@ -747,6 +751,7 @@ public class TelaGPS extends JFrame {
         }
 
         lblClienteDetalhe.setText("Cliente: " + entrega.cliente.getNome_cliente());
+        lblTelefoneDetalhe.setText("Telefone: " + formatarTelefone(entrega.cliente.getTelefone()));
         lblEnderecoDetalhe.setText("Endereco: " + entrega.enderecoTexto);
         lblStatusDetalhe.setText("Status: " + (entrega.entregue ? "ENTREGUE" : "PENDENTE"));
         lblDistanciaDetalhe.setText("Distancia: " + formatarNumero(entrega.distanciaDoCaminhaoKm) + " km");
@@ -973,6 +978,20 @@ public class TelaGPS extends JFrame {
 
     private String formatarNumero(double valor) {
         return String.format(Locale.US, "%.6f", valor);
+    }
+
+    private String formatarTelefone(String telefone) {
+        if (telefone == null || telefone.isBlank()) {
+            return "-";
+        }
+        String n = telefone.replaceAll("\\D", "");
+        if (n.length() == 11) {
+            return n.replaceAll("(\\d{2})(\\d{5})(\\d{4})", "($1) $2-$3");
+        }
+        if (n.length() == 10) {
+            return n.replaceAll("(\\d{2})(\\d{4})(\\d{4})", "($1) $2-$3");
+        }
+        return telefone;
     }
 
     private static class EntregaMarcada {

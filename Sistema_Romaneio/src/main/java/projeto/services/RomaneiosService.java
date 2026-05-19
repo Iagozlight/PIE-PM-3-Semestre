@@ -36,30 +36,34 @@ public class RomaneiosService {
     }
 
     public String atribuirVeiculo(Romaneios romaneio, Veiculos veiculo) {
-        if (romaneio.getVeiculo() != null) {
-            return "Este romaneio já possui o veículo: " + romaneio.getVeiculo().getNomeVeiculo();
+        if (veiculo == null) {
+            romaneio.setVeiculo(null);
+            romaneiosRepository.update(romaneio);
+            return "Veiculo removido do romaneio!";
         }
         if (veiculo.getDisponibilidade() == null || !veiculo.getDisponibilidade()) {
-            return "Veículo indisponível para romaneio!";
+            return "VeÃ­culo indisponÃ­vel para romaneio!";
         }
         if (romaneiosRepository.veiculoEmUso(veiculo)) {
-            return "Veículo já está em uso em outro romaneio!";
+            return "VeÃ­culo jÃ¡ estÃ¡ em uso em outro romaneio!";
         }
         romaneio.setVeiculo(veiculo);
         romaneiosRepository.update(romaneio);
-        return "Veículo atribuído com sucesso!";
+        return "Veiculo atualizado com sucesso!";
     }
 
     public String atribuirMotorista(Romaneios romaneio, Motoristas motorista) {
-        if (romaneio.getMotorista() != null) {
-            return "Este romaneio já possui o motorista: " + romaneio.getMotorista().getNome();
+        if (motorista == null) {
+            romaneio.setMotorista(null);
+            romaneiosRepository.update(romaneio);
+            return "Motorista removido do romaneio!";
         }
         if (romaneiosRepository.motoristaEmUso(motorista)) {
-            return "Motorista já está em uso em outro romaneio!";
+            return "Motorista jÃ¡ estÃ¡ em uso em outro romaneio!";
         }
         romaneio.setMotorista(motorista);
         romaneiosRepository.update(romaneio);
-        return "Motorista atribuído com sucesso!";
+        return "Motorista atualizado com sucesso!";
     }
 
     public void deletarRomaneio(Romaneios romaneio) {
@@ -87,3 +91,5 @@ public class RomaneiosService {
         return romaneiosRepository.findByMotorista(motorista);
     }
 }
+
+

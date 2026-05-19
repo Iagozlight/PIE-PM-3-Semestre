@@ -48,6 +48,7 @@ CREATE TABLE clientes_romaneio (
                                    id SERIAL PRIMARY KEY,
                                    nome_cliente VARCHAR(50) NOT NULL,
                                    cpf VARCHAR(50) NOT NULL,
+                                   telefone VARCHAR(20) NOT NULL,
                                    cep VARCHAR(50) NOT NULL,
                                    rua VARCHAR(50) NOT NULL,
                                    numero VARCHAR(50) NOT NULL,
