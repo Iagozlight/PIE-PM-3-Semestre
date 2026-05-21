@@ -1,6 +1,7 @@
 package projeto;
 
 import jakarta.persistence.EntityManager;
+import com.formdev.flatlaf.FlatLightLaf;
 import projeto.config.FlyWayconfig;
 import projeto.models.*;
 import projeto.repositories.*;
@@ -514,6 +515,7 @@ public class Main {
     // ==================== MAIN ====================
 
     public static void main(String[] args) {
+        FlatLightLaf.setup();
         javax.swing.SwingUtilities.invokeLater(projeto.views.telas.TelaPrincipal::new);
     }
 }

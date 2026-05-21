@@ -2,6 +2,7 @@ package projeto.views.componentes;
 
 import projeto.util.Cores;
 import projeto.util.Fontes;
+import projeto.util.BotaoEstilo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,24 +21,18 @@ public class PainelTopo extends JPanel {
     }
 
     private void iniciar() {
-        JLabel titulo = new JLabel("DUTRA MÃ“VEIS - Romaneios");
+        JLabel titulo = new JLabel("DUTRA MÓVEIS - Romaneios");
         titulo.setForeground(Cores.MARROM);
         titulo.setFont(Fontes.arial(Font.BOLD, 18));
 
         JPanel painelBotoes = new JPanel(new GridLayout(1, 3, 8, 0));
         painelBotoes.setBackground(Cores.FUNDO);
 
-        btnNovoCliente = new JButton("+ Novo Cliente");
-        btnNovoCliente.setBackground(Cores.BEGE);
-        btnNovoCliente.setForeground(Cores.MARROM);
+        btnNovoCliente = BotaoEstilo.aviso(new JButton("+ Novo Cliente"));
 
-        btnNovoRomaneio = new JButton("+ Novo Romaneio");
-        btnNovoRomaneio.setBackground(Cores.BEGE);
-        btnNovoRomaneio.setForeground(Cores.MARROM);
+        btnNovoRomaneio = BotaoEstilo.aviso(new JButton("+ Novo Romaneio"));
 
-        btnVeiculos = new JButton("Veiculos");
-        btnVeiculos.setBackground(Cores.BEGE);
-        btnVeiculos.setForeground(Cores.MARROM);
+        btnVeiculos = BotaoEstilo.aviso(new JButton("Veículos"));
 
         painelBotoes.add(btnNovoCliente);
         painelBotoes.add(btnNovoRomaneio);

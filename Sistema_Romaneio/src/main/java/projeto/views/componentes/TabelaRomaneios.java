@@ -19,7 +19,7 @@ public class TabelaRomaneios extends JScrollPane {
     }
 
     private void iniciar() {
-        String[] colunas = {"ID", "Data", "VeÃ­culo", "Motorista"};
+        String[] colunas = {"ID", "Data", "Veículo", "Motorista"};
         modeloTabela = new DefaultTableModel(colunas, 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -51,7 +51,7 @@ public class TabelaRomaneios extends JScrollPane {
             modeloTabela.addRow(new Object[]{
                     r.getId(),
                     r.getData(),
-                    r.getVeiculo() != null ? r.getVeiculo().getNomeVeiculo() : "Sem veÃ­culo",
+                    r.getVeiculo() != null ? r.getVeiculo().getNomeVeiculo() : "Sem veículo",
                     r.getMotorista() != null ? r.getMotorista().getNome() : "Sem motorista"
             });
         }

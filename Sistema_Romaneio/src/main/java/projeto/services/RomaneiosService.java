@@ -39,17 +39,17 @@ public class RomaneiosService {
         if (veiculo == null) {
             romaneio.setVeiculo(null);
             romaneiosRepository.update(romaneio);
-            return "Veiculo removido do romaneio!";
+            return "Veículo removido do romaneio!";
         }
         if (veiculo.getDisponibilidade() == null || !veiculo.getDisponibilidade()) {
-            return "VeÃ­culo indisponÃ­vel para romaneio!";
+            return "Veículo indisponível para romaneio!";
         }
         if (romaneiosRepository.veiculoEmUso(veiculo)) {
-            return "VeÃ­culo jÃ¡ estÃ¡ em uso em outro romaneio!";
+            return "Veículo já está em uso em outro romaneio!";
         }
         romaneio.setVeiculo(veiculo);
         romaneiosRepository.update(romaneio);
-        return "Veiculo atualizado com sucesso!";
+        return "Veículo atualizado com sucesso!";
     }
 
     public String atribuirMotorista(Romaneios romaneio, Motoristas motorista) {
@@ -59,7 +59,7 @@ public class RomaneiosService {
             return "Motorista removido do romaneio!";
         }
         if (romaneiosRepository.motoristaEmUso(motorista)) {
-            return "Motorista jÃ¡ estÃ¡ em uso em outro romaneio!";
+            return "Motorista já está em uso em outro romaneio!";
         }
         romaneio.setMotorista(motorista);
         romaneiosRepository.update(romaneio);

@@ -155,7 +155,7 @@ public class DialogNovoCliente extends JDialog {
 
         painelPrincipal.add(Box.createVerticalStrut(10));
 
-        painelPrincipal.add(criarTitulo("Endereco"));
+        painelPrincipal.add(criarTitulo("Endereço"));
         painelPrincipal.add(Box.createVerticalStrut(5));
 
         campoCep = new JTextField();

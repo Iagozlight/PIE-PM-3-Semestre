@@ -1,6 +1,7 @@
 package projeto.views.componentes;
 
 import projeto.util.Cores;
+import projeto.util.BotaoEstilo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,25 +22,15 @@ public class PainelRodape extends JPanel {
     }
 
     private void iniciar() {
-        btnAtribuirVeiculo = new JButton("Atribuir VeÃ­culo");
-        btnAtribuirVeiculo.setBackground(Cores.BRANCO);
-        btnAtribuirVeiculo.setForeground(Cores.MARROM);
+        btnAtribuirVeiculo = BotaoEstilo.neutro(new JButton("Atribuir Veículo"));
 
-        btnAtribuirMotorista = new JButton("Atribuir Motorista");
-        btnAtribuirMotorista.setBackground(Cores.BRANCO);
-        btnAtribuirMotorista.setForeground(Cores.MARROM);
+        btnAtribuirMotorista = BotaoEstilo.neutro(new JButton("Atribuir Motorista"));
 
-        btnDeletar = new JButton("Deletar");
-        btnDeletar.setBackground(Cores.VERMELHO);
-        btnDeletar.setForeground(Color.WHITE);
+        btnDeletar = BotaoEstilo.perigo(new JButton("Deletar"));
 
-        btnEditar = new JButton("Editar");
-        btnEditar.setBackground(new Color(255, 193, 7));
-        btnEditar.setForeground(Cores.MARROM);
+        btnEditar = BotaoEstilo.aviso(new JButton("Editar"));
 
-        btnGps = new JButton("GPS");
-        btnGps.setBackground(Cores.AZUL);
-        btnGps.setForeground(Color.WHITE);
+        btnGps = BotaoEstilo.primario(new JButton("GPS"));
 
         add(btnAtribuirVeiculo);
         add(btnAtribuirMotorista);

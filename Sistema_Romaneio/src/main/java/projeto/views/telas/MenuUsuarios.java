@@ -30,7 +30,7 @@ public class MenuUsuarios extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("CADASTRO DE USUARIO");
+        jButton1.setText("CADASTRO DE USUÁRIO");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -44,7 +44,7 @@ public class MenuUsuarios extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("EXIBIR USUARIOS");
+        jButton3.setText("EXIBIR USUÁRIOS");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -58,7 +58,7 @@ public class MenuUsuarios extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("REMOVER USUARIO");
+        jButton5.setText("REMOVER USUÁRIO");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
