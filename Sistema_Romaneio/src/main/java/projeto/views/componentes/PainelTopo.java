@@ -1,5 +1,9 @@
 package projeto.views.componentes;
 
+import projeto.util.Cores;
+import projeto.util.Fontes;
+import projeto.util.BotaoEstilo;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,36 +11,32 @@ public class PainelTopo extends JPanel {
 
     private JButton btnNovoCliente;
     private JButton btnNovoRomaneio;
-
-    private final Color corFundo = new Color(245, 240, 225);
-    private final Color corMarrom = new Color(60, 42, 33);
-    private final Color corBege = new Color(220, 198, 150);
+    private JButton btnVeiculos;
 
     public PainelTopo() {
         setLayout(new BorderLayout());
-        setBackground(corFundo);
+        setBackground(Cores.FUNDO);
         setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         iniciar();
     }
 
     private void iniciar() {
         JLabel titulo = new JLabel("DUTRA MÓVEIS - Romaneios");
-        titulo.setForeground(corMarrom);
-        titulo.setFont(new Font("Arial", Font.BOLD, 18));
+        titulo.setForeground(Cores.MARROM);
+        titulo.setFont(Fontes.arial(Font.BOLD, 18));
 
-        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        painelBotoes.setBackground(corFundo);
+        JPanel painelBotoes = new JPanel(new GridLayout(1, 3, 8, 0));
+        painelBotoes.setBackground(Cores.FUNDO);
 
-        btnNovoCliente = new JButton("+ Novo Cliente");
-        btnNovoCliente.setBackground(corBege);
-        btnNovoCliente.setForeground(corMarrom);
+        btnNovoCliente = BotaoEstilo.aviso(new JButton("+ Novo Cliente"));
 
-        btnNovoRomaneio = new JButton("+ Novo Romaneio");
-        btnNovoRomaneio.setBackground(corBege);
-        btnNovoRomaneio.setForeground(corMarrom);
+        btnNovoRomaneio = BotaoEstilo.aviso(new JButton("+ Novo Romaneio"));
+
+        btnVeiculos = BotaoEstilo.aviso(new JButton("Veículos"));
 
         painelBotoes.add(btnNovoCliente);
         painelBotoes.add(btnNovoRomaneio);
+        painelBotoes.add(btnVeiculos);
 
         add(titulo, BorderLayout.WEST);
         add(painelBotoes, BorderLayout.EAST);
@@ -44,4 +44,5 @@ public class PainelTopo extends JPanel {
 
     public JButton getBtnNovoCliente() { return btnNovoCliente; }
     public JButton getBtnNovoRomaneio() { return btnNovoRomaneio; }
+    public JButton getBtnVeiculos() { return btnVeiculos; }
 }

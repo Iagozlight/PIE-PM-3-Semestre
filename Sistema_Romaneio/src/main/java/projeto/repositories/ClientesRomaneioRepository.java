@@ -59,4 +59,24 @@ public class ClientesRomaneioRepository {
         }
         return clientes.get(0);
     }
+
+    public ClientesRomaneio findByTelefone(String telefone) {
+        List<ClientesRomaneio> clientes = em.createQuery(
+                        "select c from ClientesRomaneio c where c.telefone = :telefone",
+                        ClientesRomaneio.class)
+                .setParameter("telefone", telefone)
+                .getResultList();
+        if (clientes.isEmpty()) {
+            return null;
+        }
+        return clientes.get(0);
+    }
+
+    public boolean existsByCpf(String cpf) {
+        return findByCpf(cpf) != null;
+    }
+
+    public boolean existsByTelefone(String telefone) {
+        return findByTelefone(telefone) != null;
+    }
 }

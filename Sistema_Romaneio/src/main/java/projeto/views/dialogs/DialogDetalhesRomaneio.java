@@ -6,6 +6,7 @@ import projeto.models.Romaneios;
 import projeto.Main;
 import projeto.services.RomaneiosService;
 import projeto.views.telas.TelaGPS;
+import projeto.views.componentes.JanelaUtil;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -39,10 +40,9 @@ public class DialogDetalhesRomaneio extends JDialog {
         this.romaneiosService = romaneiosService;
         this.sessaoUsuario = sessaoUsuario;
         this.aoAtualizar = aoAtualizar;
-        setSize(600, 550);
-        setLocationRelativeTo(parent);
-        setResizable(false);
         iniciarComponentes();
+        setResizable(true);
+        JanelaUtil.configurarDialog(this, parent, new Dimension(700, 620), new Dimension(560, 460));
         setVisible(true);
     }
 
@@ -74,7 +74,7 @@ public class DialogDetalhesRomaneio extends JDialog {
         painelPrincipal.add(criarTitulo("Clientes e Pedidos"));
         painelPrincipal.add(Box.createVerticalStrut(10));
 
-        String[] colunas = {"Cliente", "Endereço", "Produto", "Quantidade"};
+        String[] colunas = {"Cliente", "Telefone", "Endereço", "Produto", "Quantidade"};
         DefaultTableModel modelo = new DefaultTableModel(colunas, 0) {
             public boolean isCellEditable(int row, int column) { return false; }
         };
@@ -82,14 +82,16 @@ public class DialogDetalhesRomaneio extends JDialog {
         for (ClientesRomaneio c : romaneio.getClientes()) {
             String endereco = c.getEndereco() != null ?
                     c.getEndereco().getRua() + ", " + c.getEndereco().getNumero() + " - " + c.getEndereco().getBairro()
+                            + " - " + c.getEndereco().getCidade()
                     : "Sem endereço";
 
             if (c.getPedidos().isEmpty()) {
-                modelo.addRow(new Object[]{c.getNome_cliente(), endereco, "-", "-"});
+                modelo.addRow(new Object[]{c.getNome_cliente(), formatarTelefone(c.getTelefone()), endereco, "-", "-"});
             } else {
                 for (Pedidos p : c.getPedidos()) {
                     modelo.addRow(new Object[]{
                             c.getNome_cliente(),
+                            formatarTelefone(c.getTelefone()),
                             endereco,
                             p.getNome_produto(),
                             p.getQuantidade()
@@ -180,6 +182,20 @@ public class DialogDetalhesRomaneio extends JDialog {
         painel.add(lbl);
         painel.add(val);
         return painel;
+    }
+
+    private String formatarTelefone(String telefone) {
+        if (telefone == null || telefone.isBlank()) {
+            return "-";
+        }
+        String n = telefone.replaceAll("\\D", "");
+        if (n.length() == 11) {
+            return n.replaceAll("(\\d{2})(\\d{5})(\\d{4})", "($1) $2-$3");
+        }
+        if (n.length() == 10) {
+            return n.replaceAll("(\\d{2})(\\d{4})(\\d{4})", "($1) $2-$3");
+        }
+        return telefone;
     }
 
     private JLabel criarTitulo(String texto) {

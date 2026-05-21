@@ -20,9 +20,10 @@ import projeto.models.Pedidos;
 import projeto.models.Romaneios;
 import projeto.repositories.ClientesRomaneioRepository;
 import projeto.repositories.CustomizerFactory;
-import projeto.services.HaversineService;
 import projeto.services.NominatimService;
+import projeto.services.RotaRodoviariaService;
 import projeto.services.RomaneiosService;
+import projeto.views.componentes.JanelaUtil;
 import projeto.util.GeoUtils;
 
 import javax.imageio.ImageIO;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -60,13 +62,14 @@ public class TelaGPS extends JFrame {
     private final Main.SessaoUsuario sessaoUsuario;
     private final ClientesRomaneioRepository clientesRomaneioRepository;
     private final NominatimService nominatimService = new NominatimService();
-    private final HaversineService haversineService = new HaversineService();
+    private final RotaRodoviariaService rotaRodoviariaService = new RotaRodoviariaService();
 
     private final List<EntregaMarcada> entregasAtivas = new ArrayList<>();
     private final List<EntregaMarcada> entregasTodas = new ArrayList<>();
     private final Deque<EntregaBackup> historicoDesfazer = new ArrayDeque<>();
     private final Map<Long, Long> ultimaTentativaGeocode = new HashMap<>();
     private final Map<Long, EntregaMarcada> entregasPorCliente = new HashMap<>();
+    private List<GeoPosition> caminhoRota = new ArrayList<>();
 
     private JXMapViewer mapa;
     private PanMouseInputListener panListener;
@@ -77,6 +80,7 @@ public class TelaGPS extends JFrame {
     private JLabel lblResumo;
     private JLabel lblDistancia;
     private JLabel lblClienteDetalhe;
+    private JLabel lblTelefoneDetalhe;
     private JLabel lblEnderecoDetalhe;
     private JLabel lblStatusDetalhe;
     private JLabel lblDistanciaDetalhe;
@@ -89,6 +93,7 @@ public class TelaGPS extends JFrame {
     private Timer timerAtualizacao;
     private boolean bloqueandoSelecaoTabela;
     private Long clienteSelecionadoId;
+    private double distanciaTotalRotaKm;
 
     private BufferedImage imagemDelivery;
 
@@ -113,6 +118,7 @@ public class TelaGPS extends JFrame {
         iniciarComponentes();
         carregarDados();
         iniciarAtualizacaoPeriodica();
+        JanelaUtil.configurarJanela(this, new Dimension(1360, 800), new Dimension(1100, 720));
         setVisible(true);
     }
 
@@ -125,9 +131,7 @@ public class TelaGPS extends JFrame {
     }
 
     private void configurarJanela() {
-        setTitle("DUTRA MOVEIS - GPS");
-        setSize(1360, 800);
-        setLocationRelativeTo(null);
+        setTitle("DUTRA MÓVEIS - GPS");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         getContentPane().setBackground(corFundo);
@@ -157,7 +161,7 @@ public class TelaGPS extends JFrame {
         lblResumo.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         lblResumo.setForeground(corMarrom);
 
-        lblDistancia = new JLabel("Distancia total: 0.00 km");
+        lblDistancia = new JLabel("Distância total da rota: 0,0 km");
         lblDistancia.setFont(new Font("Segoe UI", Font.BOLD, 13));
         lblDistancia.setForeground(corMarrom);
 
@@ -172,7 +176,7 @@ public class TelaGPS extends JFrame {
 
     private JComponent criarConteudo() {
         modeloTabela = new DefaultTableModel(new Object[]{
-                "Cliente", "Endereco", "Distancia (km)", "Status"
+                "Cliente", "Endereço", "Distância (km)", "Status"
         }, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -202,7 +206,7 @@ public class TelaGPS extends JFrame {
         });
 
         JScrollPane scrollTabela = new JScrollPane(tabelaEntregas);
-        scrollTabela.setPreferredSize(new Dimension(420, 0));
+        scrollTabela.setPreferredSize(new Dimension(360, 0));
 
         mapa = new JXMapViewer();
         mapa.setBackground(corBranco);
@@ -235,13 +239,15 @@ public class TelaGPS extends JFrame {
         splitMapaDetalhe.setDividerSize(8);
         splitMapaDetalhe.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        JLabel lblMapa = new JLabel("Regiao oeste do Parana");
+        JLabel lblMapa = new JLabel("Região oeste do Paraná");
         lblMapa.setFont(new Font("Segoe UI", Font.BOLD, 12));
         lblMapa.setForeground(corMarrom);
         lblMapa.setBorder(BorderFactory.createEmptyBorder(4, 8, 8, 8));
 
         JPanel mapaContainer = new JPanel(new BorderLayout());
         mapaContainer.setBackground(corBranco);
+        mapa.setPreferredSize(new Dimension(820, 620));
+        painelDetalhe.setPreferredSize(new Dimension(800, 240));
         mapaContainer.add(splitMapaDetalhe, BorderLayout.CENTER);
         mapaContainer.add(lblMapa, BorderLayout.SOUTH);
 
@@ -249,6 +255,7 @@ public class TelaGPS extends JFrame {
         split.setResizeWeight(0.34);
         split.setDividerSize(8);
         split.setBorder(BorderFactory.createEmptyBorder(0, 12, 0, 12));
+        split.setPreferredSize(new Dimension(1280, 760));
         return split;
     }
 
@@ -308,14 +315,16 @@ public class TelaGPS extends JFrame {
         titulo.setForeground(corMarrom);
 
         lblClienteDetalhe = criarLabelDetalhe("Cliente: -");
-        lblEnderecoDetalhe = criarLabelDetalhe("Endereco: -");
+        lblTelefoneDetalhe = criarLabelDetalhe("Telefone: -");
+        lblEnderecoDetalhe = criarLabelDetalhe("Endereço: -");
         lblStatusDetalhe = criarLabelDetalhe("Status: -");
-        lblDistanciaDetalhe = criarLabelDetalhe("Distancia: -");
+        lblDistanciaDetalhe = criarLabelDetalhe("Distância: -");
         lblTotalProdutos = criarLabelDetalhe("Total de produtos: 0");
 
         resumo.add(titulo);
         resumo.add(Box.createVerticalStrut(6));
         resumo.add(lblClienteDetalhe);
+        resumo.add(lblTelefoneDetalhe);
         resumo.add(lblEnderecoDetalhe);
         resumo.add(lblStatusDetalhe);
         resumo.add(lblDistanciaDetalhe);
@@ -379,19 +388,27 @@ public class TelaGPS extends JFrame {
         entregasPorCliente.clear();
 
         List<ClientesRomaneio> clientes = romaneio.getClientes();
-        int entregasPendentes = 0;
+        List<EntregaMarcada> entregasOrdenadas = new ArrayList<>();
         for (ClientesRomaneio cliente : clientes) {
-            EntregaMarcada entrega = montarEntrega(cliente);
+            entregasOrdenadas.add(montarEntrega(cliente));
+        }
+
+        entregasOrdenadas.sort(Comparator
+                .comparing((EntregaMarcada e) -> prioridadeCidade(e.cliente)).thenComparing(e -> e.cliente.getNome_cliente(), String.CASE_INSENSITIVE_ORDER)
+                .thenComparingDouble(e -> e.distanciaDoCaminhaoKm));
+
+        int entregasPendentes = 0;
+        for (EntregaMarcada entrega : entregasOrdenadas) {
             entregasTodas.add(entrega);
-            if (cliente.getId() != null) {
-                entregasPorCliente.put(cliente.getId(), entrega);
+            if (entrega.cliente.getId() != null) {
+                entregasPorCliente.put(entrega.cliente.getId(), entrega);
             }
 
             String status = entrega.entregue ? "ENTREGUE" : "PENDENTE";
             modeloTabela.addRow(new Object[]{
-                    cliente.getNome_cliente(),
+                    entrega.cliente.getNome_cliente(),
                     entrega.enderecoTexto,
-                    entrega.posicao != null ? formatarNumero(entrega.distanciaDoCaminhaoKm) + " km" : "-",
+                    entrega.posicao != null ? formatarDistancia(entrega.distanciaDoCaminhaoKm) + " km" : "-",
                     status
             });
 
@@ -401,11 +418,34 @@ public class TelaGPS extends JFrame {
             }
         }
 
-        double distancia = calcularDistanciaDaRota();
-        lblDistancia.setText("Distancia total aproximada: " + formatarNumero(distancia) + " km");
+        RotaRodoviariaService.RotaCalculada rotaCalculada = rotaRodoviariaService.calcularRota(construirPontosDaRota());
+        caminhoRota = new ArrayList<>(rotaCalculada.getGeometria());
+        distanciaTotalRotaKm = rotaCalculada.getDistanciaTotalKm();
+
+        List<Double> distanciasAcumuladas = rotaCalculada.getDistanciasAcumuladasKm();
+        for (int i = 0; i < entregasAtivas.size(); i++) {
+            int indice = i + 1;
+            if (indice < distanciasAcumuladas.size()) {
+                entregasAtivas.get(i).distanciaDoCaminhaoKm = distanciasAcumuladas.get(indice);
+            }
+        }
+
+        for (EntregaMarcada entrega : entregasTodas) {
+            if (entrega.posicao != null && !Boolean.TRUE.equals(entrega.cliente.getEntregue())
+                    && entrega.distanciaDoCaminhaoKm <= 0.0) {
+                entrega.distanciaDoCaminhaoKm = GeoUtils.calcularDistancia(
+                        BASE_MOTORISTA.getLatitude(),
+                        BASE_MOTORISTA.getLongitude(),
+                        entrega.posicao.getLatitude(),
+                        entrega.posicao.getLongitude()
+                );
+            }
+        }
+
+        lblDistancia.setText("Distância total da rota: " + formatarDistancia(distanciaTotalRotaKm) + " km");
 
         String data = romaneio.getData() != null ? romaneio.getData().toString() : "-";
-        String veiculo = romaneio.getVeiculo() != null ? romaneio.getVeiculo().getNomeVeiculo() : "Sem veiculo";
+        String veiculo = romaneio.getVeiculo() != null ? romaneio.getVeiculo().getNomeVeiculo() : "Sem veículo";
         String motorista = romaneio.getMotorista() != null ? romaneio.getMotorista().getNome() : "Sem motorista";
         lblResumo.setText("Romaneio " + data + " | " + veiculo + " | " + motorista
                 + " | entregas pendentes: " + entregasPendentes);
@@ -438,7 +478,7 @@ public class TelaGPS extends JFrame {
                 if (podeTentarGeocode(cliente)) {
                     double[] coordenadas = nominatimService.buscarCoordenadas(
                             endereco,
-                            "Foz do Iguacu"
+                            prioridadeCidade(cliente)
                     );
                     if (coordenadas != null) {
                         endereco.setLatitude(coordenadas[0]);
@@ -449,10 +489,10 @@ public class TelaGPS extends JFrame {
                         ultimaTentativaGeocode.remove(cliente.getId());
                     } else {
                         registrarTentativaGeocode(cliente);
-                        posicao = fallbackRegional(enderecoTexto);
+                        posicao = fallbackRegional(cliente, enderecoTexto);
                     }
                 } else {
-                    posicao = fallbackRegional(enderecoTexto);
+                    posicao = fallbackRegional(cliente, enderecoTexto);
                 }
             }
         } else {
@@ -507,7 +547,7 @@ public class TelaGPS extends JFrame {
 
     private String montarEnderecoTexto(Endereco endereco) {
         if (endereco == null) {
-            return "Sem endereco";
+            return "Sem endereço";
         }
 
         StringBuilder sb = new StringBuilder();
@@ -515,10 +555,10 @@ public class TelaGPS extends JFrame {
         appendParte(sb, endereco.getRua());
         appendParte(sb, endereco.getNumero());
         appendParte(sb, endereco.getBairro());
-        appendParte(sb, "Foz do Iguacu");
+        appendParte(sb, endereco.getCidade());
         appendParte(sb, "Parana");
         appendParte(sb, "Brasil");
-        return sb.length() > 0 ? sb.toString() : "Sem endereco";
+        return sb.length() > 0 ? sb.toString() : "Sem endereço";
     }
 
     private void appendParte(StringBuilder sb, String valor) {
@@ -531,12 +571,31 @@ public class TelaGPS extends JFrame {
         sb.append(valor.trim());
     }
 
-    private GeoPosition fallbackRegional(String enderecoTexto) {
-        String normalizado = enderecoTexto == null ? "" : enderecoTexto.toLowerCase(Locale.ROOT);
+    private GeoPosition fallbackRegional(ClientesRomaneio cliente, String enderecoTexto) {
+        String normalizado = (prioridadeCidade(cliente) + " " + (enderecoTexto == null ? "" : enderecoTexto))
+                .toLowerCase(Locale.ROOT);
         if (normalizado.contains("santa terezinha")) {
             return SANTA_TEREZINHA_CENTRO;
         }
+        if (normalizado.contains("medianeira")) {
+            return CENTRO_OESTE_PR;
+        }
         return FOZ_DO_IGUACU_CENTRO;
+    }
+
+    private String prioridadeCidade(ClientesRomaneio cliente) {
+        if (cliente == null) {
+            return "Foz do Iguacu";
+        }
+        List<String> cidades = cliente.getListaCidadesAtendidas();
+        if (!cidades.isEmpty()) {
+            return cidades.get(0);
+        }
+        Endereco endereco = cliente.getEndereco();
+        if (endereco != null && endereco.getCidade() != null && !endereco.getCidade().isBlank()) {
+            return endereco.getCidade();
+        }
+        return "Foz do Iguacu";
     }
 
     private boolean podeTentarGeocode(ClientesRomaneio cliente) {
@@ -556,7 +615,7 @@ public class TelaGPS extends JFrame {
         }
     }
 
-    private double calcularDistanciaDaRota() {
+    private List<GeoPosition> construirPontosDaRota() {
         List<GeoPosition> pontos = new ArrayList<>();
         pontos.add(BASE_MOTORISTA);
         for (EntregaMarcada entrega : entregasAtivas) {
@@ -564,17 +623,7 @@ public class TelaGPS extends JFrame {
                 pontos.add(entrega.posicao);
             }
         }
-        if (pontos.size() < 2) {
-            return 0.0;
-        }
-
-        double total = 0.0;
-        for (int i = 0; i < pontos.size() - 1; i++) {
-            GeoPosition a = pontos.get(i);
-            GeoPosition b = pontos.get(i + 1);
-            total += haversineService.calcularDistancia(a.getLatitude(), a.getLongitude(), b.getLatitude(), b.getLongitude());
-        }
-        return total;
+        return pontos;
     }
 
     private void atualizarOverlay() {
@@ -591,7 +640,10 @@ public class TelaGPS extends JFrame {
         waypointPainter.setWaypoints(waypoints);
 
         Painter<JXMapViewer> routePainter = (g, map, width, height) -> {
-            if (entregasAtivas.isEmpty()) {
+            List<GeoPosition> rota = caminhoRota != null && caminhoRota.size() > 1
+                    ? caminhoRota
+                    : construirPontosDaRota();
+            if (rota.size() < 2) {
                 return;
             }
             Graphics2D g2 = (Graphics2D) g.create();
@@ -600,15 +652,13 @@ public class TelaGPS extends JFrame {
                 g2.setColor(new Color(33, 150, 243));
                 g2.setStroke(new BasicStroke(2.5f));
 
-                GeoPosition anterior = BASE_MOTORISTA;
-                for (EntregaMarcada entrega : entregasAtivas) {
-                    if (entrega.posicao == null) {
-                        continue;
-                    }
+                GeoPosition anterior = rota.get(0);
+                for (int i = 1; i < rota.size(); i++) {
+                    GeoPosition entrega = rota.get(i);
                     java.awt.geom.Point2D p1 = map.convertGeoPositionToPoint(anterior);
-                    java.awt.geom.Point2D p2 = map.convertGeoPositionToPoint(entrega.posicao);
+                    java.awt.geom.Point2D p2 = map.convertGeoPositionToPoint(entrega);
                     g2.draw(new Line2D.Double(p1, p2));
-                    anterior = entrega.posicao;
+                    anterior = entrega;
                 }
             } finally {
                 g2.dispose();
@@ -620,13 +670,7 @@ public class TelaGPS extends JFrame {
     }
 
     private void enquadrarMapaSePossivel() {
-        List<GeoPosition> posicoes = new ArrayList<>();
-        posicoes.add(BASE_MOTORISTA);
-        for (EntregaMarcada entrega : entregasAtivas) {
-            if (entrega.posicao != null) {
-                posicoes.add(entrega.posicao);
-            }
-        }
+        List<GeoPosition> posicoes = construirPontosDaRota();
 
         if (posicoes.size() > 1) {
             Set<GeoPosition> conjunto = new LinkedHashSet<>(posicoes);
@@ -702,9 +746,10 @@ public class TelaGPS extends JFrame {
         }
         if (entrega == null) {
             lblClienteDetalhe.setText("Cliente: -");
-            lblEnderecoDetalhe.setText("Endereco: -");
+            lblTelefoneDetalhe.setText("Telefone: -");
+            lblEnderecoDetalhe.setText("Endereço: -");
             lblStatusDetalhe.setText("Status: -");
-            lblDistanciaDetalhe.setText("Distancia: -");
+            lblDistanciaDetalhe.setText("Distância: -");
             lblTotalProdutos.setText("Total de produtos: 0");
             if (modeloProdutos != null) {
                 modeloProdutos.setRowCount(0);
@@ -716,9 +761,10 @@ public class TelaGPS extends JFrame {
         }
 
         lblClienteDetalhe.setText("Cliente: " + entrega.cliente.getNome_cliente());
-        lblEnderecoDetalhe.setText("Endereco: " + entrega.enderecoTexto);
+        lblTelefoneDetalhe.setText("Telefone: " + formatarTelefone(entrega.cliente.getTelefone()));
+        lblEnderecoDetalhe.setText("Endereço: " + entrega.enderecoTexto);
         lblStatusDetalhe.setText("Status: " + (entrega.entregue ? "ENTREGUE" : "PENDENTE"));
-        lblDistanciaDetalhe.setText("Distancia: " + formatarNumero(entrega.distanciaDoCaminhaoKm) + " km");
+        lblDistanciaDetalhe.setText("Distância: " + formatarDistancia(entrega.distanciaDoCaminhaoKm) + " km");
 
         if (modeloProdutos != null) {
             modeloProdutos.setRowCount(0);
@@ -762,11 +808,11 @@ public class TelaGPS extends JFrame {
         }
         EntregaMarcada entrega = entregasPorCliente.get(clienteSelecionadoId);
         if (entrega == null) {
-            JOptionPane.showMessageDialog(this, "Entrega nao encontrada.");
+            JOptionPane.showMessageDialog(this, "Entrega não encontrada.");
             return;
         }
         if (!podeEncerrarEntrega(entrega)) {
-            JOptionPane.showMessageDialog(this, "Voce nao tem permissao para concluir esta entrega.");
+            JOptionPane.showMessageDialog(this, "Você não tem permissão para concluir esta entrega.");
             return;
         }
         int opcao = JOptionPane.showConfirmDialog(
@@ -791,8 +837,6 @@ public class TelaGPS extends JFrame {
 
     private void abrirDetalhesEntrega(EntregaMarcada entrega) {
         JDialog dialog = new JDialog(this, "Detalhes da entrega", true);
-        dialog.setSize(560, 450);
-        dialog.setLocationRelativeTo(this);
         dialog.setLayout(new BorderLayout());
         dialog.getContentPane().setBackground(corFundo);
 
@@ -802,11 +846,11 @@ public class TelaGPS extends JFrame {
         painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
 
         painel.add(criarLinha("Cliente", entrega.cliente.getNome_cliente()));
-        painel.add(criarLinha("Endereco", entrega.enderecoTexto));
+        painel.add(criarLinha("Endereço", entrega.enderecoTexto));
         painel.add(criarLinha("Produtos", entrega.produtosTexto));
-        painel.add(criarLinha("Distancia do caminhao", formatarNumero(entrega.distanciaDoCaminhaoKm) + " km"));
+        painel.add(criarLinha("Distância do caminhão", formatarDistancia(entrega.distanciaDoCaminhaoKm) + " km"));
         painel.add(criarLinha("Coordenadas", entrega.posicao != null
-                ? formatarNumero(entrega.posicao.getLatitude()) + ", " + formatarNumero(entrega.posicao.getLongitude())
+                ? formatarCoordenada(entrega.posicao.getLatitude()) + ", " + formatarCoordenada(entrega.posicao.getLongitude())
                 : "-"));
 
         JTextArea observacao = new JTextArea(entrega.produtosTexto);
@@ -845,6 +889,8 @@ public class TelaGPS extends JFrame {
         botoes.add(btnFechar);
         botoes.add(btnEncerrar);
         dialog.add(botoes, BorderLayout.SOUTH);
+        dialog.setResizable(true);
+        JanelaUtil.configurarDialog(dialog, this, new Dimension(620, 480), new Dimension(520, 380));
         dialog.setVisible(true);
     }
 
@@ -940,8 +986,26 @@ public class TelaGPS extends JFrame {
         return linha;
     }
 
-    private String formatarNumero(double valor) {
+    private String formatarDistancia(double valor) {
+        return String.format(new Locale("pt", "BR"), "%.1f", valor);
+    }
+
+    private String formatarCoordenada(double valor) {
         return String.format(Locale.US, "%.6f", valor);
+    }
+
+    private String formatarTelefone(String telefone) {
+        if (telefone == null || telefone.isBlank()) {
+            return "-";
+        }
+        String n = telefone.replaceAll("\\D", "");
+        if (n.length() == 11) {
+            return n.replaceAll("(\\d{2})(\\d{5})(\\d{4})", "($1) $2-$3");
+        }
+        if (n.length() == 10) {
+            return n.replaceAll("(\\d{2})(\\d{4})(\\d{4})", "($1) $2-$3");
+        }
+        return telefone;
     }
 
     private static class EntregaMarcada {
@@ -950,7 +1014,7 @@ public class TelaGPS extends JFrame {
         private final String produtosTexto;
         private final boolean entregue;
         private final GeoPosition posicao;
-        private final double distanciaDoCaminhaoKm;
+        private double distanciaDoCaminhaoKm;
 
         private EntregaMarcada(ClientesRomaneio cliente, String enderecoTexto, String produtosTexto,
                                boolean entregue, GeoPosition posicao, double distanciaDoCaminhaoKm) {

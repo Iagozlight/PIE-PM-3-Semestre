@@ -3,6 +3,7 @@ package projeto.views.telas;
 import projeto.repositories.UsuarioRepository;
 import projeto.services.MotoristaService;
 import projeto.services.UsuariosService;
+import projeto.views.componentes.JanelaUtil;
 
 public class MenuUsuarios extends javax.swing.JFrame {
     private MotoristaService motoristaService;
@@ -12,6 +13,7 @@ public class MenuUsuarios extends javax.swing.JFrame {
         this.usuarioService = usuarioService;
         this.motoristaService = motoristaService;
         initComponents();
+        JanelaUtil.configurarJanela(this, null, new java.awt.Dimension(420, 360));
     }
 
     @SuppressWarnings("unchecked")
@@ -28,7 +30,7 @@ public class MenuUsuarios extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("CADASTRO DE USUARIO");
+        jButton1.setText("CADASTRO DE USUÁRIO");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -42,7 +44,7 @@ public class MenuUsuarios extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("EXIBIR USUARIOS");
+        jButton3.setText("EXIBIR USUÁRIOS");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -56,7 +58,7 @@ public class MenuUsuarios extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("REMOVER USUARIO");
+        jButton5.setText("REMOVER USUÁRIO");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);

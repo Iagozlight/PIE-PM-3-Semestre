@@ -38,7 +38,10 @@ public class NominatimService {
         if (endereco == null) {
             return null;
         }
-        String cidade = (cidadePadrao == null || cidadePadrao.isBlank()) ? "Foz do Iguacu" : cidadePadrao.trim();
+        String cidade = endereco.getCidade();
+        if (cidade == null || cidade.isBlank()) {
+            cidade = (cidadePadrao == null || cidadePadrao.isBlank()) ? "Foz do Iguacu" : cidadePadrao.trim();
+        }
         String estado = "Parana";
         String bairro = valor(endereco.getBairro());
         String rua = valor(endereco.getRua());

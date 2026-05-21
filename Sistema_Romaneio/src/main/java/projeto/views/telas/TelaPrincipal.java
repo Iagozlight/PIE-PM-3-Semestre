@@ -16,14 +16,17 @@ import projeto.repositories.VeiculosRepository;
 import projeto.services.ClientesService;
 import projeto.services.RomaneiosService;
 import projeto.services.UsuariosService;
+import projeto.services.VeiculosService;
 import projeto.views.componentes.PainelRodape;
 import projeto.views.componentes.PainelTopo;
+import projeto.views.componentes.JanelaUtil;
 import projeto.views.componentes.TabelaRomaneios;
 import projeto.views.componentes.CursorUtil;
 import projeto.views.dialogs.DialogAtribuirMotorista;
 import projeto.views.dialogs.DialogAtribuirVeiculo;
 import projeto.views.dialogs.DialogDetalhesRomaneio;
 import projeto.views.dialogs.DialogEditarRomaneio;
+import projeto.views.dialogs.DialogGerenciarVeiculos;
 import projeto.views.dialogs.DialogNovoCliente;
 import projeto.views.dialogs.DialogNovoRomaneio;
 import projeto.views.telas.TelaGPS;
@@ -49,18 +52,18 @@ public class TelaPrincipal extends JFrame {
     private final CardLayout cardLayout  = new CardLayout();
     private final JPanel     painelCards = new JPanel(cardLayout);
 
-    // ── Apenas 3 botões visíveis na barra ──
-    private final JButton     btnRomaneios  = new JButton("Romaneios");
-    private final JButton     btnUsuarios   = new JButton("Usuários ▾");
-    private final JButton     btnLogout     = new JButton("Sair");
+    // Apenas 3 botões visíveis na barra
+    private final JButton     btnRomaneios  = projeto.util.BotaoEstilo.aviso(new JButton("Romaneios"));
+    private final JButton     btnUsuarios   = projeto.util.BotaoEstilo.aviso(new JButton("Usuários ▾"));
+    private final JButton     btnLogout     = projeto.util.BotaoEstilo.neutro(new JButton("Sair"));
 
-    // Popup que aparece ao clicar em "Usuários ▾"
+    // Popup que aparece ao clicar em Usuários
     private final JPopupMenu  menuUsuarios  = new JPopupMenu();
 
-    // btnLogin usado internamente (mostrarLogin)
-    private final JButton btnLogin = new JButton("Login");
+    // btnLogin usado internamente
+    private final JButton btnLogin = projeto.util.BotaoEstilo.primario(new JButton("Login"));
 
-    private final JLabel lblStatus = new JLabel("Nenhuma sessao ativa");
+    private final JLabel lblStatus = new JLabel("Nenhuma sessão ativa");
 
     // Campos de formulários
     private final JTextField    campoLoginUsuario              = new JTextField(18);
@@ -103,6 +106,7 @@ public class TelaPrincipal extends JFrame {
     private RomaneiosRepository        romaneiosRepository;
     private ClientesRomaneioRepository clientesRomaneioRepository;
     private VeiculosRepository         veiculosRepository;
+    private VeiculosService            veiculosService;
     private UsuariosService            usuariosService;
     private ClientesService            clientesService;
     private RomaneiosService           romaneiosService;
@@ -110,16 +114,14 @@ public class TelaPrincipal extends JFrame {
     private Main.SessaoUsuario sessaoAtual;
 
     public TelaPrincipal() {
-        super("DUTRA MOVEIS");
+        super("DUTRA MÓVEIS");
         inicializarInfraestrutura();
         construirInterface();
         atualizarAcesso(null);
         setVisible(true);
     }
 
-    // =========================================================
-    // INFRAESTRUTURA
-    // =========================================================
+    // INFRAESTRUTURA DO SISTEMA
 
     private void inicializarInfraestrutura() {
         FlyWayconfig.migrate();
@@ -129,19 +131,16 @@ public class TelaPrincipal extends JFrame {
         romaneiosRepository        = new RomaneiosRepository(entityManager);
         clientesRomaneioRepository = new ClientesRomaneioRepository(entityManager);
         veiculosRepository         = new VeiculosRepository(entityManager);
+        veiculosService            = new VeiculosService(veiculosRepository);
         usuariosService            = new UsuariosService(usuarioRepository, motoristasRepository);
         clientesService            = new ClientesService(clientesRomaneioRepository);
         romaneiosService           = new RomaneiosService(romaneiosRepository, clientesRomaneioRepository);
     }
 
-    // =========================================================
-    // CONSTRUÇÃO DA INTERFACE
-    // =========================================================
+    // CONSTRUÇÃO DA INTERFACE DO SISTEMA
 
     private void construirInterface() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(1180, 760);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         getContentPane().setBackground(NORMAL);
         setarIcone();
@@ -167,16 +166,17 @@ public class TelaPrincipal extends JFrame {
         add(painelCards, BorderLayout.CENTER);
 
         configurarAcoes();
+        JanelaUtil.configurarJanela(this, new Dimension(1180, 760), new Dimension(1024, 680));
         mostrarLogin();
     }
 
-    // ── Topo (logo + status) ──────────────────────────────────
+    // Topo
     private JPanel construirTopo() {
         JPanel painelLogo = new JPanel(new BorderLayout());
         painelLogo.setBackground(LOGO);
         painelLogo.setBorder(BorderFactory.createEmptyBorder(14, 16, 14, 16));
 
-        JLabel logoTexto = new JLabel("DUTRA MOVEIS", SwingConstants.CENTER);
+        JLabel logoTexto = new JLabel("DUTRA MÓVEIS", SwingConstants.CENTER);
         logoTexto.setForeground(TEXTO);
         logoTexto.setFont(new Font("Segoe UI", Font.BOLD, 28));
 
@@ -189,7 +189,7 @@ public class TelaPrincipal extends JFrame {
         return painelLogo;
     }
 
-    // ── Barra de navegação: apenas 3 botões ──────────────────
+    // Barra de navegação: apenas 3 botões
     private JPanel construirNavegacao() {
         JPanel faixa = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 6));
         faixa.setBackground(NORMAL);
@@ -213,16 +213,13 @@ public class TelaPrincipal extends JFrame {
         return faixa;
     }
 
-    /** Cria um JMenuItem que navega para o card indicado. */
     private JMenuItem itemMenu(String texto, String card) {
         JMenuItem item = new JMenuItem(texto);
         item.addActionListener(e -> abrirCard(card));
         return item;
     }
 
-    // =========================================================
-    // PAINÉIS (cards)
-    // =========================================================
+    // PAINÉIS
 
     private JPanel construirPainelLogin() {
         painelLogin = new JPanel(new GridBagLayout());
@@ -238,13 +235,13 @@ public class TelaPrincipal extends JFrame {
         painelLogin.add(titulo, c);
 
         c.gridwidth = 1;
-        c.gridy++; c.gridx = 0; painelLogin.add(new JLabel("Usuario"), c);
+        c.gridy++; c.gridx = 0; painelLogin.add(new JLabel("Usuário"), c);
         c.gridx = 1;            painelLogin.add(campoLoginUsuario, c);
 
         c.gridy++; c.gridx = 0; painelLogin.add(new JLabel("Senha"), c);
         c.gridx = 1;            painelLogin.add(campoLoginSenha, c);
 
-        JButton btnEntrar = new JButton("Entrar");
+        JButton btnEntrar = projeto.util.BotaoEstilo.primario(new JButton("Entrar"));
         btnEntrar.addActionListener(e -> autenticarUsuario());
 
         c.gridy++; c.gridx = 0; c.gridwidth = 2;
@@ -269,6 +266,8 @@ public class TelaPrincipal extends JFrame {
                 new DialogNovoCliente(this, clientesService));
         topo.getBtnNovoRomaneio().addActionListener(e ->
                 new DialogNovoRomaneio(this, romaneiosService, this::carregarRomaneiosAdmin));
+        topo.getBtnVeiculos().addActionListener(e ->
+                new DialogGerenciarVeiculos(this, veiculosService, this::carregarRomaneiosAdmin));
 
         rodape.getBtnDeletar().addActionListener(e -> {
             Romaneios r = romaneioSelecionadoDaTabelaAdmin();
@@ -297,7 +296,8 @@ public class TelaPrincipal extends JFrame {
         rodape.getBtnEditar().addActionListener(e -> {
             Romaneios r = romaneioSelecionadoDaTabelaAdmin();
             if (r != null)
-                new DialogEditarRomaneio(this, r, romaneiosService, clientesRomaneioRepository, this::carregarRomaneiosAdmin);
+                new DialogEditarRomaneio(this, r, romaneiosService, clientesRomaneioRepository,
+                        motoristasRepository, veiculosRepository, this::carregarRomaneiosAdmin);
         });
 
         rodape.getBtnGps().addActionListener(e -> {
@@ -321,13 +321,13 @@ public class TelaPrincipal extends JFrame {
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 20));
         topo.add(titulo, BorderLayout.WEST);
 
-        JButton btnAtualizar = new JButton("Atualizar");
+        JButton btnAtualizar = projeto.util.BotaoEstilo.neutro(new JButton("Atualizar"));
         btnAtualizar.addActionListener(e -> carregarRomaneiosMotorista());
         topo.add(btnAtualizar, BorderLayout.EAST);
         painelRomaneiosMotorista.add(topo, BorderLayout.NORTH);
 
         modeloRomaneiosMotorista = new DefaultTableModel(
-                new Object[]{"ID", "Data", "Veiculo", "Status"}, 0) {
+                new Object[]{"ID", "Data", "Veículo", "Status"}, 0) {
             @Override public boolean isCellEditable(int row, int col) { return false; }
         };
         tabelaRomaneiosMotorista = new JTable(modeloRomaneiosMotorista);
@@ -337,15 +337,13 @@ public class TelaPrincipal extends JFrame {
 
         JPanel rodape = new JPanel(new FlowLayout(FlowLayout.LEFT));
         rodape.setOpaque(false);
-        JButton btnDetalhes = new JButton("Ver Detalhes");
+        JButton btnDetalhes = projeto.util.BotaoEstilo.aviso(new JButton("Ver Detalhes"));
         btnDetalhes.addActionListener(e -> {
             Romaneios r = romaneioSelecionadoDaTabelaMotorista();
             if (r != null)
                 new DialogDetalhesRomaneio(this, r, romaneiosService, this::carregarRomaneiosMotorista, sessaoAtual);
         });
-        JButton btnGps = new JButton("GPS");
-        btnGps.setBackground(new Color(33, 150, 243));
-        btnGps.setForeground(Color.WHITE);
+        JButton btnGps = projeto.util.BotaoEstilo.primario(new JButton("GPS"));
         btnGps.addActionListener(e -> {
             Romaneios r = romaneioSelecionadoDaTabelaMotorista();
             if (r != null) {
@@ -363,21 +361,21 @@ public class TelaPrincipal extends JFrame {
         painelMenuUsuarios.setBackground(FUNDO_CARD);
         painelMenuUsuarios.setBorder(BorderFactory.createEmptyBorder(24, 24, 24, 24));
 
-        JLabel titulo = new JLabel("Menu Usuarios");
+        JLabel titulo = new JLabel("Menu Usuários");
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
         painelMenuUsuarios.add(titulo);
-        painelMenuUsuarios.add(botaoMenu("Novo Usuario",      "NOVO_USUARIO"));
+        painelMenuUsuarios.add(botaoMenu("Novo Usuário",      "NOVO_USUARIO"));
         painelMenuUsuarios.add(botaoMenu("Novo Motorista",    "NOVO_MOTORISTA"));
-        painelMenuUsuarios.add(botaoMenu("Exibir Usuarios",   "EXIBIR_USUARIOS"));
+        painelMenuUsuarios.add(botaoMenu("Exibir Usuários",   "EXIBIR_USUARIOS"));
         painelMenuUsuarios.add(botaoMenu("Alterar Senha",     "ALTERAR_SENHA"));
-        painelMenuUsuarios.add(botaoMenu("Remover Usuarios",  "REMOVER_USUARIO"));
+        painelMenuUsuarios.add(botaoMenu("Remover Usuários",  "REMOVER_USUARIO"));
         return painelMenuUsuarios;
     }
 
     private JPanel construirPainelAlterarSenha() {
         return painelAlterarSenha = construirFormularioSimples(
                 "Alterar Senha",
-                new String[]{"Usuario", "Senha atual", "Nova senha"},
+                new String[]{"Usuário", "Senha atual", "Nova senha"},
                 new JTextField[]{campoAlterarUsuario},
                 new JPasswordField[]{campoAlterarSenhaAtual, campoAlterarSenhaNova},
                 this::executarAlterarSenha);
@@ -385,8 +383,8 @@ public class TelaPrincipal extends JFrame {
 
     private JPanel construirPainelNovoUsuario() {
         return painelNovoUsuario = construirFormularioSimples(
-                "Novo Usuario",
-                new String[]{"Usuario", "Senha", "Confirmar senha"},
+                "Novo Usuário",
+                new String[]{"Usuário", "Senha", "Confirmar senha"},
                 new JTextField[]{campoNovoUsuario},
                 new JPasswordField[]{campoNovoUsuarioSenha, campoNovoUsuarioSenhaConfirmacao},
                 this::executarNovoUsuario);
@@ -395,7 +393,7 @@ public class TelaPrincipal extends JFrame {
     private JPanel construirPainelNovoMotorista() {
         return painelNovoMotorista = construirFormularioSimples(
                 "Novo Motorista",
-                new String[]{"Nome", "Data nascimento (dd/MM/yyyy)", "Usuario"},
+                new String[]{"Nome", "Data de nascimento (dd/MM/yyyy)", "Usuário"},
                 new JTextField[]{campoNovoMotoristaNome, campoNovoMotoristaData, campoNovoMotoristaUsuario},
                 new JPasswordField[0],
                 this::executarNovoMotorista);
@@ -403,8 +401,8 @@ public class TelaPrincipal extends JFrame {
 
     private JPanel construirPainelRemoverUsuario() {
         return painelRemoverUsuario = construirFormularioSimples(
-                "Remover Usuario",
-                new String[]{"Usuario", "Repita o usuario"},
+                "Remover Usuário",
+                new String[]{"Usuário", "Repita o usuário"},
                 new JTextField[]{campoRemoverUsuario, campoRemoverConfirmacao},
                 new JPasswordField[0],
                 this::executarRemoverUsuario);
@@ -417,16 +415,16 @@ public class TelaPrincipal extends JFrame {
 
         JPanel topo = new JPanel(new BorderLayout());
         topo.setOpaque(false);
-        JLabel titulo = new JLabel("Usuarios");
+        JLabel titulo = new JLabel("Usuários");
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
         topo.add(titulo, BorderLayout.WEST);
 
-        JButton btnAtualizar = new JButton("Atualizar");
+        JButton btnAtualizar = projeto.util.BotaoEstilo.neutro(new JButton("Atualizar"));
         btnAtualizar.addActionListener(e -> carregarUsuariosTabela());
         topo.add(btnAtualizar, BorderLayout.EAST);
         painelExibirUsuarios.add(topo, BorderLayout.NORTH);
 
-        modeloUsuarios = new DefaultTableModel(new Object[]{"Usuario", "Perfil"}, 0) {
+        modeloUsuarios = new DefaultTableModel(new Object[]{"Usuário", "Perfil"}, 0) {
             @Override public boolean isCellEditable(int row, int col) { return false; }
         };
         tabelaUsuarios = new JTable(modeloUsuarios);
@@ -463,9 +461,9 @@ public class TelaPrincipal extends JFrame {
 
         JPanel botoes = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         botoes.setOpaque(false);
-        JButton btnSalvar = new JButton("Salvar");
+        JButton btnSalvar = projeto.util.BotaoEstilo.sucesso(new JButton("Salvar"));
         btnSalvar.addActionListener(e -> acaoSalvar.run());
-        JButton btnVoltar = new JButton("Voltar");
+        JButton btnVoltar = projeto.util.BotaoEstilo.neutro(new JButton("Voltar"));
         btnVoltar.addActionListener(e -> mostrarCardPadrao());
         botoes.add(btnSalvar);
         botoes.add(btnVoltar);
@@ -484,7 +482,7 @@ public class TelaPrincipal extends JFrame {
     }
 
     private JButton botaoMenu(String texto, String card) {
-        JButton b = new JButton(texto);
+        JButton b = projeto.util.BotaoEstilo.aviso(new JButton(texto));
         b.addActionListener(e -> abrirCard(card));
         return b;
     }
@@ -503,7 +501,7 @@ public class TelaPrincipal extends JFrame {
                 new String(campoLoginSenha.getPassword())
         );
         if (sessao == null) {
-            JOptionPane.showMessageDialog(this, "Usuario ou senha incorretos!");
+            JOptionPane.showMessageDialog(this, "Usuário ou senha incorretos!");
             return;
         }
         atualizarAcesso(sessao);
@@ -594,14 +592,14 @@ public class TelaPrincipal extends JFrame {
         String senha       = new String(campoNovoUsuarioSenha.getPassword());
         String confirmacao = new String(campoNovoUsuarioSenhaConfirmacao.getPassword());
         if (!senha.equals(confirmacao)) {
-            JOptionPane.showMessageDialog(this, "As senhas nao conferem.");
+            JOptionPane.showMessageDialog(this, "As senhas não conferem.");
             return;
         }
         try {
             usuariosService.criarUsuario(campoNovoUsuario.getText().trim(), senha);
             limparFormularioNovoUsuario();
             carregarUsuariosTabela();
-            JOptionPane.showMessageDialog(this, "Usuario cadastrado com sucesso!");
+            JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
         } catch (Exception e) { JOptionPane.showMessageDialog(this, e.getMessage()); }
     }
 
@@ -630,13 +628,11 @@ public class TelaPrincipal extends JFrame {
             usuariosService.removerUsuario(usuario);
             limparFormularioRemoverUsuario();
             carregarUsuariosTabela();
-            JOptionPane.showMessageDialog(this, "Usuario removido com sucesso!");
+            JOptionPane.showMessageDialog(this, "Usuário removido com sucesso!");
         } catch (Exception e) { JOptionPane.showMessageDialog(this, e.getMessage()); }
     }
 
-    // =========================================================
     // CARREGAMENTO DE DADOS
-    // =========================================================
 
     private void carregarUsuariosTabela() {
         if (modeloUsuarios == null) return;
@@ -672,15 +668,14 @@ public class TelaPrincipal extends JFrame {
             modeloRomaneiosMotorista.addRow(new Object[]{
                     r.getId(),
                     r.getData(),
-                    r.getVeiculo() != null ? r.getVeiculo().getNomeVeiculo() : "Sem veiculo",
+                    r.getVeiculo() != null ? r.getVeiculo().getNomeVeiculo() : "Sem veículo",
                     r.getStatus()
             });
         }
     }
 
-    // =========================================================
+
     // SELEÇÃO DE LINHA NAS TABELAS
-    // =========================================================
 
     private Romaneios romaneioSelecionadoDaTabelaAdmin() {
         if (tabelaRomaneiosAdmin == null) return null;
@@ -728,10 +723,6 @@ public class TelaPrincipal extends JFrame {
         campoRemoverUsuario.setText("");
         campoRemoverConfirmacao.setText("");
     }
-
-    // =========================================================
-    // ÍCONE
-    // =========================================================
 
     private void setarIcone() {
         URL iconUrl = getClass().getResource("/view/icons/supplies.png");

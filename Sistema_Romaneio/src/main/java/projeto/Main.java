@@ -1,6 +1,7 @@
 package projeto;
 
 import jakarta.persistence.EntityManager;
+import com.formdev.flatlaf.FlatLightLaf;
 import projeto.config.FlyWayconfig;
 import projeto.models.*;
 import projeto.repositories.*;
@@ -147,6 +148,8 @@ public class Main {
         String nomeCliente = scanner.nextLine();
         System.out.println("CPF: ");
         String cpfCliente = scanner.nextLine();
+        System.out.println("Telefone (DDD + numero): ");
+        String telefoneCliente = scanner.nextLine();
         System.out.println("Dados do Cliente Confirmado!");
 
         Endereco endereco = Endereco.lerEndereco(scanner);
@@ -183,7 +186,14 @@ public class Main {
         } while (!opcao.equals("n") && !opcao.equals("N"));
 
         try {
-            clientesService.criarCliente(nomeCliente, cpfCliente, endereco, listaPedidos);
+            clientesService.criarCliente(
+                    nomeCliente,
+                    cpfCliente,
+                    telefoneCliente,
+                    endereco,
+                    listaPedidos,
+                    java.util.List.of(endereco.getCidade())
+            );
             System.out.println("Cliente salvo com sucesso!");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -246,9 +256,9 @@ public class Main {
 
     static void cadastrarVeiculo(VeiculosService veiculosService, Scanner sc) {
         System.out.println("=== Cadastro de VeÃ­culo ===");
-        System.out.println("Nome do veÃ­culo: ");
+        System.out.println("Modelo do veiculo: ");
         String nome = sc.nextLine();
-        System.out.println("Placa (ex: ABC1D23): ");
+        System.out.println("Placa comercial (ex: ABC1D23): ");
         String placa = sc.nextLine();
 
         try {
@@ -257,7 +267,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Erro ao cadastrar veÃ­culo:");
 
-            if (e.getMessage().contains("A placa deve seguir o formato Mercosul")) {
+            if (e.getMessage().contains("Placa invalida")) {
                 System.out.println("A placa deve seguir o formato Mercosul (ex: ABC1D23)");
             } else {
                 System.out.println("Erro inesperado: " + e.getMessage());
@@ -505,6 +515,7 @@ public class Main {
     // ==================== MAIN ====================
 
     public static void main(String[] args) {
+        FlatLightLaf.setup();
         javax.swing.SwingUtilities.invokeLater(projeto.views.telas.TelaPrincipal::new);
     }
 }
