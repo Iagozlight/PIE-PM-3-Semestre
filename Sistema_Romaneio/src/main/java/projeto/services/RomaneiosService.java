@@ -4,6 +4,8 @@ import projeto.models.*;
 import projeto.repositories.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class RomaneiosService {
@@ -20,7 +22,12 @@ public class RomaneiosService {
     public void criarRomaneio(LocalDate data, List<ClientesRomaneio> clientes) {
         Romaneios romaneio = new Romaneios(null, data);
 
-        for (ClientesRomaneio cliente : clientes) {
+        List<ClientesRomaneio> clientesOrdenados = new ArrayList<>(clientes);
+        clientesOrdenados.sort(Comparator
+                .comparing(ClientesRomaneio::getCidadePrincipal, String.CASE_INSENSITIVE_ORDER)
+                .thenComparing(ClientesRomaneio::getNome_cliente, String.CASE_INSENSITIVE_ORDER));
+
+        for (ClientesRomaneio cliente : clientesOrdenados) {
             cliente.setRomaneio(romaneio);
             romaneio.getClientes().add(cliente);
         }
@@ -29,8 +36,10 @@ public class RomaneiosService {
     }
 
     public String atribuirVeiculo(Romaneios romaneio, Veiculos veiculo) {
-        if (romaneio.getVeiculo() != null) {
-            return "Este romaneio já possui o veículo: " + romaneio.getVeiculo().getNomeVeiculo();
+        if (veiculo == null) {
+            romaneio.setVeiculo(null);
+            romaneiosRepository.update(romaneio);
+            return "Veículo removido do romaneio!";
         }
         if (veiculo.getDisponibilidade() == null || !veiculo.getDisponibilidade()) {
             return "Veículo indisponível para romaneio!";
@@ -40,19 +49,21 @@ public class RomaneiosService {
         }
         romaneio.setVeiculo(veiculo);
         romaneiosRepository.update(romaneio);
-        return "Veículo atribuído com sucesso!";
+        return "Veículo atualizado com sucesso!";
     }
 
     public String atribuirMotorista(Romaneios romaneio, Motoristas motorista) {
-        if (romaneio.getMotorista() != null) {
-            return "Este romaneio já possui o motorista: " + romaneio.getMotorista().getNome();
+        if (motorista == null) {
+            romaneio.setMotorista(null);
+            romaneiosRepository.update(romaneio);
+            return "Motorista removido do romaneio!";
         }
         if (romaneiosRepository.motoristaEmUso(motorista)) {
             return "Motorista já está em uso em outro romaneio!";
         }
         romaneio.setMotorista(motorista);
         romaneiosRepository.update(romaneio);
-        return "Motorista atribuído com sucesso!";
+        return "Motorista atualizado com sucesso!";
     }
 
     public void deletarRomaneio(Romaneios romaneio) {
@@ -80,3 +91,5 @@ public class RomaneiosService {
         return romaneiosRepository.findByMotorista(motorista);
     }
 }
+
+

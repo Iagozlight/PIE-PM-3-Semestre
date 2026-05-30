@@ -4,6 +4,8 @@ import projeto.models.Motoristas;
 import projeto.models.Romaneios;
 import projeto.repositories.MotoristasRepository;
 import projeto.services.RomaneiosService;
+import projeto.views.componentes.JanelaUtil;
+import projeto.util.BotaoEstilo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,10 +34,9 @@ public class DialogAtribuirMotorista extends JDialog {
         this.romaneiosService = romaneiosService;
         this.motoristasRepository = motoristasRepository;
         this.aoSalvar = aoSalvar;
-        setSize(400, 350);
-        setLocationRelativeTo(parent);
-        setResizable(false);
         iniciarComponentes();
+        setResizable(true);
+        JanelaUtil.configurarDialog(this, parent, new Dimension(460, 380), new Dimension(360, 300));
         setVisible(true);
     }
 
@@ -80,14 +81,10 @@ public class DialogAtribuirMotorista extends JDialog {
         painelBotoes.setBackground(corFundo);
         painelBotoes.setBorder(BorderFactory.createEmptyBorder(5, 15, 10, 15));
 
-        JButton btnCancelar = new JButton("Cancelar");
-        btnCancelar.setBackground(corBranco);
-        btnCancelar.setForeground(corMarrom);
+        JButton btnCancelar = BotaoEstilo.neutro(new JButton("Cancelar"));
         btnCancelar.addActionListener(e -> dispose());
 
-        JButton btnAtribuir = new JButton("Atribuir");
-        btnAtribuir.setBackground(new Color(46, 125, 50));
-        btnAtribuir.setForeground(Color.WHITE);
+        JButton btnAtribuir = BotaoEstilo.sucesso(new JButton("Atribuir"));
         btnAtribuir.addActionListener(e -> atribuir());
 
         painelBotoes.add(btnCancelar);
@@ -109,7 +106,7 @@ public class DialogAtribuirMotorista extends JDialog {
         String mensagem = romaneiosService.atribuirMotorista(romaneio, motorista);
         JOptionPane.showMessageDialog(this, mensagem);
 
-        if (mensagem.equals("Motorista atribuído com sucesso!")) {
+        if (mensagem.toLowerCase(java.util.Locale.ROOT).contains("sucesso")) {
             aoSalvar.run();
             dispose();
         }
