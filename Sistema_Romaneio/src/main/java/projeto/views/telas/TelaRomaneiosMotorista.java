@@ -1,8 +1,8 @@
 package projeto.views.telas;
 
-import projeto.models.Motoristas;
-import projeto.models.Romaneios;
-import projeto.services.RomaneiosService;
+import projeto.models.entity.Motoristas;
+import projeto.models.entity.Romaneios;
+import projeto.models.services.RomaneiosService;
 import projeto.views.componentes.JanelaUtil;
 import projeto.views.dialogs.DialogDetalhesRomaneio;
 

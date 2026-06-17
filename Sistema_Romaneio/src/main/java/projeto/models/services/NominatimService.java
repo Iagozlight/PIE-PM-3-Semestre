@@ -1,9 +1,9 @@
-package projeto.services;
+package projeto.models.services;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import projeto.models.Endereco;
+import projeto.models.entity.Endereco;
 
 import java.net.URI;
 import java.net.URLEncoder;

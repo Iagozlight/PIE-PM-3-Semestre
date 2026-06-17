@@ -1,9 +1,9 @@
-package projeto.services;
+package projeto.models.services;
 
-import projeto.models.ClientesRomaneio;
-import projeto.models.Endereco;
-import projeto.models.Pedidos;
-import projeto.repositories.ClientesRomaneioRepository;
+import projeto.models.entity.ClientesRomaneio;
+import projeto.models.entity.Endereco;
+import projeto.models.entity.Pedidos;
+import projeto.models.repositories.ClientesRomaneioRepository;
 
 import java.util.List;
 import java.util.Set;

@@ -1,13 +1,9 @@
 package projeto.views.telas;
 
-import projeto.repositories.MotoristasRepository;
-import projeto.repositories.UsuarioRepository;
 import projeto.views.componentes.NovoMotoristaComponents;
 import projeto.views.componentes.JanelaUtil;
-import projeto.services.MotoristaService;
-import projeto.services.UsuariosService;
-import projeto.services.MotoristaService;
-import projeto.services.UsuariosService;
+import projeto.models.services.MotoristaService;
+import projeto.models.services.UsuariosService;
 
 public class novoMotorista extends javax.swing.JFrame {
 

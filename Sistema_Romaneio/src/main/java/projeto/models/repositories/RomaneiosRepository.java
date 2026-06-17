@@ -1,11 +1,10 @@
-package projeto.repositories;
+package projeto.models.repositories;
 
 import jakarta.persistence.EntityManager;
-import projeto.models.Motoristas;
-import projeto.models.Romaneios;
-import projeto.models.Veiculos;
+import projeto.models.entity.Motoristas;
+import projeto.models.entity.Romaneios;
+import projeto.models.entity.Veiculos;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class RomaneiosRepository {

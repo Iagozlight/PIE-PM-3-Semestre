@@ -2,7 +2,7 @@ package projeto.views.telas;
 
 import projeto.views.componentes.NovoUsuarioComponentes;
 import projeto.views.componentes.JanelaUtil;
-import projeto.services.UsuariosService;
+import projeto.models.services.UsuariosService;
 
 public class novoUsuario extends javax.swing.JFrame {
 

@@ -1,4 +1,4 @@
-package projeto.util;
+package projeto.models.util;
 
 public class GeoUtils {
     private static final double RAIO_TERRA_KM = 6371.0;

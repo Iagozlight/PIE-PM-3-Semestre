@@ -1,9 +1,9 @@
-package projeto.services;
+package projeto.models.services;
 
-import projeto.repositories.MotoristasRepository;
-import projeto.repositories.UsuarioRepository;
-import projeto.models.Motoristas;
-import projeto.models.Usuarios;
+import projeto.models.repositories.MotoristasRepository;
+import projeto.models.repositories.UsuarioRepository;
+import projeto.models.entity.Motoristas;
+import projeto.models.entity.Usuarios;
 import java.time.LocalDate;
 
 public class MotoristaService {

@@ -1,8 +1,8 @@
-package projeto.repositories;
+package projeto.models.repositories;
 
 import jakarta.persistence.EntityManager;
 import java.util.List;
-import projeto.models.Usuarios;
+import projeto.models.entity.Usuarios;
 
 public class UsuarioRepository {
     private EntityManager em;//EntityManager serve pra interagir com banco de dados, o "em" Ã© um atributo que eu defini do EntityManager

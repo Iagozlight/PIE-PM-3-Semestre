@@ -1,7 +1,7 @@
-package projeto.repositories;
+package projeto.models.repositories;
 
 import jakarta.persistence.EntityManager;
-import projeto.models.ClientesRomaneio;
+import projeto.models.entity.ClientesRomaneio;
 
 import java.util.List;
 

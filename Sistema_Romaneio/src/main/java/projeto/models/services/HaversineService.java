@@ -1,8 +1,8 @@
-package projeto.services;
+package projeto.models.services;
 
-import projeto.models.ClientesRomaneio;
-import projeto.models.Endereco;
-import projeto.util.GeoUtils;
+import projeto.models.entity.ClientesRomaneio;
+import projeto.models.entity.Endereco;
+import projeto.models.util.GeoUtils;
 
 import java.util.List;
 

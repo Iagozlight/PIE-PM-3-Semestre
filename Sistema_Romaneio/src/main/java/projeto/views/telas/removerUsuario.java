@@ -2,7 +2,7 @@ package projeto.views.telas;
 
 import projeto.views.componentes.RemoverUsuariosComponentes;
 import projeto.views.componentes.JanelaUtil;
-import projeto.services.UsuariosService;
+import projeto.models.services.UsuariosService;
 
 public class removerUsuario extends javax.swing.JFrame {
     private RemoverUsuariosComponentes componentes;

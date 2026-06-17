@@ -1,4 +1,4 @@
-package projeto.repositories;
+package projeto.models.repositories;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;

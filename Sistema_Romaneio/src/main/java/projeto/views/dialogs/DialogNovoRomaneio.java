@@ -1,7 +1,7 @@
 package projeto.views.dialogs;
 
-import projeto.models.ClientesRomaneio;
-import projeto.services.RomaneiosService;
+import projeto.models.entity.ClientesRomaneio;
+import projeto.models.services.RomaneiosService;
 import projeto.views.componentes.JanelaUtil;
 
 import javax.swing.*;

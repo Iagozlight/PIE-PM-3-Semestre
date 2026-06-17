@@ -1,9 +1,8 @@
 package projeto.views.telas;
 
-import projeto.services.UsuariosService;
+import projeto.models.entity.Usuarios;
+import projeto.models.services.UsuariosService;
 import projeto.views.componentes.JanelaUtil;
-
-import javax.swing.*;
 
 public class exibirUsuarios extends javax.swing.JFrame {
 
@@ -21,7 +20,7 @@ public class exibirUsuarios extends javax.swing.JFrame {
         javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
 
-        for (projeto.models.Usuarios u : usuarioService.listarUsuarios()) {
+        for (Usuarios u : usuarioService.listarUsuarios()) {
             model.addRow(new Object[]{u.getUsuario(), "Usuário"});
         }
     }

@@ -1,7 +1,7 @@
-package projeto.repositories;
+package projeto.models.repositories;
 
 import jakarta.persistence.EntityManager;
-import projeto.models.Permissoes;
+import projeto.models.entity.Permissoes;
 
 import java.util.List;
 

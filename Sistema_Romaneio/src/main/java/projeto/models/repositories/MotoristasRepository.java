@@ -1,7 +1,7 @@
-package projeto.repositories;
+package projeto.models.repositories;
 
 import jakarta.persistence.EntityManager;
-import projeto.models.Motoristas;
+import projeto.models.entity.Motoristas;
 
 import java.util.List;
 

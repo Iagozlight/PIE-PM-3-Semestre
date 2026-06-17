@@ -1,10 +1,10 @@
-package projeto.services;
+package projeto.models.services;
 
-import projeto.Main;
-import projeto.models.Motoristas;
-import projeto.models.Usuarios;
-import projeto.repositories.MotoristasRepository;
-import projeto.repositories.UsuarioRepository;
+import projeto.controller.dto.SessaoUsuario;
+import projeto.models.entity.Motoristas;
+import projeto.models.entity.Usuarios;
+import projeto.models.repositories.MotoristasRepository;
+import projeto.models.repositories.UsuarioRepository;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -21,7 +21,7 @@ public class UsuariosService {
         this.motoristasRepository = motoristasRepository;
     }
 
-    public Main.SessaoUsuario autenticar(String username, String senha) {
+    public SessaoUsuario autenticar(String username, String senha) {
         if (username == null || senha == null) {
             return null;
         }
@@ -30,7 +30,7 @@ public class UsuariosService {
             Usuarios admin = new Usuarios();
             admin.setUsuario("admin");
             admin.setSenha("admin123");
-            return new Main.SessaoUsuario(admin, true, null);
+            return new SessaoUsuario(admin, true, null);
         }
 
         Usuarios usuario = usuarioRepository.findByUsuario(username);
@@ -49,7 +49,7 @@ public class UsuariosService {
                 }
             }
         }
-        return new Main.SessaoUsuario(usuario, isAdmin, motorista);
+        return new SessaoUsuario(usuario, isAdmin, motorista);
     }
 
     public void criarUsuario(String username, String senha) {

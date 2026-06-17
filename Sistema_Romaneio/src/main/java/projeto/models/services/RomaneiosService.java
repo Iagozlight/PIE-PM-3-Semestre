@@ -1,7 +1,10 @@
-package projeto.services;
+package projeto.models.services;
 
-import projeto.models.*;
-import projeto.repositories.*;
+import projeto.models.entity.ClientesRomaneio;
+import projeto.models.entity.Motoristas;
+import projeto.models.entity.Romaneios;
+import projeto.models.entity.Veiculos;
+import projeto.models.repositories.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

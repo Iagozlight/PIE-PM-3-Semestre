@@ -1,7 +1,7 @@
-package projeto.services;
+package projeto.models.services;
 
-import projeto.models.Veiculos;
-import projeto.repositories.VeiculosRepository;
+import projeto.models.entity.Veiculos;
+import projeto.models.repositories.VeiculosRepository;
 
 import java.util.List;
 import java.util.Locale;
