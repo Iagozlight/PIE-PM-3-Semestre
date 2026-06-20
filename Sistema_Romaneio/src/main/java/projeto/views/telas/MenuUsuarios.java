@@ -1,8 +1,7 @@
 package projeto.views.telas;
 
-import projeto.repositories.UsuarioRepository;
-import projeto.services.MotoristaService;
-import projeto.services.UsuariosService;
+import projeto.models.services.MotoristaService;
+import projeto.models.services.UsuariosService;
 import projeto.views.componentes.JanelaUtil;
 
 public class MenuUsuarios extends javax.swing.JFrame {

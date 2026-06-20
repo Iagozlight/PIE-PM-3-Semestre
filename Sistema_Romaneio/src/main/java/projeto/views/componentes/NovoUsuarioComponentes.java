@@ -1,6 +1,6 @@
 package projeto.views.componentes;
 
-import projeto.services.UsuariosService;
+import projeto.models.services.UsuariosService;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 

@@ -1,7 +1,7 @@
 package projeto.views.componentes;
 
-import projeto.util.Cores;
-import projeto.util.BotaoEstilo;
+import projeto.models.util.Cores;
+import projeto.models.util.BotaoEstilo;
 
 import javax.swing.*;
 import java.awt.*;

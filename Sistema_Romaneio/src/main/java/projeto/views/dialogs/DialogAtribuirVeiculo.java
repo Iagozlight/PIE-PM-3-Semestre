@@ -1,11 +1,11 @@
 package projeto.views.dialogs;
 
-import projeto.models.Romaneios;
-import projeto.models.Veiculos;
-import projeto.repositories.VeiculosRepository;
-import projeto.services.RomaneiosService;
+import projeto.models.entity.Romaneios;
+import projeto.models.entity.Veiculos;
+import projeto.models.repositories.VeiculosRepository;
+import projeto.models.services.RomaneiosService;
 import projeto.views.componentes.JanelaUtil;
-import projeto.util.BotaoEstilo;
+import projeto.models.util.BotaoEstilo;
 
 import javax.swing.*;
 import java.awt.*;

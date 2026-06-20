@@ -1,22 +1,21 @@
 package projeto.views.telas;
 
 import jakarta.persistence.EntityManager;
-import projeto.Main;
+import projeto.controller.dto.SessaoUsuario;
+import projeto.controller.impl.UsuarioController;
 import projeto.config.FlyWayconfig;
-import projeto.models.ClientesRomaneio;
-import projeto.models.Motoristas;
-import projeto.models.Romaneios;
-import projeto.models.Usuarios;
-import projeto.repositories.ClientesRomaneioRepository;
-import projeto.repositories.CustomizerFactory;
-import projeto.repositories.MotoristasRepository;
-import projeto.repositories.RomaneiosRepository;
-import projeto.repositories.UsuarioRepository;
-import projeto.repositories.VeiculosRepository;
-import projeto.services.ClientesService;
-import projeto.services.RomaneiosService;
-import projeto.services.UsuariosService;
-import projeto.services.VeiculosService;
+import projeto.models.entity.Motoristas;
+import projeto.models.entity.Romaneios;
+import projeto.models.entity.Usuarios;
+import projeto.models.repositories.ClientesRomaneioRepository;
+import projeto.models.repositories.CustomizerFactory;
+import projeto.models.repositories.MotoristasRepository;
+import projeto.models.repositories.RomaneiosRepository;
+import projeto.models.repositories.UsuarioRepository;
+import projeto.models.repositories.VeiculosRepository;
+import projeto.models.services.ClientesService;
+import projeto.models.services.RomaneiosService;
+import projeto.models.services.VeiculosService;
 import projeto.views.componentes.PainelRodape;
 import projeto.views.componentes.PainelTopo;
 import projeto.views.componentes.JanelaUtil;
@@ -29,7 +28,6 @@ import projeto.views.dialogs.DialogEditarRomaneio;
 import projeto.views.dialogs.DialogGerenciarVeiculos;
 import projeto.views.dialogs.DialogNovoCliente;
 import projeto.views.dialogs.DialogNovoRomaneio;
-import projeto.views.telas.TelaGPS;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -53,15 +51,15 @@ public class TelaPrincipal extends JFrame {
     private final JPanel     painelCards = new JPanel(cardLayout);
 
     // Apenas 3 botões visíveis na barra
-    private final JButton     btnRomaneios  = projeto.util.BotaoEstilo.aviso(new JButton("Romaneios"));
-    private final JButton     btnUsuarios   = projeto.util.BotaoEstilo.aviso(new JButton("Usuários ▾"));
-    private final JButton     btnLogout     = projeto.util.BotaoEstilo.neutro(new JButton("Sair"));
+    private final JButton     btnRomaneios  = projeto.models.util.BotaoEstilo.aviso(new JButton("Romaneios"));
+    private final JButton     btnUsuarios   = projeto.models.util.BotaoEstilo.aviso(new JButton("Usuários ▾"));
+    private final JButton     btnLogout     = projeto.models.util.BotaoEstilo.neutro(new JButton("Sair"));
 
     // Popup que aparece ao clicar em Usuários
     private final JPopupMenu  menuUsuarios  = new JPopupMenu();
 
     // btnLogin usado internamente
-    private final JButton btnLogin = projeto.util.BotaoEstilo.primario(new JButton("Login"));
+    private final JButton btnLogin = projeto.models.util.BotaoEstilo.primario(new JButton("Login"));
 
     private final JLabel lblStatus = new JLabel("Nenhuma sessão ativa");
 
@@ -101,17 +99,16 @@ public class TelaPrincipal extends JFrame {
     private JPanel painelRemoverUsuario;
 
     private EntityManager              entityManager;
-    private UsuarioRepository          usuarioRepository;
     private MotoristasRepository       motoristasRepository;
     private RomaneiosRepository        romaneiosRepository;
     private ClientesRomaneioRepository clientesRomaneioRepository;
     private VeiculosRepository         veiculosRepository;
     private VeiculosService            veiculosService;
-    private UsuariosService            usuariosService;
+    private UsuarioController          usuarioController;
     private ClientesService            clientesService;
     private RomaneiosService           romaneiosService;
 
-    private Main.SessaoUsuario sessaoAtual;
+    private SessaoUsuario sessaoAtual;
 
     public TelaPrincipal() {
         super("DUTRA MÓVEIS");
@@ -126,13 +123,12 @@ public class TelaPrincipal extends JFrame {
     private void inicializarInfraestrutura() {
         FlyWayconfig.migrate();
         entityManager              = CustomizerFactory.getEntityManager();
-        usuarioRepository          = new UsuarioRepository(entityManager);
         motoristasRepository       = new MotoristasRepository(entityManager);
         romaneiosRepository        = new RomaneiosRepository(entityManager);
         clientesRomaneioRepository = new ClientesRomaneioRepository(entityManager);
         veiculosRepository         = new VeiculosRepository(entityManager);
         veiculosService            = new VeiculosService(veiculosRepository);
-        usuariosService            = new UsuariosService(usuarioRepository, motoristasRepository);
+        usuarioController           = new UsuarioController(new UsuarioRepository(entityManager), motoristasRepository);
         clientesService            = new ClientesService(clientesRomaneioRepository);
         romaneiosService           = new RomaneiosService(romaneiosRepository, clientesRomaneioRepository);
     }
@@ -241,7 +237,7 @@ public class TelaPrincipal extends JFrame {
         c.gridy++; c.gridx = 0; painelLogin.add(new JLabel("Senha"), c);
         c.gridx = 1;            painelLogin.add(campoLoginSenha, c);
 
-        JButton btnEntrar = projeto.util.BotaoEstilo.primario(new JButton("Entrar"));
+        JButton btnEntrar = projeto.models.util.BotaoEstilo.primario(new JButton("Entrar"));
         btnEntrar.addActionListener(e -> autenticarUsuario());
 
         c.gridy++; c.gridx = 0; c.gridwidth = 2;
@@ -321,7 +317,7 @@ public class TelaPrincipal extends JFrame {
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 20));
         topo.add(titulo, BorderLayout.WEST);
 
-        JButton btnAtualizar = projeto.util.BotaoEstilo.neutro(new JButton("Atualizar"));
+        JButton btnAtualizar = projeto.models.util.BotaoEstilo.neutro(new JButton("Atualizar"));
         btnAtualizar.addActionListener(e -> carregarRomaneiosMotorista());
         topo.add(btnAtualizar, BorderLayout.EAST);
         painelRomaneiosMotorista.add(topo, BorderLayout.NORTH);
@@ -337,13 +333,13 @@ public class TelaPrincipal extends JFrame {
 
         JPanel rodape = new JPanel(new FlowLayout(FlowLayout.LEFT));
         rodape.setOpaque(false);
-        JButton btnDetalhes = projeto.util.BotaoEstilo.aviso(new JButton("Ver Detalhes"));
+        JButton btnDetalhes = projeto.models.util.BotaoEstilo.aviso(new JButton("Ver Detalhes"));
         btnDetalhes.addActionListener(e -> {
             Romaneios r = romaneioSelecionadoDaTabelaMotorista();
             if (r != null)
                 new DialogDetalhesRomaneio(this, r, romaneiosService, this::carregarRomaneiosMotorista, sessaoAtual);
         });
-        JButton btnGps = projeto.util.BotaoEstilo.primario(new JButton("GPS"));
+        JButton btnGps = projeto.models.util.BotaoEstilo.primario(new JButton("GPS"));
         btnGps.addActionListener(e -> {
             Romaneios r = romaneioSelecionadoDaTabelaMotorista();
             if (r != null) {
@@ -419,7 +415,7 @@ public class TelaPrincipal extends JFrame {
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
         topo.add(titulo, BorderLayout.WEST);
 
-        JButton btnAtualizar = projeto.util.BotaoEstilo.neutro(new JButton("Atualizar"));
+        JButton btnAtualizar = projeto.models.util.BotaoEstilo.neutro(new JButton("Atualizar"));
         btnAtualizar.addActionListener(e -> carregarUsuariosTabela());
         topo.add(btnAtualizar, BorderLayout.EAST);
         painelExibirUsuarios.add(topo, BorderLayout.NORTH);
@@ -461,9 +457,9 @@ public class TelaPrincipal extends JFrame {
 
         JPanel botoes = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         botoes.setOpaque(false);
-        JButton btnSalvar = projeto.util.BotaoEstilo.sucesso(new JButton("Salvar"));
+        JButton btnSalvar = projeto.models.util.BotaoEstilo.sucesso(new JButton("Salvar"));
         btnSalvar.addActionListener(e -> acaoSalvar.run());
-        JButton btnVoltar = projeto.util.BotaoEstilo.neutro(new JButton("Voltar"));
+        JButton btnVoltar = projeto.models.util.BotaoEstilo.neutro(new JButton("Voltar"));
         btnVoltar.addActionListener(e -> mostrarCardPadrao());
         botoes.add(btnSalvar);
         botoes.add(btnVoltar);
@@ -482,7 +478,7 @@ public class TelaPrincipal extends JFrame {
     }
 
     private JButton botaoMenu(String texto, String card) {
-        JButton b = projeto.util.BotaoEstilo.aviso(new JButton(texto));
+        JButton b = projeto.models.util.BotaoEstilo.aviso(new JButton(texto));
         b.addActionListener(e -> abrirCard(card));
         return b;
     }
@@ -496,7 +492,7 @@ public class TelaPrincipal extends JFrame {
     }
 
     private void autenticarUsuario() {
-        Main.SessaoUsuario sessao = usuariosService.autenticar(
+        SessaoUsuario sessao = usuarioController.autenticar(
                 campoLoginUsuario.getText().trim(),
                 new String(campoLoginSenha.getPassword())
         );
@@ -514,7 +510,7 @@ public class TelaPrincipal extends JFrame {
         }
     }
 
-    private void atualizarAcesso(Main.SessaoUsuario sessao) {
+    private void atualizarAcesso(SessaoUsuario sessao) {
         sessaoAtual = sessao;
 
         boolean logado = sessaoAtual != null;
@@ -579,7 +575,7 @@ public class TelaPrincipal extends JFrame {
 
     private void executarAlterarSenha() {
         try {
-            usuariosService.alterarSenha(
+            usuarioController.alterarSenha(
                     campoAlterarUsuario.getText().trim(),
                     new String(campoAlterarSenhaAtual.getPassword()),
                     new String(campoAlterarSenhaNova.getPassword()));
@@ -596,7 +592,7 @@ public class TelaPrincipal extends JFrame {
             return;
         }
         try {
-            usuariosService.criarUsuario(campoNovoUsuario.getText().trim(), senha);
+            usuarioController.criarUsuario(campoNovoUsuario.getText().trim(), senha);
             limparFormularioNovoUsuario();
             carregarUsuariosTabela();
             JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
@@ -608,7 +604,7 @@ public class TelaPrincipal extends JFrame {
             LocalDate data = LocalDate.parse(
                     campoNovoMotoristaData.getText().trim(),
                     DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            usuariosService.criarMotorista(
+            usuarioController.criarMotorista(
                     campoNovoMotoristaNome.getText().trim(),
                     data,
                     campoNovoMotoristaUsuario.getText().trim());
@@ -625,7 +621,7 @@ public class TelaPrincipal extends JFrame {
             return;
         }
         try {
-            usuariosService.removerUsuario(usuario);
+            usuarioController.removerUsuario(usuario);
             limparFormularioRemoverUsuario();
             carregarUsuariosTabela();
             JOptionPane.showMessageDialog(this, "Usuário removido com sucesso!");
@@ -643,7 +639,7 @@ public class TelaPrincipal extends JFrame {
             if (m.getUsuarios() != null && m.getUsuarios().getId() != null)
                 motoristaIds.add(m.getUsuarios().getId());
         }
-        for (Usuarios u : usuariosService.listarUsuarios()) {
+        for (Usuarios u : usuarioController.listarUsuarios()) {
             String perfil = u.temPermissao("ADMIN") || "admin".equalsIgnoreCase(u.getUsuario())
                     ? "ADMIN"
                     : (motoristaIds.contains(u.getId()) ? "MOTORISTA" : "USUARIO");

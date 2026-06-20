@@ -1,8 +1,8 @@
 package projeto.views.componentes;
 
-import projeto.models.Romaneios;
-import projeto.util.Cores;
-import projeto.util.Fontes;
+import projeto.models.entity.Romaneios;
+import projeto.models.util.Cores;
+import projeto.models.util.Fontes;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

@@ -1,8 +1,8 @@
 package projeto.views.dialogs;
 
-import projeto.models.Endereco;
-import projeto.models.Pedidos;
-import projeto.services.ClientesService;
+import projeto.models.entity.Endereco;
+import projeto.models.entity.Pedidos;
+import projeto.models.services.ClientesService;
 import projeto.views.componentes.JanelaUtil;
 
 import javax.swing.*;

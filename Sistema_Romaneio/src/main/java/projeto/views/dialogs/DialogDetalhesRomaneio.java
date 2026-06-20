@@ -1,10 +1,10 @@
 package projeto.views.dialogs;
 
-import projeto.models.ClientesRomaneio;
-import projeto.models.Pedidos;
-import projeto.models.Romaneios;
-import projeto.Main;
-import projeto.services.RomaneiosService;
+import projeto.models.entity.ClientesRomaneio;
+import projeto.models.entity.Pedidos;
+import projeto.models.entity.Romaneios;
+import projeto.controller.dto.SessaoUsuario;
+import projeto.models.services.RomaneiosService;
 import projeto.views.telas.TelaGPS;
 import projeto.views.componentes.JanelaUtil;
 
@@ -17,7 +17,7 @@ public class DialogDetalhesRomaneio extends JDialog {
 
     private final Romaneios romaneio;
     private final RomaneiosService romaneiosService;
-    private final Main.SessaoUsuario sessaoUsuario;
+    private final SessaoUsuario sessaoUsuario;
     private Runnable aoAtualizar;
 
     private final Color corFundo = new Color(245, 240, 225);
@@ -34,7 +34,7 @@ public class DialogDetalhesRomaneio extends JDialog {
     public DialogDetalhesRomaneio(JFrame parent, Romaneios romaneio,
                                   RomaneiosService romaneiosService,
                                   Runnable aoAtualizar,
-                                  Main.SessaoUsuario sessaoUsuario) {
+                                  SessaoUsuario sessaoUsuario) {
         super(parent, "Detalhes do Romaneio", true);
         this.romaneio = romaneio;
         this.romaneiosService = romaneiosService;

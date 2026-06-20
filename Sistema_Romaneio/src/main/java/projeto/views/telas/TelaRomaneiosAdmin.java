@@ -1,10 +1,10 @@
 package projeto.views.telas;
 
 import jakarta.persistence.EntityManager;
-import projeto.models.Romaneios;
-import projeto.repositories.*;
-import projeto.services.ClientesService;
-import projeto.services.RomaneiosService;
+import projeto.models.entity.Romaneios;
+import projeto.models.repositories.*;
+import projeto.models.services.ClientesService;
+import projeto.models.services.RomaneiosService;
 import projeto.views.componentes.*;
 import projeto.views.componentes.JanelaUtil;
 import projeto.views.dialogs.*;

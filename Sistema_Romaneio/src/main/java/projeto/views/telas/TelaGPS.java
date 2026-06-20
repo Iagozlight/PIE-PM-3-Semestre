@@ -1,7 +1,7 @@
 package projeto.views.telas;
 
 import jakarta.persistence.EntityManager;
-import projeto.Main;
+import projeto.controller.dto.SessaoUsuario;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
@@ -11,20 +11,19 @@ import org.jxmapviewer.painter.Painter;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.Waypoint;
 import org.jxmapviewer.viewer.WaypointPainter;
 import org.jxmapviewer.viewer.WaypointRenderer;
-import projeto.models.ClientesRomaneio;
-import projeto.models.Endereco;
-import projeto.models.Pedidos;
-import projeto.models.Romaneios;
-import projeto.repositories.ClientesRomaneioRepository;
-import projeto.repositories.CustomizerFactory;
-import projeto.services.NominatimService;
-import projeto.services.RotaRodoviariaService;
-import projeto.services.RomaneiosService;
+import projeto.models.entity.ClientesRomaneio;
+import projeto.models.entity.Endereco;
+import projeto.models.entity.Pedidos;
+import projeto.models.entity.Romaneios;
+import projeto.models.repositories.ClientesRomaneioRepository;
+import projeto.models.repositories.CustomizerFactory;
+import projeto.models.services.NominatimService;
+import projeto.models.services.RotaRodoviariaService;
+import projeto.models.services.RomaneiosService;
 import projeto.views.componentes.JanelaUtil;
-import projeto.util.GeoUtils;
+import projeto.models.util.GeoUtils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -37,7 +36,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
@@ -59,7 +57,7 @@ public class TelaGPS extends JFrame {
 
     private final Romaneios romaneio;
     private final RomaneiosService romaneiosService;
-    private final Main.SessaoUsuario sessaoUsuario;
+    private final SessaoUsuario sessaoUsuario;
     private final ClientesRomaneioRepository clientesRomaneioRepository;
     private final NominatimService nominatimService = new NominatimService();
     private final RotaRodoviariaService rotaRodoviariaService = new RotaRodoviariaService();
@@ -107,7 +105,7 @@ public class TelaGPS extends JFrame {
         this(romaneio, romaneiosService, null);
     }
 
-    public TelaGPS(Romaneios romaneio, RomaneiosService romaneiosService, Main.SessaoUsuario sessaoUsuario) {
+    public TelaGPS(Romaneios romaneio, RomaneiosService romaneiosService, SessaoUsuario sessaoUsuario) {
         this.romaneio = romaneio;
         this.romaneiosService = romaneiosService;
         this.sessaoUsuario = sessaoUsuario;
